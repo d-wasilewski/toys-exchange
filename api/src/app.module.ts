@@ -10,10 +10,13 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
+import { ToysService } from './toys/toys.service';
+import { ToysController } from './toys/toys.controller';
+import { ToysModule } from './toys/toys.module';
 
 @Module({
-  imports: [PrismaModule, UserModule, AuthModule],
-  controllers: [AppController, UserController, AuthController],
-  providers: [AppService, UserService, PrismaService, AuthService, JwtService],
+  imports: [PrismaModule, UserModule, AuthModule, ToysModule],
+  controllers: [AppController, UserController, AuthController, ToysController],
+  providers: [AppService, UserService, PrismaService, AuthService, JwtService, ToysService],
 })
 export class AppModule {}
