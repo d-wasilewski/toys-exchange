@@ -16,6 +16,7 @@ export class UserService {
           password: hashedPassword,
         },
       });
+
       return createdUser;
     } catch (error) {
       throw new HttpException(
@@ -23,6 +24,14 @@ export class UserService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async findOne(username: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        name: username,
+      },
+    });
   }
 
   async getUsers() {
