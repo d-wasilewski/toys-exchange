@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useFormik } from "formik";
 import Input from "../components/Input";
 
@@ -11,13 +12,16 @@ export const AddNewToyForm = () => {
       description: "",
     },
     onSubmit: async (values) => {
-      console.log(values);
+      axios.post("http://localhost:3000/toy/create-toy", {
+        ...values,
+        ownerId: 9,
+      });
     },
   });
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div style={{ justifyContent: "center" }}>
+      <div>
         <h2>Add a toy</h2>
         <Input
           placeholder="McQueen"
@@ -28,7 +32,7 @@ export const AddNewToyForm = () => {
         />
         <Input
           placeholder="Auta"
-          name="email"
+          name="category"
           label="Kategoria"
           onChange={formik.handleChange}
           value={formik.values.category}

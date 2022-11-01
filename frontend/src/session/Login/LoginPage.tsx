@@ -1,13 +1,11 @@
 import styled from "styled-components";
-import { AddNewToyForm } from "./AddNewToyForm";
-import { ToysList } from "./ToysList";
+import { LoginForm } from "./LoginForm";
 
-export const ToysView = () => {
+export const LoginPage = () => {
   return (
     <PageWrapper>
-      <h1>List of toys</h1>
-      <ToysList />
-      <AddNewToyForm />
+      <h1>Login</h1>
+      <LoginForm />
     </PageWrapper>
   );
 };
@@ -18,5 +16,4 @@ const PageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding-top: 54px;
 `;

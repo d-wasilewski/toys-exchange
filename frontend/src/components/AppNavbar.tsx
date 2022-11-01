@@ -1,36 +1,37 @@
 import styled from "styled-components";
+import { Link } from "./Link";
 
-// import { Link } from "./Link";
 import { Navbar } from "./Navbar";
 
-// interface AppNavbarProps {
-//   onLogoClick: () => void;
-//   onLinkClick: (path: string) => void;
-//   links: {
-//     label: string;
-//     url: string;
-//     groupUrl?: string;
-//   }[];
-//   signOut: () => void;
-// }
-export const AppNavbar = () => {
+interface AppNavbarProps {
+  links: {
+    label: string;
+    url: string;
+  }[];
+  onLinkClick: (path: string) => void;
+  isMatch: (path: string) => boolean;
+}
+
+export const AppNavbar = ({ links, onLinkClick, isMatch }: AppNavbarProps) => {
   return (
     <Navbar>
-      <div>Navbar</div>
+      <LinksWrapper>
+        {links.map((link) => {
+          return (
+            <Link
+              label={link.label}
+              onClick={() => onLinkClick(link.url)}
+              match={isMatch(link.url)}
+            />
+          );
+        })}
+      </LinksWrapper>
     </Navbar>
   );
 };
 
-// const Logo = styled.img`
-//   cursor: pointer;
-// `;
-
-// const LinksWrapper = styled.div`
-//   display: flex;
-//   justify-content: flex-end;
-//   flex-grow: 1;
-// `;
-
-// const Spacer = styled.div`
-//   margin: auto;
-// `;
+const LinksWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+`;

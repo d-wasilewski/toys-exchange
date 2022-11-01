@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import styled from "styled-components";
 import Input from "../../components/Input";
 
 export const RegisterForm = () => {
@@ -11,7 +12,7 @@ export const RegisterForm = () => {
       confirmPassword: "",
     },
     onSubmit: async (values) => {
-      axios.post("http://localhost:3000/user/sign-up", values);
+      axios.post("http://localhost:3000/auth/sign-up", values);
       console.log(values);
       const users = await axios.get("http://localhost:3000/user/users");
       console.log(users);
@@ -20,8 +21,7 @@ export const RegisterForm = () => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="App">
-        <h1>Vite + React</h1>
+      <div>
         <Input
           placeholder="John"
           name="name"
@@ -50,8 +50,17 @@ export const RegisterForm = () => {
           onChange={formik.handleChange}
           value={formik.values.confirmPassword}
         />
-        <button type="submit">Submit</button>
+        <ButtonWrapper>
+          <button type="submit">Submit</button>
+        </ButtonWrapper>
       </div>
     </form>
   );
 };
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  margin-bottom: 100px;
+`;

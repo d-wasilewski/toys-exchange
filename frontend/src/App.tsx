@@ -1,24 +1,80 @@
 import "./App.css";
-import Input from "./components/Input";
-import { useFormik } from "formik";
-import axios from "axios";
-import { Route, Routes, useRoutes } from "react-router-dom";
-import { LoginForm } from "./session/Login/LoginForm";
-import { RegisterForm } from "./session/Register/RegisterForm";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToysView } from "./toys/ToysView";
 import styled from "styled-components";
 import { NAVBAR_HEIGHT } from "./components/Navbar";
+import { ROUTES } from "./routes";
+import { AppNavbar } from "./components/AppNavbar";
+import { LoginPage } from "./session/Login/LoginPage";
+import { RegisterPage } from "./session/Register/RegisterPage";
+import { useRecoilValue } from "recoil";
+import { jwtTokenState } from "./session/sessionState";
+import jwtDecode from "jwt-decode";
+import axios from "axios";
+
+const links = [
+  { label: "Login", url: ROUTES.login },
+  { label: "Register", url: ROUTES.register },
+];
+
+const authenticatedLinks = [
+  { label: "Toys", url: ROUTES.toys },
+  { label: "Logout", url: ROUTES.root },
+];
+
+interface IDecodedToken {
+  auth: string;
+  exp: number;
+  iat: number;
+  iss: string;
+  sub: string;
+}
+
+const token = localStorage.authToken;
+
+if (token) {
+  const decodedToken = jwtDecode<IDecodedToken>(token);
+  if (decodedToken.exp * 1000 < Date.now()) {
+    // store.dispatch(logout());
+    // logout action here, in this case clear local storage from token
+    window.location.href = "/login";
+  } else {
+    axios.defaults.headers.common.Authorization = token;
+    // get user data here
+    // store.dispatch(updateUser());
+    // store.dispatch(setActiveView(activeView));
+  }
+}
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const jwtToken = useRecoilValue(jwtTokenState);
+
   return (
-    <PageWrapper>
-      <Routes>
-        <Route path="/" element={<LoginForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />} />
-        <Route path="/toys" element={<ToysView />} />
-      </Routes>
-    </PageWrapper>
+    <>
+      <AppNavbar
+        links={jwtToken ? authenticatedLinks : links}
+        onLinkClick={(path) => navigate(path)}
+        isMatch={(url) => location.pathname === url}
+      />
+
+      <PageWrapper>
+        {jwtToken ? (
+          <Routes>
+            <Route path="/" element={<div>Homepage</div>} />
+            <Route path="/toys" element={<ToysView />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/" element={<div>Homepage</div>} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Routes>
+        )}
+      </PageWrapper>
+    </>
   );
 }
 
@@ -26,5 +82,6 @@ export default App;
 
 const PageWrapper = styled.div`
   padding-top: ${NAVBAR_HEIGHT}px;
-  /* height: ${`calc(100vh - ${NAVBAR_HEIGHT}rem)`}; */
+  width: 100vw;
+  height: ${`calc(100vh - ${NAVBAR_HEIGHT}px)`};
 `;
