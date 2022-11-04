@@ -44,7 +44,6 @@ export type APIResponse<Path extends keyof paths> = paths[Path] extends {
   ? ResponseBody
   : never;
 
-//   TODO
 export const getAuthToken = async () => {
-  return "";
+  return localStorage.authToken;
 };

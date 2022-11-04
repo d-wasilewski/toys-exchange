@@ -1,6 +1,11 @@
 import { atom } from "recoil";
+import { User } from "../shared/APIs/userService";
+import { recoilPersist } from "recoil-persist";
 
-export const jwtTokenState = atom({
-  key: "jwtTokenState",
+const { persistAtom } = recoilPersist();
+
+export const userState = atom<User | null>({
+  key: "userState",
   default: null,
+  effects: [persistAtom],
 });

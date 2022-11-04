@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
+import { UserLoginDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +11,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
+  async validateUser(username: string, pass: string): Promise<UserLoginDto> {
     const user = await this.userService.findOne(username);
 
     const equalPasswords = await bcrypt.compare(pass, user.password);
@@ -23,7 +23,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User) {
+  async login(user: UserLoginDto) {
     const payload = { username: user.name, sub: user.id };
 
     return {

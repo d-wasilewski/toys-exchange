@@ -1,4 +1,3 @@
-import "./App.css";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToysView } from "./toys/ToysView";
 import styled from "styled-components";
@@ -7,14 +6,14 @@ import { ROUTES } from "./routes";
 import { AppNavbar } from "./components/AppNavbar";
 import { LoginPage } from "./session/Login/LoginPage";
 import { RegisterPage } from "./session/Register/RegisterPage";
-import { useRecoilValue } from "recoil";
-import { jwtTokenState } from "./session/sessionState";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 
 const links = [
   { label: "Login", url: ROUTES.login },
   { label: "Register", url: ROUTES.register },
+  { label: "Toys", url: ROUTES.toys },
+  { label: "Logout", url: ROUTES.root },
 ];
 
 const authenticatedLinks = [
@@ -50,29 +49,21 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const jwtToken = useRecoilValue(jwtTokenState);
-
   return (
     <>
       <AppNavbar
-        links={jwtToken ? authenticatedLinks : links}
+        links={links}
         onLinkClick={(path) => navigate(path)}
         isMatch={(url) => location.pathname === url}
       />
 
       <PageWrapper>
-        {jwtToken ? (
-          <Routes>
-            <Route path="/" element={<div>Homepage</div>} />
-            <Route path="/toys" element={<ToysView />} />
-          </Routes>
-        ) : (
-          <Routes>
-            <Route path="/" element={<div>Homepage</div>} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-          </Routes>
-        )}
+        <Routes>
+          <Route path="/" element={<div>Homepage</div>} />
+          <Route path="/toys" element={<ToysView />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Routes>
       </PageWrapper>
     </>
   );

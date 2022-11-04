@@ -13,11 +13,17 @@ export interface paths {
   "/user/users": {
     get: operations["UserController_getUsers"];
   };
+  "/user/user": {
+    post: operations["UserController_getUserById"];
+  };
   "/auth/login": {
     post: operations["AuthController_login"];
   };
   "/auth/protected": {
     get: operations["AuthController_protectedRoute"];
+  };
+  "/auth/test": {
+    get: operations["AuthController_getTest"];
   };
   "/toy/create-toy": {
     post: operations["ToysController_createToy"];
@@ -29,7 +35,7 @@ export interface paths {
 
 export interface components {
   schemas: {
-    UserDto: {
+    RegisterUserDto: {
       id: number;
       email: string;
       name?: string | null;
@@ -44,6 +50,24 @@ export interface components {
       address: string;
       ownerId: number;
     };
+    UserDto: {
+      id: number;
+      email: string;
+      name?: string | null;
+      password: string;
+      toys: components["schemas"]["ToyDto"][];
+    };
+    UserIdDto: {
+      id: number;
+    };
+    AccessTokenDto: {
+      access_token: string;
+    };
+    UserLoginDto: {
+      id: number;
+      email: string;
+      name: string;
+    };
   };
 }
 
@@ -51,7 +75,11 @@ export interface operations {
   AppController_getHello: {
     parameters: {};
     responses: {
-      200: unknown;
+      200: {
+        content: {
+          "application/json": string;
+        };
+      };
     };
   };
   UserController_signupUser: {
@@ -65,7 +93,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserDto"];
+        "application/json": components["schemas"]["RegisterUserDto"];
       };
     };
   };
@@ -79,16 +107,49 @@ export interface operations {
       };
     };
   };
+  UserController_getUserById: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["UserDto"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserIdDto"];
+      };
+    };
+  };
   AuthController_login: {
     parameters: {};
     responses: {
-      201: unknown;
+      201: {
+        content: {
+          "application/json": components["schemas"]["AccessTokenDto"];
+        };
+      };
     };
   };
   AuthController_protectedRoute: {
     parameters: {};
     responses: {
-      200: unknown;
+      200: {
+        content: {
+          "application/json": string;
+        };
+      };
+    };
+  };
+  AuthController_getTest: {
+    parameters: {};
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserLoginDto"];
+        };
+      };
     };
   };
   ToysController_createToy: {

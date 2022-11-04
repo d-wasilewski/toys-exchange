@@ -1,4 +1,6 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { userState } from "../session/sessionState";
 import { Link } from "./Link";
 
 import { Navbar } from "./Navbar";
@@ -13,6 +15,8 @@ interface AppNavbarProps {
 }
 
 export const AppNavbar = ({ links, onLinkClick, isMatch }: AppNavbarProps) => {
+  const user = useRecoilValue(userState);
+
   return (
     <Navbar>
       <LinksWrapper>
@@ -26,6 +30,7 @@ export const AppNavbar = ({ links, onLinkClick, isMatch }: AppNavbarProps) => {
           );
         })}
       </LinksWrapper>
+      <UserWidget>{user?.name}</UserWidget>
     </Navbar>
   );
 };
@@ -34,4 +39,13 @@ const LinksWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
+`;
+
+const UserWidget = styled.div`
+  background-color: #00a3ad;
+  color: white;
+  margin-right: 40px;
+  margin-left: 20px;
+  padding: 5px 15px;
+  border-radius: 10px;
 `;

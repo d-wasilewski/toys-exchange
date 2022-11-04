@@ -1,14 +1,11 @@
-import axios from "axios";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import Input from "../../components/Input";
-import { jwtTokenState } from "../sessionState";
+import { loginUser } from "../../shared/APIs/userService";
+import { useSuccessfulLoginHandler } from "../useSuccessfulLoginHandler";
 
 export const LoginForm = () => {
-  const [jwtToken, setJwtToken] = useRecoilState(jwtTokenState);
-  const navigate = useNavigate();
+  const { setUserAndRedirect } = useSuccessfulLoginHandler();
 
   const formik = useFormik({
     initialValues: {
@@ -17,15 +14,11 @@ export const LoginForm = () => {
     },
     onSubmit: async (values) => {
       try {
-        const data = await axios.post(
-          "http://localhost:3000/auth/login",
-          values
-        );
-        setJwtToken(data.data.access_token);
+        const data = await loginUser(values as never);
+
+        await setUserAndRedirect(data.access_token);
       } catch (error) {
         console.log(error);
-      } finally {
-        navigate("/toys");
       }
     },
   });

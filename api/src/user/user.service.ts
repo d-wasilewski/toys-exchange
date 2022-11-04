@@ -1,19 +1,23 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { RegisterUserDto } from './dtos/user.dto';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
-  async register(data: User): Promise<User> {
+  async register(data: RegisterUserDto) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     try {
       const createdUser = await this.prisma.user.create({
         data: {
           ...data,
           password: hashedPassword,
+        },
+        include: {
+          toys: true,
         },
       });
 
@@ -34,7 +38,22 @@ export class UserService {
     });
   }
 
+  async getUserById(userId: number) {
+    return this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      include: {
+        toys: true,
+      },
+    });
+  }
+
   async getUsers() {
-    return this.prisma.user.findMany({});
+    return this.prisma.user.findMany({
+      include: {
+        toys: true,
+      },
+    });
   }
 }

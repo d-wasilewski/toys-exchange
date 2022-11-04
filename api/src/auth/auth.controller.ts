@@ -1,5 +1,7 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { GetCurrentUser } from 'src/shared/decorators/getCurrentUser.decorator';
 import { AuthService } from './auth.service';
+import { AccessTokenDto, UserLoginDto } from './dto/auth.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';
 
@@ -9,7 +11,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req): Promise<any> {
+  async login(@Request() req: { user: UserLoginDto }): Promise<AccessTokenDto> {
     return this.authService.login(req.user);
   }
 
@@ -17,5 +19,11 @@ export class AuthController {
   @Get('protected')
   async protectedRoute() {
     return 'Contgratulations';
+  }
+
+  // this is here because Swagger can see the DTO type only if its a return type somewhere
+  @Get('test')
+  async getTest(data: UserLoginDto): Promise<UserLoginDto> {
+    return data;
   }
 }
