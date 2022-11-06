@@ -1,5 +1,4 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
-import { GetCurrentUser } from 'src/shared/decorators/getCurrentUser.decorator';
 import { AuthService } from './auth.service';
 import { AccessTokenDto, UserLoginDto } from './dto/auth.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';

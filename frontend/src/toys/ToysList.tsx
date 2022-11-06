@@ -1,36 +1,23 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { fakeToys } from "./fakeToys";
+import { AllToys } from "../shared/APIs/fetchToys";
 import { ToyCard } from "./ToyCard";
+import { toysListState } from "./toysState";
 
-interface Toy {
-  ownerName: string;
-  ownerId: number;
-  category: string;
-  name: string;
-  imgUrl: string;
+interface ToysListProps {
+  toysList: AllToys;
 }
 
-export const ToysList = () => {
+export const ToysList = ({ toysList }: ToysListProps) => {
   // Walmart format?
-  const [toysList, setToysList] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await axios.get("http://localhost:3000/toy/toys");
-      setToysList(data.data);
-    };
-    fetchData();
-  }, []);
 
   return (
     <ToysWrapper>
-      {toysList.map((toy: Toy) => {
+      {toysList.map((toy) => {
         return (
           <ToyCard
             name={toy.name}
-            ownerName={toy.ownerName}
+            ownerName={"Owner name"}
             ownerRating={toy.ownerId}
             imgUrl={toy.imgUrl}
             category={toy.category}

@@ -1,15 +1,15 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { ToysList } from "./ToysList";
-import { toysListState } from "./toysState";
+import { myToysListState } from "./toysState";
 
-export const ToysView = () => {
-  const toysList = useRecoilValue(toysListState);
+export const MyToysView = () => {
+  const myToysList = useRecoilValue(myToysListState);
 
   return (
     <PageWrapper>
-      <h1>List of all toys</h1>
-      <ToysList toysList={toysList} />
+      <h1>List of my toys</h1>
+      <ToysList toysList={myToysList} />
     </PageWrapper>
   );
 };

@@ -1,8 +1,13 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import { useRecoilValue } from "recoil";
 import Input from "../components/Input";
+import { userState } from "../session/sessionState";
+import { createToy } from "../shared/APIs/fetchToys";
 
 export const AddNewToyForm = () => {
+  const user = useRecoilValue(userState);
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -12,10 +17,10 @@ export const AddNewToyForm = () => {
       description: "",
     },
     onSubmit: async (values) => {
-      axios.post("http://localhost:3000/toy/create-toy", {
-        ...values,
-        ownerId: 9,
-      });
+      if (user) {
+        createToy({ ...values, ownerId: user.id });
+        // refresh toy lists states
+      }
     },
   });
 

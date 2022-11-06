@@ -8,11 +8,17 @@ import { LoginPage } from "./session/Login/LoginPage";
 import { RegisterPage } from "./session/Register/RegisterPage";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
+import { AddNewToyForm } from "./toys/AddNewToyForm";
+import { MyToysView } from "./toys/MyToysView";
+import { Suspense } from "react";
+import { logout } from "./shared/APIs/userService";
 
 const links = [
   { label: "Login", url: ROUTES.login },
   { label: "Register", url: ROUTES.register },
   { label: "Toys", url: ROUTES.toys },
+  { label: "My toys", url: ROUTES.myToys },
+  { label: "Add a toy", url: ROUTES.addToy },
   { label: "Logout", url: ROUTES.root },
 ];
 
@@ -34,8 +40,7 @@ const token = localStorage.authToken;
 if (token) {
   const decodedToken = jwtDecode<IDecodedToken>(token);
   if (decodedToken.exp * 1000 < Date.now()) {
-    // store.dispatch(logout());
-    // logout action here, in this case clear local storage from token
+    logout();
     window.location.href = "/login";
   } else {
     axios.defaults.headers.common.Authorization = token;
@@ -60,9 +65,25 @@ function App() {
       <PageWrapper>
         <Routes>
           <Route path="/" element={<div>Homepage</div>} />
-          <Route path="/toys" element={<ToysView />} />
+          <Route
+            path="/toys"
+            element={
+              <Suspense>
+                <ToysView />
+              </Suspense>
+            }
+          />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/my-toys"
+            element={
+              <Suspense>
+                <MyToysView />
+              </Suspense>
+            }
+          />
+          <Route path="/add-toy" element={<AddNewToyForm />} />
         </Routes>
       </PageWrapper>
     </>

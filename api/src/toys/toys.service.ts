@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma, Toy } from '@prisma/client';
+import { Toy } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateToyDto } from './dtos/toys.dto';
 
 @Injectable()
 export class ToysService {
   constructor(private prisma: PrismaService) {}
 
-  async createToy(toyData: Toy) {
+  async createToy(toyData: CreateToyDto) {
     try {
       const createdToy = await this.prisma.toy.create({
         data: toyData,
@@ -22,5 +23,13 @@ export class ToysService {
 
   async getToys() {
     return this.prisma.toy.findMany({});
+  }
+
+  async getToysByUserId(ownerId: number) {
+    return this.prisma.toy.findMany({
+      where: {
+        ownerId,
+      },
+    });
   }
 }

@@ -11,7 +11,7 @@ export interface paths {
     post: operations["UserController_signupUser"];
   };
   "/user/users": {
-    get: operations["UserController_getUsers"];
+    post: operations["UserController_getUsers"];
   };
   "/user/user": {
     post: operations["UserController_getUserById"];
@@ -29,7 +29,10 @@ export interface paths {
     post: operations["ToysController_createToy"];
   };
   "/toy/toys": {
-    get: operations["ToysController_getToys"];
+    post: operations["ToysController_getToys"];
+  };
+  "/toy/user-toys": {
+    post: operations["ToysController_getUserToys"];
   };
 }
 
@@ -68,6 +71,17 @@ export interface components {
       email: string;
       name: string;
     };
+    CreateToyDto: {
+      name: string;
+      category: string;
+      imgUrl: string;
+      description: string;
+      address: string;
+      ownerId: number;
+    };
+    OwnerIdDto: {
+      id: number;
+    };
   };
 }
 
@@ -100,7 +114,7 @@ export interface operations {
   UserController_getUsers: {
     parameters: {};
     responses: {
-      200: {
+      201: {
         content: {
           "application/json": components["schemas"]["UserDto"][];
         };
@@ -163,17 +177,32 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ToyDto"];
+        "application/json": components["schemas"]["CreateToyDto"];
       };
     };
   };
   ToysController_getToys: {
     parameters: {};
     responses: {
-      200: {
+      201: {
         content: {
           "application/json": components["schemas"]["ToyDto"][];
         };
+      };
+    };
+  };
+  ToysController_getUserToys: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["ToyDto"][];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["OwnerIdDto"];
       };
     };
   };

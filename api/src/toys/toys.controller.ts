@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ToyDto } from './dtos/toys.dto';
+import { CreateToyDto, OwnerIdDto, ToyDto } from './dtos/toys.dto';
 import { ToysService } from './toys.service';
 
 @Controller('toy')
@@ -7,12 +7,17 @@ export class ToysController {
   constructor(private readonly toysService: ToysService) {}
 
   @Post('create-toy')
-  async createToy(@Body() toyData: ToyDto): Promise<ToyDto> {
+  async createToy(@Body() toyData: CreateToyDto): Promise<ToyDto> {
     return this.toysService.createToy(toyData);
   }
 
-  @Get('toys')
+  @Post('toys')
   async getToys(): Promise<ToyDto[]> {
     return this.toysService.getToys();
+  }
+
+  @Post('/user-toys')
+  async getUserToys(@Body() ownerId: OwnerIdDto): Promise<ToyDto[]> {
+    return this.toysService.getToysByUserId(ownerId.id);
   }
 }

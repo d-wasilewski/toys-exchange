@@ -11,7 +11,7 @@ export class UserController {
     return this.userService.register(userData);
   }
 
-  @Get('users')
+  @Post('users')
   async getUsers(): Promise<UserDto[]> {
     return this.userService.getUsers();
   }
