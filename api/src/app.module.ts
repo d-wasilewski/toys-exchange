@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
@@ -16,10 +16,29 @@ import { ToysModule } from './toys/toys.module';
 import { OfferController } from './offer/offer.controller';
 import { OfferService } from './offer/offer.service';
 import { OfferModule } from './offer/offer.module';
+import { LoggerMiddleware } from './shared/middleware/logger.middleware';
 
 @Module({
   imports: [PrismaModule, UserModule, AuthModule, ToysModule, OfferModule],
-  controllers: [AppController, UserController, AuthController, ToysController, OfferController],
-  providers: [AppService, UserService, PrismaService, AuthService, JwtService, ToysService, OfferService],
+  controllers: [
+    AppController,
+    UserController,
+    AuthController,
+    ToysController,
+    OfferController,
+  ],
+  providers: [
+    AppService,
+    UserService,
+    PrismaService,
+    AuthService,
+    JwtService,
+    ToysService,
+    OfferService,
+  ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
