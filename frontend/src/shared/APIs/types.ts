@@ -58,6 +58,7 @@ export interface components {
       email: string;
       name?: string | null;
       password: string;
+      role?: "BASIC" | "ADMIN";
     };
     ToyDto: {
       id: number;

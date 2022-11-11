@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Status } from '@prisma/client';
 
+const offerStatuses = Object.values(Status);
+
 export class OfferIdDto {
   @ApiProperty()
   offerId!: number;
@@ -41,7 +43,7 @@ export class OfferDto {
   @ApiProperty()
   toyFromReceiverId: number;
 
-  @ApiProperty({ enum: ['ACCEPTED', 'DECLINED', 'PENDING'] })
+  @ApiProperty({ enum: [...offerStatuses] })
   status: Status;
 
   @ApiProperty()

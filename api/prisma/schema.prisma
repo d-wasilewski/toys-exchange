@@ -14,12 +14,18 @@ model User {
   name        String
   password    String
   phoneNumber String?
+  role        UserRole @default(BASIC)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
   toys           Toy[]
   offersSend     Offer[] @relation(name: "offersSend")
   offersReceived Offer[] @relation(name: "offersReceived")
+}
+
+enum UserRole {
+  BASIC
+  ADMIN
 }
 
 model Toy {
@@ -32,6 +38,7 @@ model Toy {
   owner              User     @relation(fields: [ownerId], references: [id])
   ownerId            Int
   createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
   offersFromSender   Offer[]  @relation(name: "toyFromSender")
   offersFromReceiver Offer[]  @relation(name: "toyFromReceiver")
 }
@@ -42,12 +49,13 @@ model Offer {
   senderUserId      Int
   receiver          User     @relation(name: "offersReceived", fields: [receiverUserId], references: [id])
   receiverUserId    Int
-  status            Status   @default(PENDING)
-  createdAt         DateTime @default(now())
   toyFromSender     Toy      @relation(name: "toyFromSender", fields: [toyFromSenderId], references: [id])
   toyFromSenderId   Int
   toyFromReceiver   Toy      @relation(name: "toyFromReceiver", fields: [toyFromReceiverId], references: [id])
   toyFromReceiverId Int
+  status            Status   @default(PENDING)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
 }
 
 enum Status {
