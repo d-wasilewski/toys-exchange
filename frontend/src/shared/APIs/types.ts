@@ -34,6 +34,21 @@ export interface paths {
   "/toy/user-toys": {
     post: operations["ToysController_getUserToys"];
   };
+  "/offer/offers": {
+    post: operations["OfferController_getOffers"];
+  };
+  "/offer/active-offers": {
+    post: operations["OfferController_getActiveOffers"];
+  };
+  "/offer/send": {
+    post: operations["OfferController_sendOffer"];
+  };
+  "/offer/decline": {
+    post: operations["OfferController_declineOffer"];
+  };
+  "/offer/accept": {
+    post: operations["OfferController_acceptOffer"];
+  };
 }
 
 export interface components {
@@ -81,6 +96,27 @@ export interface components {
     };
     OwnerIdDto: {
       id: number;
+    };
+    OfferDto: {
+      id: number;
+      senderUserId: number;
+      receiverUserId: number;
+      toyFromSenderId: number;
+      toyFromReceiverId: number;
+      status: "ACCEPTED" | "DECLINED" | "PENDING";
+      createdAt: string;
+    };
+    ReceiverIdDto: {
+      receiverId: number;
+    };
+    SendOfferDto: {
+      senderUserId: number;
+      receiverUserId: number;
+      toyFromSenderId: number;
+      toyFromReceiverId: number;
+    };
+    OfferIdDto: {
+      offerId: number;
     };
   };
 }
@@ -203,6 +239,68 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["OwnerIdDto"];
+      };
+    };
+  };
+  OfferController_getOffers: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["OfferDto"][];
+        };
+      };
+    };
+  };
+  OfferController_getActiveOffers: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": { [key: string]: unknown }[];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReceiverIdDto"];
+      };
+    };
+  };
+  OfferController_sendOffer: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["OfferDto"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendOfferDto"];
+      };
+    };
+  };
+  OfferController_declineOffer: {
+    parameters: {};
+    responses: {
+      201: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["OfferIdDto"];
+      };
+    };
+  };
+  OfferController_acceptOffer: {
+    parameters: {};
+    responses: {
+      201: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["OfferIdDto"];
       };
     };
   };

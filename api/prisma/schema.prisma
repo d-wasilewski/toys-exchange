@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -8,20 +9,49 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  name     String
-  password String
-  toys     Toy[]
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  name        String
+  password    String
+  phoneNumber String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  toys           Toy[]
+  offersSend     Offer[] @relation(name: "offersSend")
+  offersReceived Offer[] @relation(name: "offersReceived")
 }
 
 model Toy {
-  id          Int    @id @default(autoincrement())
-  name        String
-  category    String
-  imgUrl      String
-  description String
-  address     String
-  owner       User   @relation(fields: [ownerId], references: [id])
-  ownerId     Int
+  id                 Int      @id @default(autoincrement())
+  name               String
+  category           String
+  imgUrl             String
+  description        String
+  address            String
+  owner              User     @relation(fields: [ownerId], references: [id])
+  ownerId            Int
+  createdAt          DateTime @default(now())
+  offersFromSender   Offer[]  @relation(name: "toyFromSender")
+  offersFromReceiver Offer[]  @relation(name: "toyFromReceiver")
+}
+
+model Offer {
+  id                Int      @id @default(autoincrement())
+  sender            User     @relation(name: "offersSend", fields: [senderUserId], references: [id])
+  senderUserId      Int
+  receiver          User     @relation(name: "offersReceived", fields: [receiverUserId], references: [id])
+  receiverUserId    Int
+  status            Status   @default(PENDING)
+  createdAt         DateTime @default(now())
+  toyFromSender     Toy      @relation(name: "toyFromSender", fields: [toyFromSenderId], references: [id])
+  toyFromSenderId   Int
+  toyFromReceiver   Toy      @relation(name: "toyFromReceiver", fields: [toyFromReceiverId], references: [id])
+  toyFromReceiverId Int
+}
+
+enum Status {
+  ACCEPTED
+  DECLINED
+  PENDING
 }

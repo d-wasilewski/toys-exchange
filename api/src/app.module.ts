@@ -13,10 +13,13 @@ import { AuthModule } from './auth/auth.module';
 import { ToysService } from './toys/toys.service';
 import { ToysController } from './toys/toys.controller';
 import { ToysModule } from './toys/toys.module';
+import { OfferController } from './offer/offer.controller';
+import { OfferService } from './offer/offer.service';
+import { OfferModule } from './offer/offer.module';
 
 @Module({
-  imports: [PrismaModule, UserModule, AuthModule, ToysModule],
-  controllers: [AppController, UserController, AuthController, ToysController],
-  providers: [AppService, UserService, PrismaService, AuthService, JwtService, ToysService],
+  imports: [PrismaModule, UserModule, AuthModule, ToysModule, OfferModule],
+  controllers: [AppController, UserController, AuthController, ToysController, OfferController],
+  providers: [AppService, UserService, PrismaService, AuthService, JwtService, ToysService, OfferService],
 })
 export class AppModule {}

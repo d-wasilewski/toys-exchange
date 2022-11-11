@@ -52,6 +52,8 @@ export class UserService {
     return this.prisma.user.findMany({
       include: {
         toys: true,
+        offersReceived: true,
+        offersSend: true,
       },
     });
   }

@@ -1,5 +1,4 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Toy } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateToyDto } from './dtos/toys.dto';
 
@@ -22,7 +21,15 @@ export class ToysService {
   }
 
   async getToys() {
-    return this.prisma.toy.findMany({});
+    return this.prisma.toy.findMany({
+      include: {
+        owner: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   async getToysByUserId(ownerId: number) {
