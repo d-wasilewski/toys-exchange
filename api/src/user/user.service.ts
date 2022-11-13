@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { RegisterUserDto } from './dtos/user.dto';
+import { UserStatus } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -55,6 +56,13 @@ export class UserService {
         offersReceived: true,
         offersSend: true,
       },
+    });
+  }
+
+  async changeUserStatus(userId: number, status: UserStatus) {
+    return await this.prisma.user.update({
+      where: { id: userId },
+      data: status,
     });
   }
 }

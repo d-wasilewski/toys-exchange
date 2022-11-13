@@ -16,6 +16,12 @@ export interface paths {
   "/user/user": {
     post: operations["UserController_getUserById"];
   };
+  "/user/block": {
+    post: operations["UserController_blockClient"];
+  };
+  "/user/activate": {
+    post: operations["UserController_activateClient"];
+  };
   "/auth/login": {
     post: operations["AuthController_login"];
   };
@@ -164,6 +170,36 @@ export interface operations {
       201: {
         content: {
           "application/json": components["schemas"]["UserDto"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserIdDto"];
+      };
+    };
+  };
+  UserController_blockClient: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserIdDto"];
+      };
+    };
+  };
+  UserController_activateClient: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": { [key: string]: unknown };
         };
       };
     };

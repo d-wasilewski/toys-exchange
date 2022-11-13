@@ -9,14 +9,15 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
+  id          Int        @id @default(autoincrement())
+  email       String     @unique
   name        String
   password    String
   phoneNumber String?
-  role        UserRole @default(BASIC)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  role        UserRole   @default(BASIC)
+  status      UserStatus @default(ACTIVE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
 
   toys           Toy[]
   offersSend     Offer[] @relation(name: "offersSend")
@@ -26,6 +27,11 @@ model User {
 enum UserRole {
   BASIC
   ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
 }
 
 model Toy {
@@ -44,21 +50,21 @@ model Toy {
 }
 
 model Offer {
-  id                Int      @id @default(autoincrement())
-  sender            User     @relation(name: "offersSend", fields: [senderUserId], references: [id])
+  id                Int         @id @default(autoincrement())
+  sender            User        @relation(name: "offersSend", fields: [senderUserId], references: [id])
   senderUserId      Int
-  receiver          User     @relation(name: "offersReceived", fields: [receiverUserId], references: [id])
+  receiver          User        @relation(name: "offersReceived", fields: [receiverUserId], references: [id])
   receiverUserId    Int
-  toyFromSender     Toy      @relation(name: "toyFromSender", fields: [toyFromSenderId], references: [id])
+  toyFromSender     Toy         @relation(name: "toyFromSender", fields: [toyFromSenderId], references: [id])
   toyFromSenderId   Int
-  toyFromReceiver   Toy      @relation(name: "toyFromReceiver", fields: [toyFromReceiverId], references: [id])
+  toyFromReceiver   Toy         @relation(name: "toyFromReceiver", fields: [toyFromReceiverId], references: [id])
   toyFromReceiverId Int
-  status            Status   @default(PENDING)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
+  status            OfferStatus @default(PENDING)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @default(now()) @updatedAt
 }
 
-enum Status {
+enum OfferStatus {
   ACCEPTED
   DECLINED
   PENDING
