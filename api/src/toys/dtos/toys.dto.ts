@@ -1,49 +1,63 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class ToyDto {
-  @ApiProperty({ type: Number })
+  @IsNotEmpty()
+  @IsNumber()
   id: number;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   name: string;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   category: string;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   imgUrl: string;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   description: string;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   address: string;
 
-  @ApiProperty({ type: Number })
+  @IsNotEmpty()
+  @IsNumber()
   ownerId: number;
 }
 
 export class CreateToyDto {
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   name: string;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   category: string;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   imgUrl: string;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   description: string;
 
-  @ApiProperty({ type: String })
+  @IsNotEmpty()
+  @IsString()
   address: string;
 
-  @ApiProperty({ type: Number })
+  @IsNotEmpty()
+  @IsNumber()
   ownerId: number;
 }
 
 export class OwnerIdDto {
-  @ApiProperty()
-  id!: number;
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
 }

@@ -1,20 +1,31 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Toy, UserRole } from '@prisma/client';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { ToyDto } from 'src/toys/dtos/toys.dto';
 
 const userRoles = Object.values(UserRole);
 
 export class RegisterUserDto {
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   id: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
-  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
   name: string | null;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   password: string;
 
   @ApiPropertyOptional({ enum: [...userRoles] })
@@ -22,16 +33,20 @@ export class RegisterUserDto {
 }
 
 export class UserDto {
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   id: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
-  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
   name: string | null;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   password: string;
 
   @ApiProperty({ type: [ToyDto] })
@@ -39,6 +54,7 @@ export class UserDto {
 }
 
 export class UserIdDto {
-  @ApiProperty()
-  id!: number;
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
 }

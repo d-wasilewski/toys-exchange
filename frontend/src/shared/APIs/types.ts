@@ -60,11 +60,11 @@ export interface paths {
 export interface components {
   schemas: {
     RegisterUserDto: {
+      role?: "BASIC" | "ADMIN";
       id: number;
       email: string;
-      name?: string | null;
+      name: string | null;
       password: string;
-      role?: "BASIC" | "ADMIN";
     };
     ToyDto: {
       id: number;
@@ -76,11 +76,11 @@ export interface components {
       ownerId: number;
     };
     UserDto: {
+      toys: components["schemas"]["ToyDto"][];
       id: number;
       email: string;
-      name?: string | null;
+      name: string | null;
       password: string;
-      toys: components["schemas"]["ToyDto"][];
     };
     UserIdDto: {
       id: number;
@@ -105,12 +105,12 @@ export interface components {
       id: number;
     };
     OfferDto: {
+      status: "ACCEPTED" | "DECLINED" | "PENDING";
       id: number;
       senderUserId: number;
       receiverUserId: number;
       toyFromSenderId: number;
       toyFromReceiverId: number;
-      status: "ACCEPTED" | "DECLINED" | "PENDING";
       createdAt: string;
     };
     ReceiverIdDto: {

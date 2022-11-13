@@ -1,51 +1,64 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { OfferStatus } from '@prisma/client';
+import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
 
 const offerStatuses = Object.values(OfferStatus);
 
 export class OfferIdDto {
-  @ApiProperty()
-  offerId!: number;
+  @IsNotEmpty()
+  @IsNumber()
+  offerId: number;
 }
 
 export class ReceiverIdDto {
-  @ApiProperty()
-  receiverId!: number;
+  @IsNotEmpty()
+  @IsNumber()
+  receiverId: number;
 }
 
 export class SendOfferDto {
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   senderUserId: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   receiverUserId: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   toyFromSenderId: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   toyFromReceiverId: number;
 }
 
 export class OfferDto {
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   id: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   senderUserId: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   receiverUserId: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   toyFromSenderId: number;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   toyFromReceiverId: number;
 
   @ApiProperty({ enum: [...offerStatuses] })
   status: OfferStatus;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsDate()
   createdAt: Date;
 }
