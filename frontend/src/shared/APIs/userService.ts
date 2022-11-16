@@ -1,7 +1,11 @@
-import { APIResponse, fetchPost } from "./baseFetch";
+import { APIRequestBody, APIResponse, fetchPost } from "./baseFetch";
 
 export const loginUser = (userData: APIResponse<"/auth/test">) => {
   return fetchPost("/auth/login", userData);
+};
+
+export const signUp = (userData: APIRequestBody<"/user/sign-up">) => {
+  return fetchPost("/user/sign-up", userData);
 };
 
 export const getAllUsers = () => {

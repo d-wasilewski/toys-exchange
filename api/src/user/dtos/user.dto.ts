@@ -13,10 +13,6 @@ const userRoles = Object.values(UserRole);
 
 export class RegisterUserDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
-
-  @IsNotEmpty()
   @IsEmail()
   email: string;
 
@@ -27,6 +23,10 @@ export class RegisterUserDto {
   @IsNotEmpty()
   @IsString()
   password: string;
+
+  @IsNotEmpty()
+  @IsString()
+  phoneNumber: string;
 
   @ApiPropertyOptional({ enum: [...userRoles] })
   role: UserRole;

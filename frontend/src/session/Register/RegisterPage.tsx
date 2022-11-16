@@ -11,16 +11,16 @@ export const RegisterPage = () => {
           fontWeight: 900,
         })}
       >
-        Welcome back!
+        Welcome!
       </Title>
       <Text color="dimmed" size="sm" align="center" mt={5}>
-        Do not have an account yet?{" "}
+        Already have an account?{" "}
         <Anchor<"a">
-          href="#"
+          href="/login"
           size="sm"
           onClick={(event) => event.preventDefault()}
         >
-          Create account
+          Log in
         </Anchor>
       </Text>
 

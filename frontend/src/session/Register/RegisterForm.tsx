@@ -1,4 +1,6 @@
 import {
+  Button,
+  Checkbox,
   Input,
   Paper,
   PasswordInput,
@@ -8,12 +10,14 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import styled from "styled-components";
 import InputMask from "react-input-mask";
 import { useDisclosure } from "@mantine/hooks";
 import { PasswordRequirement } from "./PasswordRequirement";
 import { getStrength } from "./getPasswordStrength";
 import { useState } from "react";
+import { schema } from "./validateSchema";
+import { signUp } from "../../shared/APIs/userService";
+import { isEmpty } from "lodash";
 
 const requirements = [
   { re: /[0-9]/, label: "Includes number" },
@@ -25,6 +29,7 @@ const requirements = [
 export const RegisterForm = () => {
   const [visible, { toggle }] = useDisclosure(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -33,11 +38,13 @@ export const RegisterForm = () => {
       phoneNumber: "",
       password: "",
       confirmPassword: "",
+      terms: false,
     },
-    validate: zodResolver(null),
+    validateInputOnBlur: true,
+    validate: zodResolver(schema),
     transformValues: (values) => ({
       ...values,
-      phoneNumber: "33",
+      phoneNumber: values.phoneNumber.replaceAll("-", "").substring(4),
     }),
   });
 
@@ -53,25 +60,52 @@ export const RegisterForm = () => {
 
   const color = strength === 100 ? "teal" : strength > 50 ? "yellow" : "red";
 
+  const handleSubmit = async (values: typeof form.values) => {
+    if (strength !== 100) {
+      form.setFieldError("password", "Password doesn't match requirements");
+    }
+
+    if (!form.values.terms) {
+      form.setFieldError("terms", "This field is required");
+    }
+
+    if (!isEmpty(form.errors)) return;
+
+    const { terms, confirmPassword, ...valuesWithoutTerms } = values;
+
+    try {
+      setIsLoading(true);
+      await signUp(valuesWithoutTerms);
+    } catch (e) {
+      console.log(e);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
         <Stack spacing="md">
           <TextInput
-            withAsterisk
+            required
             radius="md"
             label="Name"
             placeholder="Damian"
             {...form.getInputProps("name")}
           />
           <TextInput
-            withAsterisk
+            required
             radius="md"
             label="Email"
             placeholder="your@email.com"
             {...form.getInputProps("email")}
           />
-          <Input.Wrapper label="Phone number" id="phoneNumber" required>
+          <Input.Wrapper
+            label="Phone number"
+            id="phoneNumber"
+            required
+            {...form.getInputProps("phoneNumber")}
+          >
             <Input
               component={InputMask}
               radius="md"
@@ -127,17 +161,17 @@ export const RegisterForm = () => {
             onVisibilityChange={toggle}
             {...form.getInputProps("confirmPassword")}
           />
-          <ButtonWrapper>
-            <button type="submit">Submit</button>
-          </ButtonWrapper>
+          <Checkbox
+            mt="sm"
+            label="I accept terms and conditions"
+            {...form.getInputProps("terms", { type: "checkbox" })}
+            error={form.errors.terms}
+          />
         </Stack>
+        <Button type="submit" mt="md" fullWidth radius="md" loading={isLoading}>
+          Submit
+        </Button>
       </form>
     </Paper>
   );
 };
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 16px;
-`;

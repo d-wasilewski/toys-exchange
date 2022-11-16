@@ -61,10 +61,10 @@ export interface components {
   schemas: {
     RegisterUserDto: {
       role?: "BASIC" | "ADMIN";
-      id: number;
       email: string;
       name: string | null;
       password: string;
+      phoneNumber: string;
     };
     ToyDto: {
       id: number;
