@@ -10,10 +10,8 @@ export const schema = z
       .string()
       .min(1, { message: "This field is required" })
       .email({ message: "Invalid email" }),
-    phoneNumber: z
-      .string()
-      .min(1, { message: "This field is required" })
-      .regex(/^\d{9}$/, { message: "Invalid phone number" }),
+    phoneNumber: z.string().min(1, { message: "This field is required" }),
+    //   .regex(/^\d{9}$/, { message: "Invalid phone number" }),
     password: z.string().min(1, { message: "This field is required" }),
     confirmPassword: z.string().min(1, { message: "This field is required" }),
     terms: z.boolean(),

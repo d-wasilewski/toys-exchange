@@ -1,6 +1,6 @@
 import { APIRequestBody, APIResponse, fetchPost } from "./baseFetch";
 
-export const loginUser = (userData: APIResponse<"/auth/test">) => {
+export const loginUser = (userData: APIRequestBody<"/auth/login">) => {
   return fetchPost("/auth/login", userData);
 };
 

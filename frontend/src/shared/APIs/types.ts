@@ -29,7 +29,7 @@ export interface paths {
     get: operations["AuthController_protectedRoute"];
   };
   "/auth/test": {
-    get: operations["AuthController_getTest"];
+    post: operations["AuthController_getTest"];
   };
   "/toy/create-toy": {
     post: operations["ToysController_createToy"];
@@ -85,13 +85,12 @@ export interface components {
     UserIdDto: {
       id: number;
     };
+    UserLoginDto: {
+      email: string;
+      password: string;
+    };
     AccessTokenDto: {
       access_token: string;
-    };
-    UserLoginDto: {
-      id: number;
-      email: string;
-      name: string;
     };
     CreateToyDto: {
       name: string;
@@ -218,6 +217,11 @@ export interface operations {
         };
       };
     };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserLoginDto"];
+      };
+    };
   };
   AuthController_protectedRoute: {
     parameters: {};
@@ -232,7 +236,7 @@ export interface operations {
   AuthController_getTest: {
     parameters: {};
     responses: {
-      200: {
+      201: {
         content: {
           "application/json": components["schemas"]["UserLoginDto"];
         };

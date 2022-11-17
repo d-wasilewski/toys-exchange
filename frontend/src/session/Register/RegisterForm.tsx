@@ -18,6 +18,8 @@ import { useState } from "react";
 import { schema } from "./validateSchema";
 import { signUp } from "../../shared/APIs/userService";
 import { isEmpty } from "lodash";
+import { getErrorMessage } from "../../shared/APIs/baseFetch";
+import { showNotification } from "@mantine/notifications";
 
 const requirements = [
   { re: /[0-9]/, label: "Includes number" },
@@ -77,9 +79,16 @@ export const RegisterForm = () => {
       setIsLoading(true);
       await signUp(valuesWithoutTerms);
     } catch (e) {
-      console.log(e);
+      const message = getErrorMessage(e);
+      showNotification({
+        title: "Error",
+        message,
+        color: "red",
+        autoClose: 5000,
+      });
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

@@ -1,4 +1,4 @@
-import axios, { ResponseType } from "axios";
+import axios, { AxiosError, ResponseType } from "axios";
 import { paths } from "./types";
 
 const client = axios.create({
@@ -43,6 +43,25 @@ export type APIResponse<Path extends keyof paths> = paths[Path] extends {
 }
   ? ResponseBody
   : never;
+
+export function isAxiosError<ResponseType>(
+  error: unknown
+): error is AxiosError<ResponseType> {
+  return axios.isAxiosError(error);
+}
+
+type MyExpectedResponseType = {
+  message: string;
+};
+
+export const getErrorMessage = (error: unknown): string | null => {
+  if (isAxiosError<MyExpectedResponseType>(error)) {
+    const data = error.response?.data;
+
+    return data?.message ?? null;
+  }
+  return null;
+};
 
 export const getAuthToken = async () => {
   return localStorage.authToken;

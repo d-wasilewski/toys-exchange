@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { RegisterUserDto } from './dtos/user.dto';
@@ -23,17 +28,14 @@ export class UserService {
 
       return createdUser;
     } catch (error) {
-      throw new HttpException(
-        'Something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new BadRequestException('Something went wrong');
     }
   }
 
-  async findOne(username: string) {
+  async findOne(email: string) {
     return this.prisma.user.findFirst({
       where: {
-        name: username,
+        email,
       },
     });
   }
