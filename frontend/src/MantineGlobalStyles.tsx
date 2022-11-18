@@ -1,4 +1,4 @@
-import { Global, MantineProvider } from "@mantine/core";
+import { Global } from "@mantine/core";
 
 export const MantineGlobalStyles = () => {
   return (

@@ -24,10 +24,10 @@ const links = [
   { label: "Admin page", url: ROUTES.admin },
 ];
 
-const authenticatedLinks = [
-  { label: "Toys", url: ROUTES.toys },
-  { label: "Logout", url: ROUTES.root },
-];
+// const authenticatedLinks = [
+//   { label: "Toys", url: ROUTES.toys },
+//   { label: "Logout", url: ROUTES.root },
+// ];
 
 interface IDecodedToken {
   auth: string;

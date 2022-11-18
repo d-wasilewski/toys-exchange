@@ -1,8 +1,6 @@
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { AllToys } from "../shared/APIs/fetchToys";
 import { ToyCard } from "./ToyCard";
-import { toysListState } from "./toysState";
 
 interface ToysListProps {
   toysList: AllToys;

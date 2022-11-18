@@ -44,7 +44,7 @@ export const ToyCard = ({
   ownerName,
   ownerRating,
 }: ToyCardProps) => {
-  const { classes, theme } = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Card withBorder p="lg" radius="md" className={classes.card}>

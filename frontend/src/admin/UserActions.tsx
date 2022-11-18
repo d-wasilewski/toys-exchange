@@ -1,4 +1,4 @@
-import { ActionIcon, Drawer, Flex } from "@mantine/core";
+import { ActionIcon, Flex } from "@mantine/core";
 import { IconEye, IconPencil } from "@tabler/icons";
 
 export const UserActions = () => {

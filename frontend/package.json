@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "yarn tsc -p tsconfig.typecheck.json"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
