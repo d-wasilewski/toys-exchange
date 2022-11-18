@@ -12,6 +12,7 @@ import { AddNewToyForm } from "./toys/AddNewToyForm";
 import { MyToysView } from "./toys/MyToysView";
 import { Suspense } from "react";
 import { logout } from "./shared/APIs/userService";
+import { AdminPage } from "./admin/AdminPage";
 
 const links = [
   { label: "Login", url: ROUTES.login },
@@ -20,6 +21,7 @@ const links = [
   { label: "My toys", url: ROUTES.myToys },
   { label: "Add a toy", url: ROUTES.addToy },
   { label: "Logout", url: ROUTES.root },
+  { label: "Admin page", url: ROUTES.admin },
 ];
 
 const authenticatedLinks = [
@@ -84,6 +86,7 @@ function App() {
             }
           />
           <Route path="/add-toy" element={<AddNewToyForm />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </PageWrapper>
     </>

@@ -76,11 +76,15 @@ export interface components {
       ownerId: number;
     };
     UserDto: {
+      role: "BASIC" | "ADMIN";
+      status: "ACTIVE" | "BLOCKED";
       toys: components["schemas"]["ToyDto"][];
       id: number;
       email: string;
-      name: string | null;
-      password: string;
+      name: string;
+      phoneNumber: string;
+      createdAt: string;
+      updatedAt: string;
     };
     UserIdDto: {
       id: number;

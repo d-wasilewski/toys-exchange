@@ -5,4 +5,5 @@ export const ROUTES = {
   toys: "/toys",
   myToys: "/my-toys",
   addToy: "/add-toy",
+  admin: "/admin",
 };

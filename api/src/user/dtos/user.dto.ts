@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Toy, UserRole } from '@prisma/client';
+import { Toy, UserRole, UserStatus } from '@prisma/client';
 import {
+  IsDate,
   IsEmail,
   IsNotEmpty,
   IsNumber,
@@ -10,6 +11,7 @@ import {
 import { ToyDto } from 'src/toys/dtos/toys.dto';
 
 const userRoles = Object.values(UserRole);
+const userStatuses = Object.values(UserStatus);
 
 export class RegisterUserDto {
   @IsNotEmpty()
@@ -41,13 +43,25 @@ export class UserDto {
   @IsEmail()
   email: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  name: string | null;
+  name: string;
 
   @IsNotEmpty()
   @IsString()
-  password: string;
+  phoneNumber: string;
+
+  @IsDate()
+  createdAt: Date;
+
+  @IsDate()
+  updatedAt: Date;
+
+  @ApiProperty({ enum: [...userRoles] })
+  role: UserRole;
+
+  @ApiProperty({ enum: [...userStatuses] })
+  status: UserStatus;
 
   @ApiProperty({ type: [ToyDto] })
   toys: Toy[];

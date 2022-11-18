@@ -1,4 +1,33 @@
-import styled from "styled-components";
+import {
+  Card,
+  Badge,
+  Group,
+  Avatar,
+  Text,
+  Image,
+  createStyles,
+  Button,
+} from "@mantine/core";
+
+const useStyles = createStyles((theme) => ({
+  card: {
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+    width: 250,
+  },
+
+  title: {
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+  },
+
+  footer: {
+    padding: `${theme.spacing.xs}px ${theme.spacing.lg}px`,
+    marginTop: theme.spacing.md,
+    borderTop: `1px solid ${
+      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
+    }`,
+  },
+}));
 
 interface ToyCardProps {
   ownerName: string;
@@ -15,36 +44,39 @@ export const ToyCard = ({
   ownerName,
   ownerRating,
 }: ToyCardProps) => {
+  const { classes, theme } = useStyles();
+
   return (
-    <CardWrapper>
-      <Image src={imgUrl} />
-      <OwnerDetails>
-        <div>{ownerName}</div>
-        <div>{ownerRating}</div>
-      </OwnerDetails>
-      <div>{category}</div>
-      <div>{name}</div>
-      <button>Swap</button>
-    </CardWrapper>
+    <Card withBorder p="lg" radius="md" className={classes.card}>
+      <Card.Section mb="sm">
+        <Image
+          src={imgUrl}
+          alt={name}
+          height={180}
+          fit="contain"
+          withPlaceholder
+        />
+      </Card.Section>
+
+      <Badge>{category}</Badge>
+
+      <Text weight={700} className={classes.title} mt="xs">
+        {name}
+      </Text>
+
+      <Group mt="lg">
+        <Avatar src={imgUrl} radius="sm" />
+        <div>
+          <Text weight={500}>{ownerName}</Text>
+          <Text size="xs" color="dimmed">
+            {ownerRating}
+          </Text>
+        </div>
+      </Group>
+
+      <Card.Section className={classes.footer}>
+        <Button fullWidth>Swap</Button>
+      </Card.Section>
+    </Card>
   );
 };
-
-const CardWrapper = styled.div`
-  width: 220px;
-  height: 300px;
-  background-color: coral;
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Image = styled.img`
-  max-width: 100%;
-  max-height: 50%;
-  object-fit: contain;
-`;
-
-const OwnerDetails = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;

@@ -52,19 +52,20 @@ export class UserService {
   }
 
   async getUsers() {
-    return this.prisma.user.findMany({
+    const users = await this.prisma.user.findMany({
       include: {
         toys: true,
         offersReceived: true,
         offersSend: true,
       },
     });
+    return users;
   }
 
   async changeUserStatus(userId: number, status: UserStatus) {
     return await this.prisma.user.update({
       where: { id: userId },
-      data: status,
+      data: { status },
     });
   }
 }

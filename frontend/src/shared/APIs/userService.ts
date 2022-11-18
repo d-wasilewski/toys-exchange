@@ -12,9 +12,11 @@ export const getAllUsers = () => {
   return fetchPost("/user/users");
 };
 
-export type AllUsers = APIResponse<"/user/users">;
+export type UserList = APIResponse<"/user/users">[number];
 
 export type User = APIResponse<"/user/user">;
+export type UserStatus = User["status"];
+export type UserRole = User["role"];
 
 export const getUserData = (userId: number): Promise<User> => {
   return fetchPost("/user/user", { id: userId });
@@ -23,6 +25,3 @@ export const getUserData = (userId: number): Promise<User> => {
 export const logout = async () => {
   localStorage.removeItem("authToken");
 };
-
-// export const signOut = async (setUser: (user: CurrentUser | null) => void) => {
-// };

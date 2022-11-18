@@ -31,6 +31,7 @@ export const ToysList = ({ toysList }: ToysListProps) => {
 const ToysWrapper = styled.div`
   width: 70vw;
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 3%;
 `;
