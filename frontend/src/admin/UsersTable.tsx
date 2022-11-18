@@ -149,7 +149,7 @@ export function UsersTable({ data }: TableSortProps) {
         <StatusBadge status={row.status} />
       </td>
       <td>
-        <UserActions />
+        <UserActions userId={row.id} />
       </td>
     </tr>
   ));

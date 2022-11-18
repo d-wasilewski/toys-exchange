@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { getAllUsers } from "../shared/APIs/userService";
+import { getAllUsers, User } from "../shared/APIs/userService";
 
 export const usersListState = selector({
   key: "usersListState",
@@ -9,9 +9,14 @@ export const usersListState = selector({
   },
 });
 
-export const clickedUserIdState = atom({
+export const clickedUserIdState = atom<number | null>({
   key: "clickedUserIdState",
   default: null,
+});
+
+export const isAdminDrawerOpenedState = atom({
+  key: "isAdminDrawerOpenedState",
+  default: false,
 });
 
 //   export const selectedUserState = selector({
