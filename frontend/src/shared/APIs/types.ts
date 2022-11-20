@@ -16,6 +16,9 @@ export interface paths {
   "/user/user": {
     post: operations["UserController_getUserById"];
   };
+  "/user/edit": {
+    post: operations["UserController_editUserById"];
+  };
   "/user/block": {
     post: operations["UserController_blockClient"];
   };
@@ -88,6 +91,14 @@ export interface components {
     };
     UserIdDto: {
       id: number;
+    };
+    UpdateUserDto: {
+      role: "BASIC" | "ADMIN";
+      status: "ACTIVE" | "BLOCKED";
+      id: number;
+      email: string;
+      name: string;
+      phoneNumber: string;
     };
     UserLoginDto: {
       email: string;
@@ -179,6 +190,21 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["UserIdDto"];
+      };
+    };
+  };
+  UserController_editUserById: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["UserDto"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateUserDto"];
       };
     };
   };

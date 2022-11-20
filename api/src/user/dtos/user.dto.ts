@@ -36,7 +36,7 @@ export class RegisterUserDto {
 
 export class UserDto {
   @IsNotEmpty()
-  @IsString()
+  @IsNumber()
   id: number;
 
   @IsNotEmpty()
@@ -65,6 +65,30 @@ export class UserDto {
 
   @ApiProperty({ type: [ToyDto] })
   toys: Toy[];
+}
+
+export class UpdateUserDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  phoneNumber: string;
+
+  @ApiProperty({ enum: [...userRoles] })
+  role: UserRole;
+
+  @ApiProperty({ enum: [...userStatuses] })
+  status: UserStatus;
 }
 
 export class UserIdDto {

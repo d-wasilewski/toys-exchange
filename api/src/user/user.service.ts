@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { RegisterUserDto } from './dtos/user.dto';
+import { RegisterUserDto, UpdateUserDto } from './dtos/user.dto';
 import { UserStatus } from '@prisma/client';
 
 @Injectable()
@@ -51,12 +51,33 @@ export class UserService {
     });
   }
 
+  async editUserById(userData: UpdateUserDto) {
+    try {
+      return this.prisma.user.update({
+        where: {
+          id: userData.id,
+        },
+        data: {
+          ...userData,
+        },
+        include: {
+          toys: true,
+        },
+      });
+    } catch (e) {
+      throw new BadRequestException('Something went wrong');
+    }
+  }
+
   async getUsers() {
     const users = await this.prisma.user.findMany({
       include: {
         toys: true,
         offersReceived: true,
         offersSend: true,
+      },
+      orderBy: {
+        name: 'asc',
       },
     });
     return users;

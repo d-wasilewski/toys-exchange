@@ -1,4 +1,7 @@
-import { Drawer } from "@mantine/core";
+import { Drawer, Loader } from "@mantine/core";
+import { Suspense } from "react";
+import { DrawerContent } from "./DrawerContent";
+import { EditableDrawerContent } from "./EditableDrawerContent";
 
 interface UserDetailsDrawerProps {
   isOpened: boolean;
@@ -15,7 +18,7 @@ export const UserDetailsDrawer = ({
     <Drawer
       opened={isOpened}
       onClose={() => setIsOpened(false)}
-      title="Register"
+      title="User details"
       padding="xl"
       size="lg"
       overlayOpacity={0.55}
@@ -23,7 +26,9 @@ export const UserDetailsDrawer = ({
       closeOnClickOutside
       position="right"
     >
-      {/* Drawer content */}
+      <Suspense fallback={<Loader />}>
+        {editable ? <EditableDrawerContent /> : <DrawerContent />}
+      </Suspense>
     </Drawer>
   );
 };

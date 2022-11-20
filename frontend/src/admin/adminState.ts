@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { getAllUsers, User } from "../shared/APIs/userService";
+import { getAllUsers, getUserData } from "../shared/APIs/userService";
 
 export const usersListState = selector({
   key: "usersListState",
@@ -19,14 +19,19 @@ export const isAdminDrawerOpenedState = atom({
   default: false,
 });
 
-//   export const selectedUserState = selector({
-//     key: "selectedUserState",
-//     get: async ({ get }) => {
-//       const user = get(userState);
-//       if (user) {
-//         const toysByOwner = await fetchToysByOwner(user?.id);
-//         return toysByOwner;
-//       }
-//       return [];
-//     },
-//   });
+export const isDrawerEditableState = atom({
+  key: "isDrawerEditableState",
+  default: false,
+});
+
+export const selectedUserState = selector({
+  key: "selectedUserState",
+  get: async ({ get }) => {
+    const userId = get(clickedUserIdState);
+    if (userId) {
+      const user = await getUserData(userId);
+      return user;
+    }
+    return null;
+  },
+});

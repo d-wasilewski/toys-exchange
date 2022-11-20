@@ -15,8 +15,6 @@ export class AuthController {
   async login(
     @Request() req: { user: UserPayloadDto },
   ): Promise<AccessTokenDto> {
-    console.log('aa');
-
     return this.authService.login(req.user);
   }
 

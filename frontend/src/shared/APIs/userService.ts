@@ -22,6 +22,12 @@ export const getUserData = (userId: number): Promise<User> => {
   return fetchPost("/user/user", { id: userId });
 };
 
+export const editUserData = (
+  userData: APIRequestBody<"/user/edit">
+): Promise<User> => {
+  return fetchPost("/user/edit", userData);
+};
+
 export const logout = async () => {
   localStorage.removeItem("authToken");
 };

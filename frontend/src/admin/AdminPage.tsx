@@ -1,11 +1,11 @@
 import { Container } from "@mantine/core";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  clickedUserIdState,
   isAdminDrawerOpenedState,
+  isDrawerEditableState,
   usersListState,
 } from "./adminState";
-import { UserDetailsDrawer } from "./UserDetailsDrawer";
+import { UserDetailsDrawer } from "./drawer/UserDetailsDrawer";
 import { UsersTable } from "./UsersTable";
 
 export const AdminPage = () => {
@@ -13,7 +13,7 @@ export const AdminPage = () => {
   const [isDrawerOpened, setIsDrawerOpened] = useRecoilState(
     isAdminDrawerOpenedState
   );
-  const userId = useRecoilValue(clickedUserIdState);
+  const isDrawerEditable = useRecoilValue(isDrawerEditableState);
 
   return (
     <Container mt={40} size="lg">
@@ -21,6 +21,7 @@ export const AdminPage = () => {
       <UserDetailsDrawer
         isOpened={isDrawerOpened}
         setIsOpened={setIsDrawerOpened}
+        editable={isDrawerEditable}
       />
     </Container>
   );

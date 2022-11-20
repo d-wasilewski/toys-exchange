@@ -13,6 +13,7 @@ import { MyToysView } from "./toys/MyToysView";
 import { Suspense } from "react";
 import { logout } from "./shared/APIs/userService";
 import { AdminPage } from "./admin/AdminPage";
+import { Loader } from "@mantine/core";
 
 const links = [
   { label: "Login", url: ROUTES.login },
@@ -86,7 +87,14 @@ function App() {
             }
           />
           <Route path="/add-toy" element={<AddNewToyForm />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<Loader />}>
+                <AdminPage />
+              </Suspense>
+            }
+          />
         </Routes>
       </PageWrapper>
     </>

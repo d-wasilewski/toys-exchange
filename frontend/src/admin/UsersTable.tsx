@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createStyles,
   Table,
@@ -47,7 +47,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface TableSortProps {
-  data: Omit<UserList[], "id" | "toys">;
+  data: UserList[];
 }
 
 interface ThProps {
@@ -115,6 +115,10 @@ export function UsersTable({ data }: TableSortProps) {
   const [sortBy, setSortBy] = useState<keyof UserList | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
+  useEffect(() => {
+    setSortedData(data);
+  }, [data]);
+
   const setSorting = (field: keyof UserList) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
@@ -130,29 +134,31 @@ export function UsersTable({ data }: TableSortProps) {
     );
   };
 
-  const rows = sortedData.map((row, i) => (
-    <tr key={i}>
-      <td>
-        <Avatar
-          src={
-            "https://media.distractify.com/brand-img/0E-t9gohB/0x0/jordan-baker-all-american-real-person-3-1585691486739.jpg"
-          }
-        />
-      </td>
-      <td>{row.name}</td>
-      <td>{row.email}</td>
-      <td>{row.phoneNumber}</td>
-      <td>
-        <RoleBadge role={row.role} />
-      </td>
-      <td>
-        <StatusBadge status={row.status} />
-      </td>
-      <td>
-        <UserActions userId={row.id} />
-      </td>
-    </tr>
-  ));
+  const rows = sortedData.map((row) => {
+    return (
+      <tr key={row.id}>
+        <td>
+          <Avatar
+            src={
+              "https://media.distractify.com/brand-img/0E-t9gohB/0x0/jordan-baker-all-american-real-person-3-1585691486739.jpg"
+            }
+          />
+        </td>
+        <td>{row.name}</td>
+        <td>{row.email}</td>
+        <td>{row.phoneNumber}</td>
+        <td>
+          <RoleBadge role={row.role} />
+        </td>
+        <td>
+          <StatusBadge status={row.status} />
+        </td>
+        <td>
+          <UserActions userId={row.id} />
+        </td>
+      </tr>
+    );
+  });
 
   return (
     <ScrollArea>

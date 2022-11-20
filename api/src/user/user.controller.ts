@@ -1,6 +1,11 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
-import { RegisterUserDto, UserDto, UserIdDto } from './dtos/user.dto';
+import {
+  RegisterUserDto,
+  UpdateUserDto,
+  UserDto,
+  UserIdDto,
+} from './dtos/user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -21,6 +26,11 @@ export class UserController {
   @Post('user')
   async getUserById(@Body() data: UserIdDto): Promise<UserDto> {
     return this.userService.getUserById(data.id);
+  }
+
+  @Post('/edit')
+  async editUserById(@Body() data: UpdateUserDto): Promise<UserDto> {
+    return this.userService.editUserById(data);
   }
 
   @UseGuards(AdminPermissionGuard)

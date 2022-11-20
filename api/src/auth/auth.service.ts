@@ -12,11 +12,7 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<UserDto> {
-    console.log({ email, password });
-
     const user = await this.userService.findOne(email);
-
-    console.log({ user });
 
     const equalPasswords = await bcrypt.compare(password, user.password);
 
@@ -28,8 +24,6 @@ export class AuthService {
   }
 
   async login(user: UserPayloadDto) {
-    console.log('aa');
-
     const payload = { username: user.email, sub: user.id };
 
     return {
