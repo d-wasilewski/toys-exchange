@@ -8,7 +8,7 @@ import { LoginPage } from "./session/Login/LoginPage";
 import { RegisterPage } from "./session/Register/RegisterPage";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
-import { AddNewToyForm } from "./toys/AddNewToyForm";
+import { AddNewToyForm } from "./toys/add-new/AddNewToyForm";
 import { MyToysView } from "./toys/MyToysView";
 import { Suspense } from "react";
 import { logout } from "./shared/APIs/userService";

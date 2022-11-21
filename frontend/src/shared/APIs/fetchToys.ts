@@ -1,3 +1,4 @@
+import axios from "axios";
 import { APIRequestBody, APIResponse, fetchPost } from "./baseFetch";
 
 export const fetchToysList = () => {
@@ -10,6 +11,6 @@ export const fetchToysByOwner = (ownerId: number) => {
   return fetchPost("/toy/user-toys", { id: ownerId });
 };
 
-export const createToy = (toyData: APIRequestBody<"/toy/create-toy">) => {
-  return fetchPost("/toy/create-toy", toyData);
+export const createToy = (toyData: FormData) => {
+  return fetchPost("/toy/create-toy", toyData as never);
 };

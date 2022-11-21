@@ -107,14 +107,6 @@ export interface components {
     AccessTokenDto: {
       access_token: string;
     };
-    CreateToyDto: {
-      name: string;
-      category: string;
-      imgUrl: string;
-      description: string;
-      address: string;
-      ownerId: number;
-    };
     OwnerIdDto: {
       id: number;
     };
@@ -280,11 +272,6 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["ToyDto"];
         };
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateToyDto"];
       };
     };
   };

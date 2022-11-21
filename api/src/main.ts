@@ -4,6 +4,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { attachDocumentation } from './documentation/attach-documentation';
 import { PrismaService } from './prisma/prisma.service';
+// import cloudinary from "cloudinary"
+const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
 async function bootstrap() {
@@ -14,6 +16,12 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   attachDocumentation(app);
+
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
+  });
 
   await app.listen(3000);
   const prismaService = app.get(PrismaService);

@@ -3,7 +3,7 @@ import { z } from "zod";
 export const schema = z
   .object({
     name: z
-      .string({ required_error: "dupa" })
+      .string()
       .min(1, { message: "This field is required" })
       .max(25, { message: "Name should have maximum 25 letters" }),
     email: z

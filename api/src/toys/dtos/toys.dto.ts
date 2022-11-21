@@ -41,10 +41,6 @@ export class CreateToyDto {
 
   @IsNotEmpty()
   @IsString()
-  imgUrl: string;
-
-  @IsNotEmpty()
-  @IsString()
   description: string;
 
   @IsNotEmpty()

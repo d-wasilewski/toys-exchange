@@ -1,22 +1,38 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateToyDto } from './dtos/toys.dto';
+import { v2 } from 'cloudinary';
+
+interface File {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  buffer: Buffer;
+  size: number;
+}
 
 @Injectable()
 export class ToysService {
   constructor(private prisma: PrismaService) {}
 
-  async createToy(toyData: CreateToyDto) {
+  async createToy(imgFile: File[], toyData: CreateToyDto) {
+    const fileBase64 = imgFile[0].buffer.toString('base64');
+
+    const uploadResponse = await v2.uploader.upload(
+      'data:image/jpeg;base64,' + fileBase64,
+      {
+        folder: 'toys',
+      },
+    );
+
     try {
       const createdToy = await this.prisma.toy.create({
-        data: toyData,
+        data: { ...toyData, imgUrl: uploadResponse.url },
       });
       return createdToy;
     } catch (error) {
-      throw new HttpException(
-        'Something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new BadRequestException('Something went wrong');
     }
   }
 
