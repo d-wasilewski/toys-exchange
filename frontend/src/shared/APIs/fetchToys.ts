@@ -1,5 +1,4 @@
-import axios from "axios";
-import { APIRequestBody, APIResponse, fetchPost } from "./baseFetch";
+import { APIResponse, fetchPost } from "./baseFetch";
 
 export const fetchToysList = () => {
   return fetchPost("/toy/toys");

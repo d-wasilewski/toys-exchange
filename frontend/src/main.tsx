@@ -1,4 +1,5 @@
 import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -12,11 +13,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <MantineGlobalStyles />
       <NotificationsProvider>
-        <RecoilRoot>
-          <Router>
-            <App />
-          </Router>
-        </RecoilRoot>
+        <ModalsProvider>
+          <RecoilRoot>
+            <Router>
+              <App />
+            </Router>
+          </RecoilRoot>
+        </ModalsProvider>
       </NotificationsProvider>
     </MantineProvider>
   </React.StrictMode>

@@ -8,19 +8,19 @@ import { LoginPage } from "./session/Login/LoginPage";
 import { RegisterPage } from "./session/Register/RegisterPage";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
-import { AddNewToyForm } from "./toys/add-new/AddNewToyForm";
 import { MyToysView } from "./toys/MyToysView";
 import { Suspense } from "react";
 import { logout } from "./shared/APIs/userService";
 import { AdminPage } from "./admin/AdminPage";
 import { Loader } from "@mantine/core";
+import { OfferCardList } from "./offers/OfferCardList";
 
 const links = [
   { label: "Login", url: ROUTES.login },
   { label: "Register", url: ROUTES.register },
   { label: "Toys", url: ROUTES.toys },
   { label: "My toys", url: ROUTES.myToys },
-  { label: "Add a toy", url: ROUTES.addToy },
+  { label: "All offers", url: ROUTES.addToy },
   { label: "Logout", url: ROUTES.root },
   { label: "Admin page", url: ROUTES.admin },
 ];
@@ -86,7 +86,7 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="/add-toy" element={<AddNewToyForm />} />
+          <Route path="/add-toy" element={<OfferCardList />} />
           <Route
             path="/admin"
             element={
@@ -106,5 +106,5 @@ export default App;
 const PageWrapper = styled.div`
   padding-top: ${NAVBAR_HEIGHT}px;
   width: 100vw;
-  height: ${`calc(100vh - ${NAVBAR_HEIGHT}px)`};
+  /* height: ${`calc(100vh - ${NAVBAR_HEIGHT}px)`}; */
 `;

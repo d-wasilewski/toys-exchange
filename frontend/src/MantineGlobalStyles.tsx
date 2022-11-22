@@ -11,7 +11,9 @@ export const MantineGlobalStyles = () => {
         body: {
           ...theme.fn.fontStyles(),
           backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[7]
+              : theme.colors.gray[0],
           color:
             theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
           lineHeight: theme.lineHeight,

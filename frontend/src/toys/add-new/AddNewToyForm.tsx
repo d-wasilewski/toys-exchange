@@ -1,29 +1,14 @@
-import {
-  Paper,
-  Stack,
-  TextInput,
-  Popover,
-  PasswordInput,
-  Progress,
-  Checkbox,
-  Button,
-  FileInput,
-  Badge,
-} from "@mantine/core";
+import { Stack, TextInput, Button, FileInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useFormik } from "formik";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { PasswordRequirement } from "../../session/Register/PasswordRequirement";
 import { userState } from "../../session/sessionState";
 import { createToy } from "../../shared/APIs/fetchToys";
-import { FileDropzone } from "./FileDropzone";
 
 export const AddNewToyForm = () => {
   const [loading, setLoading] = useState(false);
   const user = useRecoilValue(userState);
-
 
   const form = useForm({
     initialValues: {

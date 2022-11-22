@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
 import {
   OfferDto,
   OfferIdDto,
@@ -11,6 +12,7 @@ import { OfferService } from './offer.service';
 export class OfferController {
   constructor(private readonly offerService: OfferService) {}
 
+  @UseGuards(AdminPermissionGuard)
   @Post('offers')
   async getOffers(): Promise<OfferDto[]> {
     return this.offerService.getAllOffers();

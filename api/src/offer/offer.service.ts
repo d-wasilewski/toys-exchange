@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SendOfferDto } from './dtos/offer.dto';
 
@@ -13,7 +13,35 @@ export class OfferService {
   constructor(private prisma: PrismaService) {}
 
   async getAllOffers() {
-    return this.prisma.offer.findMany({});
+    return this.prisma.offer.findMany({
+      include: {
+        sender: {
+          // add rating and image to sender and receiver
+          select: {
+            name: true,
+          },
+        },
+        receiver: {
+          select: {
+            name: true,
+          },
+        },
+        toyFromSender: {
+          select: {
+            name: true,
+            imgUrl: true,
+            category: true,
+          },
+        },
+        toyFromReceiver: {
+          select: {
+            name: true,
+            imgUrl: true,
+            category: true,
+          },
+        },
+      },
+    });
   }
 
   async sendOffer({
@@ -57,7 +85,17 @@ export class OfferService {
 
   async acceptOffer(offerId: number) {
     await this.prisma.$transaction(async (tx) => {
-      const offer = await tx.offer.update({
+      const offer = await tx.offer.findFirst({
+        where: {
+          id: offerId,
+        },
+      });
+
+      if (offer.status !== Status.PENDING) {
+        throw new ConflictException(`Offer is not active anymore`);
+      }
+
+      await tx.offer.update({
         where: {
           id: offerId,
         },
@@ -65,10 +103,6 @@ export class OfferService {
           status: Status.ACCEPTED,
         },
       });
-
-      if (offer.status !== Status.PENDING) {
-        throw new Error(`Offer ${offer.id} is not active anymore`);
-      }
 
       await tx.toy.update({
         where: {
@@ -91,6 +125,16 @@ export class OfferService {
   }
 
   async declineOffer(offerId: number) {
+    const offer = await this.prisma.offer.findFirst({
+      where: {
+        id: offerId,
+      },
+    });
+
+    if (offer.status !== Status.PENDING) {
+      throw new ConflictException(`Offer is not active anymore`);
+    }
+
     await this.prisma.offer.update({
       where: {
         id: offerId,
