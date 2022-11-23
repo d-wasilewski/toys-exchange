@@ -1,4 +1,4 @@
-import { selector } from "recoil";
+import { atom, selector } from "recoil";
 import { userState } from "../session/sessionState";
 import { fetchToysByOwner, fetchToysList } from "../shared/APIs/fetchToys";
 
@@ -10,8 +10,8 @@ export const toysListState = selector({
   },
 });
 
-export const myToysListState = selector({
-  key: "myToysListState",
+export const currentToysListState = selector({
+  key: "currentToysListState",
   get: async ({ get }) => {
     const user = get(userState);
     if (user) {
@@ -20,4 +20,14 @@ export const myToysListState = selector({
     }
     return [];
   },
+});
+
+export const selectedToyIdState = atom<number | null>({
+  key: "selectedToyIdState",
+  default: null,
+});
+
+export const offeredToyIdState = atom<number | null>({
+  key: "offeredToyIdState",
+  default: null,
 });

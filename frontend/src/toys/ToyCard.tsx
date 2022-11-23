@@ -8,12 +8,17 @@ import {
   createStyles,
   Button,
 } from "@mantine/core";
+import { useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userState } from "../session/sessionState";
+import { SwapModal } from "./SwapModal";
+import { currentToysListState, selectedToyIdState } from "./toysState";
 
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-    width: 250,
+    width: 270,
   },
 
   title: {
@@ -30,21 +35,35 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface ToyCardProps {
+  id: number;
   ownerName: string;
   ownerRating: number;
+  ownerId: number;
   category: string;
   name: string;
   imgUrl: string;
+  basic?: boolean;
 }
 
 export const ToyCard = ({
+  id,
   name,
   category,
   imgUrl,
   ownerName,
   ownerRating,
+  ownerId,
+  basic,
 }: ToyCardProps) => {
   const { classes } = useStyles();
+  const setSelectedToyId = useSetRecoilState(selectedToyIdState);
+  const currentUser = useRecoilValue(userState);
+  const [opened, setOpened] = useState(false);
+
+  const handleSwap = () => {
+    setOpened(true);
+    setSelectedToyId(id);
+  };
 
   return (
     <Card withBorder p="lg" radius="md" className={classes.card}>
@@ -74,9 +93,29 @@ export const ToyCard = ({
         </div>
       </Group>
 
-      <Card.Section className={classes.footer}>
-        <Button fullWidth>Swap</Button>
-      </Card.Section>
+      {!basic && ownerId !== currentUser?.id && (
+        <>
+          <Card.Section className={classes.footer}>
+            <Button fullWidth onClick={handleSwap}>
+              Swap
+            </Button>
+          </Card.Section>
+
+          <SwapModal
+            opened={opened}
+            setOpened={setOpened}
+            cardData={{
+              id,
+              name,
+              category,
+              imgUrl,
+              ownerName,
+              ownerRating,
+              ownerId,
+            }}
+          />
+        </>
+      )}
     </Card>
   );
 };

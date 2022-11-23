@@ -13,7 +13,12 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <MantineGlobalStyles />
       <NotificationsProvider>
-        <ModalsProvider>
+        <ModalsProvider
+          modalProps={{
+            overlayOpacity: 0.55,
+            overlayBlur: 3,
+          }}
+        >
           <RecoilRoot>
             <Router>
               <App />

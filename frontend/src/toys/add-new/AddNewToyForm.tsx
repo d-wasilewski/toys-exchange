@@ -50,7 +50,6 @@ export const AddNewToyForm = () => {
     } finally {
       setLoading(false);
     }
-    console.log({ values });
   };
 
   return (

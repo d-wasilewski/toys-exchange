@@ -86,7 +86,14 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="/add-toy" element={<OfferCardList />} />
+          <Route
+            path="/add-toy"
+            element={
+              <Suspense fallback={<Loader />}>
+                <OfferCardList />
+              </Suspense>
+            }
+          />
           <Route
             path="/admin"
             element={

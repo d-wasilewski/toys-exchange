@@ -1,4 +1,12 @@
-import { createStyles, Card, Image, Avatar, Text, Group } from "@mantine/core";
+import {
+  createStyles,
+  Card,
+  Image,
+  Avatar,
+  Text,
+  Group,
+  Rating,
+} from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -42,7 +50,7 @@ export function OfferDetails({ toy, user }: ArticleCardVerticalProps) {
           <Text className={classes.title} mt="xs" mb="md">
             {toy.name}
           </Text>
-          <Group noWrap spacing="xs">
+          <Group spacing="xs">
             <Group spacing="xs" noWrap>
               <Avatar size={20} src={toy.imgUrl} />
               <Text size="xs">{user.name}</Text>
@@ -51,8 +59,9 @@ export function OfferDetails({ toy, user }: ArticleCardVerticalProps) {
               •
             </Text>
             <Text size="xs" color="dimmed">
-              {"3 stars"}
+              3/5
             </Text>
+            <Rating value={1} count={1} fractions={10} size="sm" />
           </Group>
         </div>
       </Group>

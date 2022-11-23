@@ -1,3 +1,4 @@
+import { Flex } from "@mantine/core";
 import styled from "styled-components";
 import { AllToys } from "../shared/APIs/fetchToys";
 import { ToyCard } from "./ToyCard";
@@ -10,26 +11,20 @@ export const ToysList = ({ toysList }: ToysListProps) => {
   // Walmart format?
 
   return (
-    <ToysWrapper>
+    <Flex wrap="wrap" gap="lg">
       {toysList.map((toy) => {
         return (
           <ToyCard
+            id={toy.id}
             name={toy.name}
             ownerName={"Owner name"}
             ownerRating={toy.ownerId}
+            ownerId={toy.ownerId}
             imgUrl={toy.imgUrl}
             category={toy.category}
           />
         );
       })}
-    </ToysWrapper>
+    </Flex>
   );
 };
-
-const ToysWrapper = styled.div`
-  width: 70vw;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 3%;
-`;

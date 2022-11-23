@@ -4,12 +4,11 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { AddNewToyForm } from "./add-new/AddNewToyForm";
 import { ToysList } from "./ToysList";
-import { myToysListState } from "./toysState";
+import { currentToysListState } from "./toysState";
 
 export const MyToysView = () => {
   const [opened, setOpened] = useState(false);
-
-  const myToysList = useRecoilValue(myToysListState);
+  const myToysList = useRecoilValue(currentToysListState);
 
   return (
     <PageWrapper>
