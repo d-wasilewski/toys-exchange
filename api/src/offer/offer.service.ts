@@ -69,14 +69,28 @@ export class OfferService {
       },
       include: {
         sender: {
+          // add rating and image to sender and receiver
           select: {
             name: true,
           },
         },
-        toyFromSender: true,
+        receiver: {
+          select: {
+            name: true,
+          },
+        },
+        toyFromSender: {
+          select: {
+            name: true,
+            imgUrl: true,
+            category: true,
+          },
+        },
         toyFromReceiver: {
           select: {
             name: true,
+            imgUrl: true,
+            category: true,
           },
         },
       },

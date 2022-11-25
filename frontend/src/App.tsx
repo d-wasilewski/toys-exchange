@@ -14,6 +14,7 @@ import { logout } from "./shared/APIs/userService";
 import { AdminPage } from "./admin/AdminPage";
 import { Loader } from "@mantine/core";
 import { OfferCardList } from "./offers/OfferCardList";
+import { MyOffersView } from "./offers/MyOffersView";
 
 const links = [
   { label: "Login", url: ROUTES.login },
@@ -23,6 +24,7 @@ const links = [
   { label: "All offers", url: ROUTES.addToy },
   { label: "Logout", url: ROUTES.root },
   { label: "Admin page", url: ROUTES.admin },
+  { label: "My offers", url: ROUTES.myOffers },
 ];
 
 // const authenticatedLinks = [
@@ -83,6 +85,14 @@ function App() {
             element={
               <Suspense>
                 <MyToysView />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/my-offers"
+            element={
+              <Suspense>
+                <MyOffersView />
               </Suspense>
             }
           />

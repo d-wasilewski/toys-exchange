@@ -20,6 +20,10 @@ export const makeAnOffer = (payload: APIRequestBody<"/offer/send">) => {
   return fetchPost("/offer/send", payload);
 };
 
+export const getActiveOffers = (receiverId: number) => {
+  return fetchPost("/offer/active-offers", { receiverId });
+};
+
 export type UserList = APIResponse<"/user/users">[number];
 
 export type User = APIResponse<"/user/user">;
