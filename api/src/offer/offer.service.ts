@@ -62,7 +62,7 @@ export class OfferService {
   }
 
   async getActiveOffers(receiverId: number) {
-    return this.prisma.offer.findMany({
+    return await this.prisma.offer.findMany({
       where: {
         receiverUserId: receiverId,
         status: Status.PENDING,

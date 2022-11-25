@@ -1,7 +1,6 @@
-import { Button, Modal } from "@mantine/core";
+import { Button, Flex, Modal } from "@mantine/core";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 import { AddNewToyForm } from "./add-new/AddNewToyForm";
 import { ToysList } from "./ToysList";
 import { currentToysListState } from "./toysState";
@@ -11,8 +10,7 @@ export const MyToysView = () => {
   const myToysList = useRecoilValue(currentToysListState);
 
   return (
-    <PageWrapper>
-      <h1>List of my toys</h1>
+    <Flex wrap="wrap" gap="lg">
       <Button onClick={() => setOpened(true)}>Add new toy</Button>
       <ToysList toysList={myToysList} />
       <Modal
@@ -22,15 +20,6 @@ export const MyToysView = () => {
       >
         <AddNewToyForm />
       </Modal>
-    </PageWrapper>
+    </Flex>
   );
 };
-
-const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding-top: 54px;
-`;

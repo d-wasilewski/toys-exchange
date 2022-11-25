@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { userState } from "../session/sessionState";
@@ -16,6 +17,7 @@ interface AppNavbarProps {
 
 export const AppNavbar = ({ links, onLinkClick, isMatch }: AppNavbarProps) => {
   const user = useRecoilValue(userState);
+  const navigate = useNavigate();
 
   return (
     <Navbar>
@@ -30,7 +32,15 @@ export const AppNavbar = ({ links, onLinkClick, isMatch }: AppNavbarProps) => {
           );
         })}
       </LinksWrapper>
-      <UserWidget>{user?.name}</UserWidget>
+      <UserWidget
+        onClick={() => {
+          if (user) {
+            navigate(`/user/${user.id}`);
+          }
+        }}
+      >
+        {user?.name}
+      </UserWidget>
     </Navbar>
   );
 };

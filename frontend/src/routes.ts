@@ -7,4 +7,9 @@ export const ROUTES = {
   myOffers: "/my-offers",
   addToy: "/add-toy",
   admin: "/admin",
+  user: "/user/:id",
+  userDetails: "/user/:id/details",
+  userActiveOffers: "/user/:id/active",
+  userOffersHistory: "/user/:id/history",
+  userToys: "/user/:id/toys",
 };

@@ -15,6 +15,11 @@ import { AdminPage } from "./admin/AdminPage";
 import { Loader } from "@mantine/core";
 import { OfferCardList } from "./offers/OfferCardList";
 import { MyOffersView } from "./offers/MyOffersView";
+import { UserPage } from "./user/UserPage";
+import { UserDetails } from "./user/UserDetails";
+import { UserToys } from "./user/UserToys";
+import { UserActiveOffers } from "./user/UserActiveOffers";
+import { UserOffersHistory } from "./user/UserOffersHistory";
 
 const links = [
   { label: "Login", url: ROUTES.login },
@@ -70,6 +75,33 @@ function App() {
       <PageWrapper>
         <Routes>
           <Route path="/" element={<div>Homepage</div>} />
+          <Route path={ROUTES.user} element={<UserPage />}>
+            <Route path={ROUTES.userDetails} element={<UserDetails />} />
+            <Route
+              path={ROUTES.userActiveOffers}
+              element={
+                <Suspense>
+                  <UserActiveOffers />
+                </Suspense>
+              }
+            />
+            <Route
+              path={ROUTES.userOffersHistory}
+              element={
+                <Suspense>
+                  <UserOffersHistory />
+                </Suspense>
+              }
+            />
+            <Route
+              path={ROUTES.userToys}
+              element={
+                <Suspense>
+                  <UserToys />
+                </Suspense>
+              }
+            />
+          </Route>
           <Route
             path="/toys"
             element={

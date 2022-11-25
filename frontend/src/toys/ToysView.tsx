@@ -1,6 +1,5 @@
-import { Center, Container } from "@mantine/core";
+import { Container } from "@mantine/core";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 import { ToysList } from "./ToysList";
 import { toysListState } from "./toysState";
 

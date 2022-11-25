@@ -1,5 +1,4 @@
 import { Flex } from "@mantine/core";
-import styled from "styled-components";
 import { AllToys } from "../shared/APIs/fetchToys";
 import { ToyCard } from "./ToyCard";
 
@@ -8,8 +7,6 @@ interface ToysListProps {
 }
 
 export const ToysList = ({ toysList }: ToysListProps) => {
-  // Walmart format?
-
   return (
     <Flex wrap="wrap" gap="lg">
       {toysList.map((toy) => {

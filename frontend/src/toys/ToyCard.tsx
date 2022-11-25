@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../session/sessionState";
 import { SwapModal } from "./SwapModal";
-import { currentToysListState, selectedToyIdState } from "./toysState";
+import { selectedToyIdState } from "./toysState";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -65,6 +65,9 @@ export const ToyCard = ({
     setSelectedToyId(id);
   };
 
+  // TODO: handle toy edit
+  const handleEdit = () => {};
+
   return (
     <Card withBorder p="lg" radius="md" className={classes.card}>
       <Card.Section mb="sm">
@@ -83,15 +86,21 @@ export const ToyCard = ({
         {name}
       </Text>
 
-      <Group mt="lg">
-        <Avatar src={imgUrl} radius="sm" />
-        <div>
-          <Text weight={500}>{ownerName}</Text>
-          <Text size="xs" color="dimmed">
-            {ownerRating}
-          </Text>
-        </div>
-      </Group>
+      {ownerId !== currentUser?.id ? (
+        <Group mt="lg">
+          <Avatar src={imgUrl} radius="sm" />
+          <div>
+            <Text weight={500}>{ownerName}</Text>
+            <Text size="xs" color="dimmed">
+              {ownerRating}
+            </Text>
+          </div>
+        </Group>
+      ) : (
+        <Button mt={20} fullWidth onClick={handleEdit}>
+          Edit
+        </Button>
+      )}
 
       {!basic && ownerId !== currentUser?.id && (
         <>
