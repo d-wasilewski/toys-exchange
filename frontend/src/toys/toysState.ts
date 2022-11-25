@@ -22,12 +22,12 @@ export const currentToysListState = selector({
   },
 });
 
-export const selectedToyIdState = atom<number | null>({
+export const selectedToyIdState = atom<string | null>({
   key: "selectedToyIdState",
   default: null,
 });
 
-export const offeredToyIdState = atom<number | null>({
+export const offeredToyIdState = atom<string | null>({
   key: "offeredToyIdState",
   default: null,
 });

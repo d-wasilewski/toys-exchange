@@ -20,7 +20,7 @@ interface ArticleCardVerticalProps {
   receiver: {
     name: string;
   };
-  offerId: number;
+  offerId: string;
 }
 
 export const OfferCard = ({

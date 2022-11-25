@@ -4,7 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 interface DecodedJWT {
   username: string;
-  sub: number;
+  sub: string;
   iat: number;
 }
 

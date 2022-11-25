@@ -9,19 +9,30 @@ datasource db {
 }
 
 model User {
-  id          Int        @id @default(autoincrement())
+  id          String     @id @default(uuid())
   email       String     @unique
   name        String
   password    String
-  phoneNumber String?
+  phoneNumber String
+  imgUrl      String?
   role        UserRole   @default(BASIC)
   status      UserStatus @default(ACTIVE)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @default(now()) @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   toys           Toy[]
-  offersSend     Offer[] @relation(name: "offersSend")
-  offersReceived Offer[] @relation(name: "offersReceived")
+  ratings        Rating[]
+  offersSend     Offer[]  @relation(name: "offersSend")
+  offersReceived Offer[]  @relation(name: "offersReceived")
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  value     Float
+  createdAt DateTime @default(now())
 }
 
 enum UserRole {
@@ -35,14 +46,14 @@ enum UserStatus {
 }
 
 model Toy {
-  id                 Int      @id @default(autoincrement())
+  id                 String   @id @default(uuid())
   name               String
   category           String
   imgUrl             String
   description        String
   address            String
   owner              User     @relation(fields: [ownerId], references: [id])
-  ownerId            Int
+  ownerId            String
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now()) @updatedAt
   offersFromSender   Offer[]  @relation(name: "toyFromSender")
@@ -50,15 +61,15 @@ model Toy {
 }
 
 model Offer {
-  id                Int         @id @default(autoincrement())
+  id                String      @id @default(uuid())
   sender            User        @relation(name: "offersSend", fields: [senderUserId], references: [id])
-  senderUserId      Int
+  senderUserId      String
   receiver          User        @relation(name: "offersReceived", fields: [receiverUserId], references: [id])
-  receiverUserId    Int
+  receiverUserId    String
   toyFromSender     Toy         @relation(name: "toyFromSender", fields: [toyFromSenderId], references: [id])
-  toyFromSenderId   Int
+  toyFromSenderId   String
   toyFromReceiver   Toy         @relation(name: "toyFromReceiver", fields: [toyFromReceiverId], references: [id])
-  toyFromReceiverId Int
+  toyFromReceiverId String
   status            OfferStatus @default(PENDING)
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @default(now()) @updatedAt

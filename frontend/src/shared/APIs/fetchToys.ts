@@ -6,7 +6,7 @@ export const fetchToysList = () => {
 
 export type AllToys = APIResponse<"/toy/toys">;
 
-export const fetchToysByOwner = (ownerId: number) => {
+export const fetchToysByOwner = (ownerId: string) => {
   return fetchPost("/toy/user-toys", { id: ownerId });
 };
 

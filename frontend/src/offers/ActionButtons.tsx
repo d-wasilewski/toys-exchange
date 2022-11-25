@@ -5,7 +5,7 @@ import { useState } from "react";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import { acceptOffer, declineOffer } from "../shared/APIs/offerService";
 
-export const ActionButtons = ({ offerId }: { offerId: number }) => {
+export const ActionButtons = ({ offerId }: { offerId: string }) => {
   const [isAcceptLoading, setIsAcceptLoading] = useState(false);
   const [isDeclineLoading, setIsDeclineLoading] = useState(false);
 

@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsNumber, IsObject, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class ToyDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  @IsUUID()
+  id: string;
 
   @IsNotEmpty()
   @IsString()
@@ -26,8 +26,8 @@ export class ToyDto {
   address: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  ownerId: number;
+  @IsUUID()
+  ownerId: string;
 }
 
 export class CreateToyDto {
@@ -48,12 +48,12 @@ export class CreateToyDto {
   address: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  ownerId: number;
+  @IsUUID()
+  ownerId: string;
 }
 
 export class OwnerIdDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  @IsUUID()
+  id: string;
 }

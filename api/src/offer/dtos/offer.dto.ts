@@ -1,59 +1,59 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { OfferStatus } from '@prisma/client';
-import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDate, IsNotEmpty, IsUUID } from 'class-validator';
 
 const offerStatuses = Object.values(OfferStatus);
 
 export class OfferIdDto {
   @IsNotEmpty()
-  @IsNumber()
-  offerId: number;
+  @IsUUID()
+  offerId: string;
 }
 
 export class ReceiverIdDto {
   @IsNotEmpty()
-  @IsNumber()
-  receiverId: number;
+  @IsUUID()
+  receiverId: string;
 }
 
 export class SendOfferDto {
   @IsNotEmpty()
-  @IsNumber()
-  senderUserId: number;
+  @IsUUID()
+  senderUserId: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  receiverUserId: number;
+  @IsUUID()
+  receiverUserId: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  toyFromSenderId: number;
+  @IsUUID()
+  toyFromSenderId: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  toyFromReceiverId: number;
+  @IsUUID()
+  toyFromReceiverId: string;
 }
 
 export class OfferDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  @IsUUID()
+  id: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  senderUserId: number;
+  @IsUUID()
+  senderUserId: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  receiverUserId: number;
+  @IsUUID()
+  receiverUserId: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  toyFromSenderId: number;
+  @IsUUID()
+  toyFromSenderId: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  toyFromReceiverId: number;
+  @IsUUID()
+  toyFromReceiverId: string;
 
   @ApiProperty({ enum: [...offerStatuses] })
   status: OfferStatus;

@@ -8,7 +8,7 @@ import {
 } from "./adminState";
 
 interface UserActionsProps {
-  userId: number;
+  userId: string;
 }
 
 export const UserActions = ({ userId }: UserActionsProps) => {

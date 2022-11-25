@@ -4,9 +4,9 @@ import {
   IsDate,
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 const userRoles = Object.values(UserRole);
@@ -24,8 +24,8 @@ export class UserLoginDto {
 
 export class UserPayloadDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  @IsUUID()
+  id: string;
 
   @IsNotEmpty()
   @IsEmail()
@@ -38,20 +38,24 @@ export class UserPayloadDto {
 
 export class UserDto {
   @IsNotEmpty()
-  @IsString()
-  id: number;
+  @IsUUID()
+  id: string;
 
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  name: string | null;
+  name: string;
 
   @IsNotEmpty()
   @IsString()
   phoneNumber: string;
+
+  @IsOptional()
+  @IsString()
+  imgUrl: string | null;
 
   @IsDate()
   createdAt: Date;
@@ -59,7 +63,7 @@ export class UserDto {
   @IsDate()
   updatedAt: Date;
 
-  @ApiPropertyOptional({ enum: [...userRoles] })
+  @ApiProperty({ enum: [...userRoles] })
   role: UserRole;
 
   @ApiProperty({ enum: [...userStatuses] })

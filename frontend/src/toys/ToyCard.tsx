@@ -35,10 +35,10 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface ToyCardProps {
-  id: number;
+  id: string;
   ownerName: string;
   ownerRating: number;
-  ownerId: number;
+  ownerId: string;
   category: string;
   name: string;
   imgUrl: string;

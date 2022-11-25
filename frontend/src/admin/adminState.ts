@@ -9,7 +9,7 @@ export const usersListState = selector({
   },
 });
 
-export const clickedUserIdState = atom<number | null>({
+export const clickedUserIdState = atom<string | null>({
   key: "clickedUserIdState",
   default: null,
 });

@@ -40,7 +40,7 @@ export class UserService {
     });
   }
 
-  async getUserById(userId: number) {
+  async getUserById(userId: string) {
     return this.prisma.user.findFirst({
       where: {
         id: userId,
@@ -83,7 +83,7 @@ export class UserService {
     return users;
   }
 
-  async changeUserStatus(userId: number, status: UserStatus) {
+  async changeUserStatus(userId: string, status: UserStatus) {
     return await this.prisma.user.update({
       where: { id: userId },
       data: { status },

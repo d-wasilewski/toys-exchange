@@ -44,7 +44,7 @@ export function AvailableToySelect({ data }: AvailableToySelectProps) {
       itemComponent={SelectItem}
       data={data}
       searchable
-      onChange={(value) => value && setOfferedToyId(Number(value))}
+      onChange={(value) => value && setOfferedToyId(value)}
       maxDropdownHeight={400}
       nothingFound="Nobody here"
       filter={(value, item) =>

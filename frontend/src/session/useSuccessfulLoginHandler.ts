@@ -7,7 +7,7 @@ import jwtDecode from "jwt-decode";
 interface IDecodedToken {
   username: string;
   iat: number;
-  sub: number;
+  sub: string;
 }
 
 export const useSuccessfulLoginHandler = () => {

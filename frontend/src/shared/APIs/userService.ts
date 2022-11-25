@@ -18,7 +18,7 @@ export type User = APIResponse<"/user/user">;
 export type UserStatus = User["status"];
 export type UserRole = User["role"];
 
-export const getUserData = (userId: number): Promise<User> => {
+export const getUserData = (userId: string): Promise<User> => {
   return fetchPost("/user/user", { id: userId });
 };
 

@@ -4,9 +4,9 @@ import {
   IsDate,
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 import { ToyDto } from 'src/toys/dtos/toys.dto';
 
@@ -18,9 +18,9 @@ export class RegisterUserDto {
   @IsEmail()
   email: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  name: string | null;
+  name: string;
 
   @IsNotEmpty()
   @IsString()
@@ -36,8 +36,8 @@ export class RegisterUserDto {
 
 export class UserDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  @IsUUID()
+  id: string;
 
   @IsNotEmpty()
   @IsEmail()
@@ -50,6 +50,10 @@ export class UserDto {
   @IsNotEmpty()
   @IsString()
   phoneNumber: string;
+
+  @IsOptional()
+  @IsString()
+  imgUrl: string | null;
 
   @IsDate()
   createdAt: Date;
@@ -69,8 +73,8 @@ export class UserDto {
 
 export class UpdateUserDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  @IsUUID()
+  id: string;
 
   @IsNotEmpty()
   @IsEmail()
@@ -93,6 +97,6 @@ export class UpdateUserDto {
 
 export class UserIdDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  @IsUUID()
+  id: string;
 }

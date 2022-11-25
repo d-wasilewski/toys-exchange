@@ -17,13 +17,13 @@ interface SwapModalProps {
   opened: boolean;
   setOpened: (arg: boolean) => void;
   cardData: {
-    id: number;
+    id: string;
     name: string;
     category: string;
     imgUrl: string;
     ownerName: string;
     ownerRating: number;
-    ownerId: number;
+    ownerId: string;
   };
 }
 

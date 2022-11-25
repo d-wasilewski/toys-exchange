@@ -48,7 +48,7 @@ export class ToysService {
     });
   }
 
-  async getToysByUserId(ownerId: number) {
+  async getToysByUserId(ownerId: string) {
     return this.prisma.toy.findMany({
       where: {
         ownerId,

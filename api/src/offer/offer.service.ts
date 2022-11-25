@@ -50,7 +50,6 @@ export class OfferService {
     toyFromSenderId,
     toyFromReceiverId,
   }: SendOfferDto) {
-    // TODO: add acceptedAt/updatedAt
     return this.prisma.offer.create({
       data: {
         senderUserId,
@@ -61,7 +60,7 @@ export class OfferService {
     });
   }
 
-  async getActiveOffers(receiverId: number) {
+  async getActiveOffers(receiverId: string) {
     return await this.prisma.offer.findMany({
       where: {
         receiverUserId: receiverId,
@@ -97,7 +96,7 @@ export class OfferService {
     });
   }
 
-  async acceptOffer(offerId: number) {
+  async acceptOffer(offerId: string) {
     await this.prisma.$transaction(async (tx) => {
       const offer = await tx.offer.findFirst({
         where: {
@@ -138,7 +137,7 @@ export class OfferService {
     });
   }
 
-  async declineOffer(offerId: number) {
+  async declineOffer(offerId: string) {
     const offer = await this.prisma.offer.findFirst({
       where: {
         id: offerId,

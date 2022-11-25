@@ -65,37 +65,38 @@ export interface components {
     RegisterUserDto: {
       role?: "BASIC" | "ADMIN";
       email: string;
-      name: string | null;
+      name: string;
       password: string;
       phoneNumber: string;
     };
     ToyDto: {
-      id: number;
+      id: string;
       name: string;
       category: string;
       imgUrl: string;
       description: string;
       address: string;
-      ownerId: number;
+      ownerId: string;
     };
     UserDto: {
       role: "BASIC" | "ADMIN";
       status: "ACTIVE" | "BLOCKED";
       toys: components["schemas"]["ToyDto"][];
-      id: number;
+      id: string;
       email: string;
       name: string;
       phoneNumber: string;
+      imgUrl: string | null;
       createdAt: string;
       updatedAt: string;
     };
     UserIdDto: {
-      id: number;
+      id: string;
     };
     UpdateUserDto: {
       role: "BASIC" | "ADMIN";
       status: "ACTIVE" | "BLOCKED";
-      id: number;
+      id: string;
       email: string;
       name: string;
       phoneNumber: string;
@@ -108,28 +109,28 @@ export interface components {
       access_token: string;
     };
     OwnerIdDto: {
-      id: number;
+      id: string;
     };
     OfferDto: {
       status: "ACCEPTED" | "DECLINED" | "PENDING";
-      id: number;
-      senderUserId: number;
-      receiverUserId: number;
-      toyFromSenderId: number;
-      toyFromReceiverId: number;
+      id: string;
+      senderUserId: string;
+      receiverUserId: string;
+      toyFromSenderId: string;
+      toyFromReceiverId: string;
       createdAt: string;
     };
     ReceiverIdDto: {
-      receiverId: number;
+      receiverId: string;
     };
     SendOfferDto: {
-      senderUserId: number;
-      receiverUserId: number;
-      toyFromSenderId: number;
-      toyFromReceiverId: number;
+      senderUserId: string;
+      receiverUserId: string;
+      toyFromSenderId: string;
+      toyFromReceiverId: string;
     };
     OfferIdDto: {
-      offerId: number;
+      offerId: string;
     };
   };
 }
