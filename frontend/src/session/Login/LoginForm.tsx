@@ -57,7 +57,7 @@ export const LoginForm = () => {
             withAsterisk
             radius="md"
             label="Password"
-            placeholder=""
+            placeholder="strongPassword123"
             visible={visible}
             onVisibilityChange={toggle}
             {...form.getInputProps("password")}

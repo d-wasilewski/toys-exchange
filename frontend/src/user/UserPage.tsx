@@ -19,7 +19,7 @@ import {
 } from "@tabler/icons";
 import { userState } from "../session/sessionState";
 import { useRecoilValue } from "recoil";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { updateAvatar } from "../shared/APIs/userService";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -121,6 +121,8 @@ export function UserPage() {
   const [active, setActive] = useState("Your data");
   const user = useRecoilValue(userState);
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log({ location: location.pathname.split("/").at(-1) });
 
   const links = data.map((item) => (
     <a

@@ -15,6 +15,7 @@ model User {
   password    String
   phoneNumber String
   imgUrl      String?
+  address     String?
   role        UserRole   @default(BASIC)
   status      UserStatus @default(ACTIVE)
 
@@ -51,7 +52,6 @@ model Toy {
   category           String
   imgUrl             String
   description        String
-  address            String
   owner              User     @relation(fields: [ownerId], references: [id])
   ownerId            String
   createdAt          DateTime @default(now())

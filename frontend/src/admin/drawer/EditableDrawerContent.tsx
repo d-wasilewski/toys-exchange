@@ -61,6 +61,7 @@ export const EditableDrawerContent = () => {
       name: selectedUser.name,
       email: selectedUser.email,
       phoneNumber: selectedUser.phoneNumber,
+      address: selectedUser?.address ?? "---",
       status: selectedUser.status,
       role: selectedUser.role,
     },
@@ -98,13 +99,7 @@ export const EditableDrawerContent = () => {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack spacing="md">
           <Center>
-            <Avatar
-              src={
-                "https://media.distractify.com/brand-img/0E-t9gohB/0x0/jordan-baker-all-american-real-person-3-1585691486739.jpg"
-              }
-              size="xl"
-              radius="xl"
-            />
+            <Avatar src={selectedUser.imgUrl} size="xl" radius="xl" />
           </Center>
           <TextInput disabled radius="md" label="Id" value={selectedUser.id} />
           <TextInput
@@ -124,6 +119,12 @@ export const EditableDrawerContent = () => {
             label="Phone number"
             value={selectedUser.phoneNumber}
             {...form.getInputProps("phoneNumber")}
+          />
+          <TextInput
+            radius="md"
+            label="Address"
+            value={selectedUser?.address}
+            {...form.getInputProps("address")}
           />
           <TextInput
             disabled

@@ -38,6 +38,7 @@ export const RegisterForm = () => {
       name: "",
       email: "",
       phoneNumber: "",
+      address: "",
       password: "",
       confirmPassword: "",
       terms: false,
@@ -124,6 +125,12 @@ export const RegisterForm = () => {
               {...form.getInputProps("phoneNumber")}
             />
           </Input.Wrapper>
+          <TextInput
+            radius="md"
+            label="Address"
+            placeholder="Lodz al. Politechniki 1"
+            {...form.getInputProps("address")}
+          />
           <Popover
             opened={popoverOpened}
             position="bottom"
@@ -139,7 +146,7 @@ export const RegisterForm = () => {
                   withAsterisk
                   radius="md"
                   label="Password"
-                  placeholder=""
+                  placeholder="strongPassword123"
                   visible={visible}
                   onVisibilityChange={toggle}
                   {...form.getInputProps("password")}
@@ -165,7 +172,7 @@ export const RegisterForm = () => {
             withAsterisk
             radius="md"
             label="Password"
-            placeholder=""
+            placeholder="strongPassword123"
             visible={visible}
             onVisibilityChange={toggle}
             {...form.getInputProps("confirmPassword")}

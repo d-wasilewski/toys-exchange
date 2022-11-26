@@ -138,11 +138,7 @@ export function UsersTable({ data }: TableSortProps) {
     return (
       <tr key={row.id}>
         <td>
-          <Avatar
-            src={
-              "https://media.distractify.com/brand-img/0E-t9gohB/0x0/jordan-baker-all-american-real-person-3-1585691486739.jpg"
-            }
-          />
+          <Avatar src={row.imgUrl} />
         </td>
         <td>{row.name}</td>
         <td>{row.email}</td>

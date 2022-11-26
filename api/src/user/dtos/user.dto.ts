@@ -102,6 +102,10 @@ export class UserDto {
   @IsString()
   imgUrl: string | null;
 
+  @IsOptional()
+  @IsString()
+  address: string | null;
+
   @IsDate()
   createdAt: Date;
 
@@ -138,6 +142,10 @@ export class UpdateUserDto {
   @IsNotEmpty()
   @IsString()
   phoneNumber: string;
+
+  @IsOptional()
+  @IsString()
+  address: string | null;
 
   @ApiProperty({ enum: [...userRoles] })
   role: UserRole;

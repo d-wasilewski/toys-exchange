@@ -12,6 +12,9 @@ export const schema = z
       .email({ message: "Invalid email" }),
     phoneNumber: z.string().min(1, { message: "This field is required" }),
     //   .regex(/^\d{9}$/, { message: "Invalid phone number" }),
+    address: z
+      .string()
+      .max(69, { message: "Address should have maximum 69 letters" }),
     password: z.string().min(1, { message: "This field is required" }),
     confirmPassword: z.string().min(1, { message: "This field is required" }),
     terms: z.boolean(),

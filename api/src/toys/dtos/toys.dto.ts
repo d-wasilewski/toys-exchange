@@ -30,10 +30,6 @@ export class BasicToyDto {
   description: string;
 
   @IsNotEmpty()
-  @IsString()
-  address: string;
-
-  @IsNotEmpty()
   @IsUUID()
   ownerId: string;
 }
@@ -74,10 +70,6 @@ export class ToyDto {
   description: string;
 
   @IsNotEmpty()
-  @IsString()
-  address: string;
-
-  @IsNotEmpty()
   @IsUUID()
   ownerId: string;
 
@@ -98,10 +90,6 @@ export class CreateToyDto {
   @IsNotEmpty()
   @IsString()
   description: string;
-
-  @IsNotEmpty()
-  @IsString()
-  address: string;
 
   @IsNotEmpty()
   @IsUUID()

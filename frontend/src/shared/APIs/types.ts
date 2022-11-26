@@ -101,7 +101,6 @@ export interface components {
       category: string;
       imgUrl: string;
       description: string;
-      address: string;
       ownerId: string;
       owner: components["schemas"]["Owner"];
     };
@@ -114,6 +113,7 @@ export interface components {
       name: string;
       phoneNumber: string;
       imgUrl: string | null;
+      address: string | null;
       createdAt: string;
       updatedAt: string;
       rating: components["schemas"]["Rating"];
@@ -128,6 +128,7 @@ export interface components {
       email: string;
       name: string;
       phoneNumber: string;
+      address: string | null;
     };
     UserLoginDto: {
       email: string;
@@ -142,7 +143,6 @@ export interface components {
       category: string;
       imgUrl: string;
       description: string;
-      address: string;
       ownerId: string;
     };
     OwnerIdDto: {

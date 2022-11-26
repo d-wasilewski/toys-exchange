@@ -1,5 +1,6 @@
 import { Drawer, Loader } from "@mantine/core";
 import { Suspense } from "react";
+import { SuspenseFallback } from "../../components/SuspenseFallback";
 import { DrawerContent } from "./DrawerContent";
 import { EditableDrawerContent } from "./EditableDrawerContent";
 
@@ -26,9 +27,9 @@ export const UserDetailsDrawer = ({
       closeOnClickOutside
       position="right"
     >
-      <Suspense fallback={<Loader />}>
+      <SuspenseFallback>
         {editable ? <EditableDrawerContent /> : <DrawerContent />}
-      </Suspense>
+      </SuspenseFallback>
     </Drawer>
   );
 };

@@ -18,6 +18,7 @@ export const UserDetails = () => {
       name: selectedUser.name,
       email: selectedUser.email,
       phoneNumber: selectedUser.phoneNumber,
+      address: selectedUser.address,
     },
     validateInputOnBlur: true,
     // TODO: add validation
@@ -32,8 +33,8 @@ export const UserDetails = () => {
   return (
     <>
       <Title my={20}>{active}</Title>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack spacing="md" sx={{ width: 500 }}>
+      <form onSubmit={form.onSubmit(handleSubmit)} style={{ width: 500 }}>
+        <Stack spacing="md">
           <TextInput
             radius="md"
             label="Name"
@@ -54,6 +55,12 @@ export const UserDetails = () => {
           />
           <TextInput
             radius="md"
+            label="Address"
+            value={selectedUser.address}
+            {...form.getInputProps("address")}
+          />
+          <TextInput
+            radius="md"
             label="Date of birth"
             value={selectedUser.createdAt}
           />
@@ -69,10 +76,17 @@ export const UserDetails = () => {
             </Input>
           </Input.Wrapper>
         </Stack>
-        {/* TODO: display button only if the data was modified */}
-        <Button type="submit" mt="lg" fullWidth radius="md" loading={isLoading}>
-          Edit
-        </Button>
+        {form.isDirty() && (
+          <Button
+            type="submit"
+            mt="lg"
+            fullWidth
+            radius="md"
+            loading={isLoading}
+          >
+            Edit
+          </Button>
+        )}
       </form>
     </>
   );
