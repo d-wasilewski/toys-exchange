@@ -62,7 +62,7 @@ export const UserDetails = () => {
             <Input
               component="button"
               rightSection={<IconChevronRight stroke={1} />}
-              onClick={() => console.log("KLik")}
+              onClick={() => console.log("Change password")}
               radius="md"
             >
               Change your password

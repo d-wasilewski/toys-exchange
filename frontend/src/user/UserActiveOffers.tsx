@@ -5,7 +5,6 @@ import { myActiveOffersState } from "../offers/offersState";
 
 export const UserActiveOffers = () => {
   const allOffers = useRecoilValue(myActiveOffersState);
-  console.log("MY offers: ", allOffers);
 
   return (
     <Center>

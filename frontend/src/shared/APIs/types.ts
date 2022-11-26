@@ -16,6 +16,12 @@ export interface paths {
   "/user/user": {
     post: operations["UserController_getUserById"];
   };
+  "/user/image/{userId}": {
+    post: operations["UserController_changeUserImage"];
+  };
+  "/user/rate": {
+    post: operations["UserController_rateUser"];
+  };
   "/user/edit": {
     post: operations["UserController_editUserById"];
   };
@@ -69,6 +75,26 @@ export interface components {
       password: string;
       phoneNumber: string;
     };
+    BasicUserDto: {
+      role: "BASIC" | "ADMIN";
+      status: "ACTIVE" | "BLOCKED";
+      id: string;
+      email: string;
+      name: string;
+      phoneNumber: string;
+      imgUrl: string | null;
+      createdAt: string;
+      updatedAt: string;
+    };
+    Rating: {
+      value: number | null;
+      count: number;
+    };
+    Owner: {
+      name: string;
+      imgUrl: string | null;
+      rating: components["schemas"]["Rating"];
+    };
     ToyDto: {
       id: string;
       name: string;
@@ -77,6 +103,7 @@ export interface components {
       description: string;
       address: string;
       ownerId: string;
+      owner: components["schemas"]["Owner"];
     };
     UserDto: {
       role: "BASIC" | "ADMIN";
@@ -89,6 +116,7 @@ export interface components {
       imgUrl: string | null;
       createdAt: string;
       updatedAt: string;
+      rating: components["schemas"]["Rating"];
     };
     UserIdDto: {
       id: string;
@@ -107,6 +135,15 @@ export interface components {
     };
     AccessTokenDto: {
       access_token: string;
+    };
+    BasicToyDto: {
+      id: string;
+      name: string;
+      category: string;
+      imgUrl: string;
+      description: string;
+      address: string;
+      ownerId: string;
     };
     OwnerIdDto: {
       id: string;
@@ -151,7 +188,7 @@ export interface operations {
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["UserDto"];
+          "application/json": components["schemas"]["BasicUserDto"];
         };
       };
     };
@@ -186,12 +223,24 @@ export interface operations {
       };
     };
   };
+  UserController_changeUserImage: {
+    parameters: {};
+    responses: {
+      201: unknown;
+    };
+  };
+  UserController_rateUser: {
+    parameters: {};
+    responses: {
+      201: unknown;
+    };
+  };
   UserController_editUserById: {
     parameters: {};
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["UserDto"];
+          "application/json": components["schemas"]["BasicUserDto"];
         };
       };
     };
@@ -271,7 +320,7 @@ export interface operations {
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["ToyDto"];
+          "application/json": components["schemas"]["BasicToyDto"];
         };
       };
     };
@@ -291,7 +340,7 @@ export interface operations {
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["ToyDto"][];
+          "application/json": components["schemas"]["BasicToyDto"][];
         };
       };
     };

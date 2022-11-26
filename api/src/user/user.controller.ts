@@ -1,6 +1,17 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
 import {
+  Body,
+  Controller,
+  Param,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
+import { File } from 'src/toys/toys.service';
+import {
+  BasicUserDto,
   RegisterUserDto,
   UpdateUserDto,
   UserDto,
@@ -13,7 +24,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('sign-up')
-  async signupUser(@Body() userData: RegisterUserDto): Promise<UserDto> {
+  async signupUser(@Body() userData: RegisterUserDto): Promise<BasicUserDto> {
     return this.userService.register(userData);
   }
 
@@ -28,8 +39,22 @@ export class UserController {
     return this.userService.getUserById(data.id);
   }
 
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('image/:userId')
+  async changeUserImage(
+    @UploadedFile() file: File,
+    @Param() param: { userId: string },
+  ) {
+    return this.userService.changeUserImage(file, param.userId);
+  }
+
+  @Post('rate')
+  async rateUser(@Body() payload) {
+    return this.userService.rateUser(payload.value, payload.userId);
+  }
+
   @Post('/edit')
-  async editUserById(@Body() data: UpdateUserDto): Promise<UserDto> {
+  async editUserById(@Body() data: UpdateUserDto): Promise<BasicUserDto> {
     return this.userService.editUserById(data);
   }
 

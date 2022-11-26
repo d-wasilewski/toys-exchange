@@ -1,4 +1,5 @@
 import { APIRequestBody, APIResponse, fetchPost } from "./baseFetch";
+import { paths } from "./types";
 
 export const loginUser = (userData: APIRequestBody<"/auth/login">) => {
   return fetchPost("/auth/login", userData);
@@ -22,9 +23,13 @@ export const getUserData = (userId: string): Promise<User> => {
   return fetchPost("/user/user", { id: userId });
 };
 
+export const updateAvatar = (file: FormData, userId: string) => {
+  return fetchPost(`/user/image/${userId}` as keyof paths, file as never);
+};
+
 export const editUserData = (
   userData: APIRequestBody<"/user/edit">
-): Promise<User> => {
+): Promise<APIResponse<"/user/edit">> => {
   return fetchPost("/user/edit", userData);
 };
 

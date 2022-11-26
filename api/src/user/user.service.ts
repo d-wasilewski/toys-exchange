@@ -8,6 +8,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { RegisterUserDto, UpdateUserDto } from './dtos/user.dto';
 import { UserStatus } from '@prisma/client';
+import { File } from 'src/toys/toys.service';
+import { v2 } from 'cloudinary';
 
 @Injectable()
 export class UserService {
@@ -41,7 +43,7 @@ export class UserService {
   }
 
   async getUserById(userId: string) {
-    return this.prisma.user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         id: userId,
       },
@@ -49,6 +51,16 @@ export class UserService {
         toys: true,
       },
     });
+
+    const userRating = await this.getUserRating(userId);
+
+    return {
+      ...user,
+      rating: {
+        value: userRating._avg.value,
+        count: userRating._count.value,
+      },
+    };
   }
 
   async editUserById(userData: UpdateUserDto) {
@@ -73,20 +85,81 @@ export class UserService {
     const users = await this.prisma.user.findMany({
       include: {
         toys: true,
-        offersReceived: true,
-        offersSend: true,
       },
       orderBy: {
         name: 'asc',
       },
     });
-    return users;
+
+    const usersWithRatings = await Promise.all(
+      users.map(async (user) => {
+        const userRating = await this.getUserRating(user.id);
+
+        return {
+          ...user,
+          rating: {
+            value: userRating._avg.value,
+            count: userRating._count.value,
+          },
+        };
+      }),
+    );
+
+    return usersWithRatings;
   }
 
   async changeUserStatus(userId: string, status: UserStatus) {
     return await this.prisma.user.update({
       where: { id: userId },
       data: { status },
+    });
+  }
+
+  async rateUser(rating: number, userId: string) {
+    await this.prisma.rating.create({
+      data: {
+        userId,
+        value: rating,
+      },
+    });
+  }
+
+  async getUserRating(userId: string) {
+    const rating = await this.prisma.rating.aggregate({
+      _avg: {
+        value: true,
+      },
+      _count: {
+        value: true,
+      },
+      where: {
+        userId,
+      },
+    });
+    return rating;
+  }
+
+  async changeUserImage(image: File, userId: string) {
+    const fileBase64 = image.buffer.toString('base64');
+
+    const uploadResponse = await v2.uploader.upload(
+      'data:image/jpeg;base64,' + fileBase64,
+      {
+        folder: 'users',
+      },
+    );
+
+    if (!uploadResponse.url) {
+      throw new BadRequestException("The file couldn't be uploaded");
+    }
+
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        imgUrl: uploadResponse.url,
+      },
     });
   }
 }

@@ -5,7 +5,6 @@ import { allOffersState } from "./offersState";
 
 export const OfferCardList = () => {
   const allOffers = useRecoilValue(allOffersState);
-  console.log({ allOffers });
 
   return (
     <Center>

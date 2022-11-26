@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 import { userState } from "../session/sessionState";
-import { fetchToysByOwner, fetchToysList } from "../shared/APIs/fetchToys";
+import { fetchToysByOwner, fetchToysList } from "../shared/APIs/toysService";
 
 export const toysListState = selector({
   key: "toysListState",

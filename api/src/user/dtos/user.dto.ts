@@ -1,12 +1,15 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Toy, UserRole, UserStatus } from '@prisma/client';
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEmail,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
+  ValidateNested,
 } from 'class-validator';
 import { ToyDto } from 'src/toys/dtos/toys.dto';
 
@@ -32,6 +35,50 @@ export class RegisterUserDto {
 
   @ApiPropertyOptional({ enum: [...userRoles] })
   role: UserRole;
+}
+
+export class Rating {
+  @IsOptional()
+  @IsNumber()
+  value: number | null;
+
+  @IsNotEmpty()
+  @IsNumber()
+  count: number;
+}
+
+export class BasicUserDto {
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  phoneNumber: string;
+
+  @IsOptional()
+  @IsString()
+  imgUrl: string | null;
+
+  @IsDate()
+  createdAt: Date;
+
+  @IsDate()
+  updatedAt: Date;
+
+  @ApiProperty({ enum: [...userRoles] })
+  role: UserRole;
+
+  @ApiProperty({ enum: [...userStatuses] })
+  status: UserStatus;
 }
 
 export class UserDto {
@@ -69,6 +116,10 @@ export class UserDto {
 
   @ApiProperty({ type: [ToyDto] })
   toys: Toy[];
+
+  @ValidateNested()
+  @Type(() => Rating)
+  rating: Rating;
 }
 
 export class UpdateUserDto {

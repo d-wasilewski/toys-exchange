@@ -4,7 +4,7 @@ import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../session/sessionState";
-import { createToy } from "../../shared/APIs/fetchToys";
+import { createToy } from "../../shared/APIs/toysService";
 
 export const AddNewToyForm = () => {
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,6 @@ export const AddNewToyForm = () => {
         autoClose: 3000,
       });
     } catch (e) {
-      console.log(e);
       showNotification({
         title: "Error",
         message: "Something went wrong",

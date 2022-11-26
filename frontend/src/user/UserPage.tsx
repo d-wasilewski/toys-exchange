@@ -7,6 +7,8 @@ import {
   Avatar,
   Text,
   Flex,
+  Button,
+  FileButton,
 } from "@mantine/core";
 import {
   IconLogout,
@@ -16,8 +18,10 @@ import {
   IconHistory,
 } from "@tabler/icons";
 import { userState } from "../session/sessionState";
-import { useRecoilValue } from "recoil";
+import { useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
 import { Outlet, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { updateAvatar } from "../shared/APIs/userService";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -81,6 +85,12 @@ const useStyles = createStyles((theme, _params, getRef) => {
       marginRight: theme.spacing.sm,
     },
 
+    avatar: {
+      "&:hover": {
+        opacity: 0.8,
+      },
+    },
+
     linkActive: {
       "&, &:hover": {
         backgroundColor: theme.fn.variant({
@@ -131,6 +141,17 @@ export function UserPage() {
     </a>
   ));
 
+  const handleAvatarClick = async (file: File | null) => {
+    if (!user || !file) return;
+    const formData = new FormData();
+    formData.set("file", file);
+    try {
+      await updateAvatar(formData, user.id);
+    } catch (e) {
+    } finally {
+    }
+  };
+
   return (
     // 1214 952
     <Container size={1514} mt={30}>
@@ -143,13 +164,20 @@ export function UserPage() {
         >
           <Navbar.Section grow>
             <Group className={classes.header}>
-              <Avatar
-                src={
-                  "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80"
-                }
-                size="lg"
-                radius="xl"
-              />
+              <FileButton
+                onChange={(file) => handleAvatarClick(file)}
+                accept="image/png,image/jpeg"
+              >
+                {(props) => (
+                  <Avatar
+                    src={user?.imgUrl}
+                    size="lg"
+                    radius="xl"
+                    className={classes.avatar}
+                    {...props}
+                  />
+                )}
+              </FileButton>
               <Flex direction="column">
                 <Text fw={500} fz="lg">
                   {user?.name}

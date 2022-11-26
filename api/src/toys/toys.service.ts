@@ -1,9 +1,15 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConsoleLogger,
+  HttpException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateToyDto } from './dtos/toys.dto';
+import { CreateToyDto, OwnerIdDto } from './dtos/toys.dto';
 import { v2 } from 'cloudinary';
+import { UserService } from 'src/user/user.service';
 
-interface File {
+export interface File {
   fieldname: string;
   originalname: string;
   encoding: string;
@@ -14,7 +20,10 @@ interface File {
 
 @Injectable()
 export class ToysService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private userService: UserService,
+  ) {}
 
   async createToy(imgFile: File[], toyData: CreateToyDto) {
     const fileBase64 = imgFile[0].buffer.toString('base64');
@@ -25,6 +34,10 @@ export class ToysService {
         folder: 'toys',
       },
     );
+
+    if (!uploadResponse.url) {
+      throw new BadRequestException("The file couldn't be uploaded");
+    }
 
     try {
       const createdToy = await this.prisma.toy.create({
@@ -37,15 +50,35 @@ export class ToysService {
   }
 
   async getToys() {
-    return this.prisma.toy.findMany({
+    const toys = await this.prisma.toy.findMany({
       include: {
         owner: {
           select: {
             name: true,
+            imgUrl: true,
           },
         },
       },
     });
+
+    const toysWithUsersRatings = await Promise.all(
+      toys.map(async (toy) => {
+        const userRating = await this.userService.getUserRating(toy.ownerId);
+
+        return {
+          ...toy,
+          owner: {
+            ...toy.owner,
+            rating: {
+              value: userRating._avg.value,
+              count: userRating._count.value,
+            },
+          },
+        };
+      }),
+    );
+
+    return toysWithUsersRatings;
   }
 
   async getToysByUserId(ownerId: string) {

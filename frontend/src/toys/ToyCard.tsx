@@ -7,10 +7,12 @@ import {
   Image,
   createStyles,
   Button,
+  Rating,
 } from "@mantine/core";
 import { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../session/sessionState";
+import { ToyOwner } from "../shared/APIs/toysService";
 import { SwapModal } from "./SwapModal";
 import { selectedToyIdState } from "./toysState";
 
@@ -25,6 +27,13 @@ const useStyles = createStyles((theme) => ({
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
   },
 
+  rating: {
+    position: "absolute",
+    top: theme.spacing.xs,
+    right: theme.spacing.xs + 1,
+    pointerEvents: "none",
+  },
+
   footer: {
     padding: `${theme.spacing.xs}px ${theme.spacing.lg}px`,
     marginTop: theme.spacing.md,
@@ -36,13 +45,13 @@ const useStyles = createStyles((theme) => ({
 
 interface ToyCardProps {
   id: string;
-  ownerName: string;
-  ownerRating: number;
   ownerId: string;
+  owner: ToyOwner;
   category: string;
   name: string;
   imgUrl: string;
   basic?: boolean;
+  description: string;
 }
 
 export const ToyCard = ({
@@ -50,10 +59,10 @@ export const ToyCard = ({
   name,
   category,
   imgUrl,
-  ownerName,
-  ownerRating,
   ownerId,
+  owner,
   basic,
+  description,
 }: ToyCardProps) => {
   const { classes } = useStyles();
   const setSelectedToyId = useSetRecoilState(selectedToyIdState);
@@ -69,7 +78,7 @@ export const ToyCard = ({
   const handleEdit = () => {};
 
   return (
-    <Card withBorder p="lg" radius="md" className={classes.card}>
+    <Card withBorder p="md" radius="md" className={classes.card}>
       <Card.Section mb="sm">
         <Image
           src={imgUrl}
@@ -80,20 +89,36 @@ export const ToyCard = ({
         />
       </Card.Section>
 
-      <Badge>{category}</Badge>
+      <Badge
+        className={classes.rating}
+        variant="gradient"
+        gradient={{ from: "yellow", to: "red" }}
+      >
+        {category}
+      </Badge>
 
       <Text weight={700} className={classes.title} mt="xs">
         {name}
       </Text>
 
+      <Text fw={400} c="dimmed">
+        {description}
+      </Text>
+
       {ownerId !== currentUser?.id ? (
         <Group mt="lg">
-          <Avatar src={imgUrl} radius="sm" />
+          <Avatar src={owner.imgUrl} radius="sm" />
           <div>
-            <Text weight={500}>{ownerName}</Text>
-            <Text size="xs" color="dimmed">
-              {ownerRating}
-            </Text>
+            <Text weight={500}>{owner.name}</Text>
+            <Group spacing={3} align="center">
+              <Text size="xs" color="dimmed">
+                {owner.rating.value ?? 0}/5
+              </Text>
+              <Rating value={1} count={1} fractions={10} size="xs" />
+              <Text size="xs" color="dimmed">
+                ({owner.rating.count})
+              </Text>
+            </Group>
           </div>
         </Group>
       ) : (
@@ -104,7 +129,7 @@ export const ToyCard = ({
 
       {!basic && ownerId !== currentUser?.id && (
         <>
-          <Card.Section className={classes.footer}>
+          <Card.Section className={classes.footer} pb={0} pt="sm">
             <Button fullWidth onClick={handleSwap}>
               Swap
             </Button>
@@ -118,9 +143,9 @@ export const ToyCard = ({
               name,
               category,
               imgUrl,
-              ownerName,
-              ownerRating,
+              owner,
               ownerId,
+              description,
             }}
           />
         </>

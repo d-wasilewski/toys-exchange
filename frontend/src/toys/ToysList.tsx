@@ -1,5 +1,5 @@
 import { Flex } from "@mantine/core";
-import { AllToys } from "../shared/APIs/fetchToys";
+import { AllToys } from "../shared/APIs/toysService";
 import { ToyCard } from "./ToyCard";
 
 interface ToysListProps {
@@ -14,11 +14,11 @@ export const ToysList = ({ toysList }: ToysListProps) => {
           <ToyCard
             id={toy.id}
             name={toy.name}
-            ownerName={"Owner name"}
-            ownerRating={toy.ownerId}
+            owner={toy.owner}
             ownerId={toy.ownerId}
             imgUrl={toy.imgUrl}
             category={toy.category}
+            description={toy.description}
           />
         );
       })}

@@ -35,7 +35,7 @@ export const AppNavbar = ({ links, onLinkClick, isMatch }: AppNavbarProps) => {
       <UserWidget
         onClick={() => {
           if (user) {
-            navigate(`/user/${user.id}`);
+            navigate(`/user/${user.id}/details`);
           }
         }}
       >

@@ -7,7 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { OwnerIdDto, ToyDto } from './dtos/toys.dto';
+import { BasicToyDto, OwnerIdDto, ToyDto } from './dtos/toys.dto';
 import { ToysService } from './toys.service';
 
 @Controller('toy')
@@ -16,7 +16,10 @@ export class ToysController {
 
   @Post('create-toy')
   @UseInterceptors(FilesInterceptor('toyImage'))
-  async createToy(@Body() toyData, @UploadedFiles() file): Promise<ToyDto> {
+  async createToy(
+    @Body() toyData,
+    @UploadedFiles() file,
+  ): Promise<BasicToyDto> {
     return this.toysService.createToy(file, JSON.parse(toyData.values));
   }
 
@@ -26,7 +29,7 @@ export class ToysController {
   }
 
   @Post('/user-toys')
-  async getUserToys(@Body() ownerId: OwnerIdDto): Promise<ToyDto[]> {
+  async getUserToys(@Body() ownerId: OwnerIdDto): Promise<BasicToyDto[]> {
     return this.toysService.getToysByUserId(ownerId.id);
   }
 }
