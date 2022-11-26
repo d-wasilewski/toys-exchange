@@ -18,6 +18,7 @@ import { UserToys } from "./user/UserToys";
 import { UserActiveOffers } from "./user/UserActiveOffers";
 import { UserOffersHistory } from "./user/UserOffersHistory";
 import { Layout } from "./components/Layout";
+import { SuspenseFallback } from "./components/SuspenseFallback";
 
 interface IDecodedToken {
   auth: string;
@@ -52,34 +53,34 @@ function App() {
           <Route
             path={ROUTES.userActiveOffers}
             element={
-              <Suspense>
+              <SuspenseFallback>
                 <UserActiveOffers />
-              </Suspense>
+              </SuspenseFallback>
             }
           />
           <Route
             path={ROUTES.userOffersHistory}
             element={
-              <Suspense>
+              <SuspenseFallback>
                 <UserOffersHistory />
-              </Suspense>
+              </SuspenseFallback>
             }
           />
           <Route
             path={ROUTES.userToys}
             element={
-              <Suspense>
+              <SuspenseFallback>
                 <UserToys />
-              </Suspense>
+              </SuspenseFallback>
             }
           />
         </Route>
         <Route
           path="/toys"
           element={
-            <Suspense>
+            <SuspenseFallback>
               <ToysView />
-            </Suspense>
+            </SuspenseFallback>
           }
         />
         <Route path="/login" element={<LoginPage />} />
@@ -87,33 +88,33 @@ function App() {
         <Route
           path="/my-toys"
           element={
-            <Suspense>
+            <SuspenseFallback>
               <MyToysView />
-            </Suspense>
+            </SuspenseFallback>
           }
         />
         <Route
           path="/my-offers"
           element={
-            <Suspense>
+            <SuspenseFallback>
               <MyOffersView />
-            </Suspense>
+            </SuspenseFallback>
           }
         />
         <Route
           path="/add-toy"
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseFallback>
               <OfferCardList />
-            </Suspense>
+            </SuspenseFallback>
           }
         />
         <Route
           path="/admin"
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseFallback>
               <AdminPage />
-            </Suspense>
+            </SuspenseFallback>
           }
         />
       </Routes>

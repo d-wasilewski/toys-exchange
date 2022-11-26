@@ -200,7 +200,8 @@ export function UserPage() {
             </a>
           </Navbar.Section>
         </Navbar>
-        <Container m={0} px={30} fluid>
+        {/* TODO: might want to exclude fluid */}
+        <Container m={0} px={30} fluid miw={1000}>
           <Outlet context={[active]} />
         </Container>
       </Flex>
