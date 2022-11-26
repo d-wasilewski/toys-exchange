@@ -1,9 +1,6 @@
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { ToysView } from "./toys/ToysView";
-import styled from "styled-components";
-import { NAVBAR_HEIGHT } from "./components/Navbar";
 import { ROUTES } from "./routes";
-import { AppNavbar } from "./components/AppNavbar";
 import { LoginPage } from "./session/Login/LoginPage";
 import { RegisterPage } from "./session/Register/RegisterPage";
 import jwtDecode from "jwt-decode";
@@ -20,22 +17,7 @@ import { UserDetails } from "./user/UserDetails";
 import { UserToys } from "./user/UserToys";
 import { UserActiveOffers } from "./user/UserActiveOffers";
 import { UserOffersHistory } from "./user/UserOffersHistory";
-
-const links = [
-  { label: "Login", url: ROUTES.login },
-  { label: "Register", url: ROUTES.register },
-  { label: "Toys", url: ROUTES.toys },
-  { label: "My toys", url: ROUTES.myToys },
-  { label: "All offers", url: ROUTES.addToy },
-  { label: "Logout", url: ROUTES.root },
-  { label: "Admin page", url: ROUTES.admin },
-  { label: "My offers", url: ROUTES.myOffers },
-];
-
-// const authenticatedLinks = [
-//   { label: "Toys", url: ROUTES.toys },
-//   { label: "Logout", url: ROUTES.root },
-// ];
+import { Layout } from "./components/Layout";
 
 interface IDecodedToken {
   auth: string;
@@ -61,99 +43,82 @@ if (token) {
 }
 
 function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   return (
-    <>
-      <AppNavbar
-        links={links}
-        onLinkClick={(path) => navigate(path)}
-        isMatch={(url) => location.pathname === url}
-      />
-
-      <PageWrapper>
-        <Routes>
-          <Route path="/" element={<div>Homepage</div>} />
-          <Route path={ROUTES.user} element={<UserPage />}>
-            <Route path={ROUTES.userDetails} element={<UserDetails />} />
-            <Route
-              path={ROUTES.userActiveOffers}
-              element={
-                <Suspense>
-                  <UserActiveOffers />
-                </Suspense>
-              }
-            />
-            <Route
-              path={ROUTES.userOffersHistory}
-              element={
-                <Suspense>
-                  <UserOffersHistory />
-                </Suspense>
-              }
-            />
-            <Route
-              path={ROUTES.userToys}
-              element={
-                <Suspense>
-                  <UserToys />
-                </Suspense>
-              }
-            />
-          </Route>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<div>Homepage</div>} />
+        <Route path={ROUTES.user} element={<UserPage />}>
+          <Route path={ROUTES.userDetails} element={<UserDetails />} />
           <Route
-            path="/toys"
+            path={ROUTES.userActiveOffers}
             element={
               <Suspense>
-                <ToysView />
+                <UserActiveOffers />
               </Suspense>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
           <Route
-            path="/my-toys"
+            path={ROUTES.userOffersHistory}
             element={
               <Suspense>
-                <MyToysView />
+                <UserOffersHistory />
               </Suspense>
             }
           />
           <Route
-            path="/my-offers"
+            path={ROUTES.userToys}
             element={
               <Suspense>
-                <MyOffersView />
+                <UserToys />
               </Suspense>
             }
           />
-          <Route
-            path="/add-toy"
-            element={
-              <Suspense fallback={<Loader />}>
-                <OfferCardList />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <Suspense fallback={<Loader />}>
-                <AdminPage />
-              </Suspense>
-            }
-          />
-        </Routes>
-      </PageWrapper>
-    </>
+        </Route>
+        <Route
+          path="/toys"
+          element={
+            <Suspense>
+              <ToysView />
+            </Suspense>
+          }
+        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/my-toys"
+          element={
+            <Suspense>
+              <MyToysView />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/my-offers"
+          element={
+            <Suspense>
+              <MyOffersView />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/add-toy"
+          element={
+            <Suspense fallback={<Loader />}>
+              <OfferCardList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <Suspense fallback={<Loader />}>
+              <AdminPage />
+            </Suspense>
+          }
+        />
+      </Routes>
+    </Layout>
   );
 }
 
 export default App;
-
-const PageWrapper = styled.div`
-  padding-top: ${NAVBAR_HEIGHT}px;
-  width: 100vw;
-  /* height: ${`calc(100vh - ${NAVBAR_HEIGHT}px)`}; */
-`;

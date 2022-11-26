@@ -18,9 +18,8 @@ import {
   IconHistory,
 } from "@tabler/icons";
 import { userState } from "../session/sessionState";
-import { useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { Outlet, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { updateAvatar } from "../shared/APIs/userService";
 
 const useStyles = createStyles((theme, _params, getRef) => {
