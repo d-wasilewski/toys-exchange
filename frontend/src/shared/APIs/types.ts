@@ -489,11 +489,7 @@ export interface operations {
   OfferController_getActiveOffers: {
     parameters: {};
     responses: {
-      201: {
-        content: {
-          "application/json": { [key: string]: unknown }[];
-        };
-      };
+      201: unknown;
     };
     requestBody: {
       content: {

@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UserService } from 'src/user/user.service';
 import { SendOfferDto } from './dtos/offer.dto';
 
 export enum Status {
@@ -10,20 +11,24 @@ export enum Status {
 
 @Injectable()
 export class OfferService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private userService: UserService,
+  ) {}
 
   async getAllOffers() {
-    return this.prisma.offer.findMany({
+    const offers = await this.prisma.offer.findMany({
       include: {
         sender: {
-          // add rating and image to sender and receiver
           select: {
             name: true,
+            imgUrl: true,
           },
         },
         receiver: {
           select: {
             name: true,
+            imgUrl: true,
           },
         },
         toyFromSender: {
@@ -42,6 +47,37 @@ export class OfferService {
         },
       },
     });
+
+    const offersWithRatings = await Promise.all(
+      offers.map(async (offer) => {
+        const senderRating = await this.userService.getUserRating(
+          offer.senderUserId,
+        );
+        const receiverRating = await this.userService.getUserRating(
+          offer.receiverUserId,
+        );
+
+        return {
+          ...offer,
+          sender: {
+            ...offer.sender,
+            rating: {
+              value: senderRating._avg.value,
+              count: senderRating._count.value,
+            },
+          },
+          receiver: {
+            ...offer.receiver,
+            rating: {
+              value: receiverRating._avg.value,
+              count: receiverRating._count.value,
+            },
+          },
+        };
+      }),
+    );
+
+    return offersWithRatings;
   }
 
   async sendOffer({
@@ -61,20 +97,21 @@ export class OfferService {
   }
 
   async getActiveOffers(receiverId: string) {
-    return await this.prisma.offer.findMany({
+    const offers = await this.prisma.offer.findMany({
       where: {
         receiverUserId: receiverId,
         status: Status.PENDING,
       },
       include: {
         sender: {
-          // add rating and image to sender and receiver
           select: {
+            imgUrl: true,
             name: true,
           },
         },
         receiver: {
           select: {
+            imgUrl: true,
             name: true,
           },
         },
@@ -94,6 +131,37 @@ export class OfferService {
         },
       },
     });
+
+    const offersWithRatings = await Promise.all(
+      offers.map(async (offer) => {
+        const senderRating = await this.userService.getUserRating(
+          offer.senderUserId,
+        );
+        const receiverRating = await this.userService.getUserRating(
+          offer.receiverUserId,
+        );
+
+        return {
+          ...offer,
+          sender: {
+            ...offer.sender,
+            rating: {
+              value: senderRating._avg.value,
+              count: senderRating._count.value,
+            },
+          },
+          receiver: {
+            ...offer.receiver,
+            rating: {
+              value: receiverRating._avg.value,
+              count: receiverRating._count.value,
+            },
+          },
+        };
+      }),
+    );
+
+    return offersWithRatings;
   }
 
   async acceptOffer(offerId: string) {
@@ -119,7 +187,7 @@ export class OfferService {
 
       await tx.toy.update({
         where: {
-          id: offer.senderUserId,
+          id: offer.toyFromSenderId,
         },
         data: {
           ownerId: offer.receiverUserId,
@@ -128,7 +196,7 @@ export class OfferService {
 
       await tx.toy.update({
         where: {
-          id: offer.receiverUserId,
+          id: offer.toyFromReceiverId,
         },
         data: {
           ownerId: offer.senderUserId,

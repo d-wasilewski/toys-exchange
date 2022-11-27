@@ -35,6 +35,8 @@ export class OfferController {
 
   @Post('accept')
   async acceptOffer(@Body() payload: OfferIdDto): Promise<void> {
+    console.log('dupa');
+
     return this.offerService.acceptOffer(payload.offerId);
   }
 }
