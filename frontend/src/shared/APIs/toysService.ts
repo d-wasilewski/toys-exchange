@@ -7,6 +7,7 @@ export const fetchToysList = () => {
 export type AllToys = APIResponse<"/toy/toys">;
 export type Toy = AllToys[number];
 export type ToyOwner = Toy["owner"];
+export type ToyCategories = Toy["category"];
 
 export const fetchToysByOwner = (
   ownerId: string

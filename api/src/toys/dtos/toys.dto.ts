@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { ToyCategories } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
@@ -8,6 +10,7 @@ import {
 } from 'class-validator';
 import { Rating } from 'src/user/dtos/user.dto';
 
+const toyCategories = Object.values(ToyCategories);
 export class BasicToyDto {
   @IsNotEmpty()
   @IsUUID()
@@ -17,9 +20,8 @@ export class BasicToyDto {
   @IsString()
   name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  category: string;
+  @ApiProperty({ enum: [...toyCategories] })
+  category: ToyCategories;
 
   @IsNotEmpty()
   @IsString()
@@ -57,9 +59,8 @@ export class ToyDto {
   @IsString()
   name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  category: string;
+  @ApiProperty({ enum: [...toyCategories] })
+  category: ToyCategories;
 
   @IsNotEmpty()
   @IsString()
@@ -83,9 +84,8 @@ export class CreateToyDto {
   @IsString()
   name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  category: string;
+  @ApiProperty({ enum: [...toyCategories] })
+  category: ToyCategories;
 
   @IsNotEmpty()
   @IsString()
@@ -105,9 +105,8 @@ export class EditToyDto {
   @IsString()
   name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  category: string;
+  @ApiProperty({ enum: [...toyCategories] })
+  category: ToyCategories;
 
   @IsNotEmpty()
   @IsString()

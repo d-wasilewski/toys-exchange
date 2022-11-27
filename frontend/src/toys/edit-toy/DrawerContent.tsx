@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Container,
+  Select,
   Stack,
   Textarea,
   TextInput,
@@ -17,6 +18,7 @@ import {
 } from "recoil";
 import { getErrorMessage } from "../../shared/APIs/baseFetch";
 import { editToyData } from "../../shared/APIs/toysService";
+import { categoriesData } from "../add-new/AddNewToyForm";
 import {
   currentToysListState,
   isEditToyDrawerOpenState,
@@ -81,10 +83,12 @@ export const DrawerContent = () => {
             value={selectedToy.name}
             {...form.getInputProps("name")}
           />
-          <TextInput
-            radius="md"
+          <Select
             label="Category"
-            value={selectedToy.category}
+            required
+            radius="md"
+            placeholder={categoriesData[0].label}
+            data={categoriesData}
             {...form.getInputProps("category")}
           />
           <Textarea
@@ -93,13 +97,6 @@ export const DrawerContent = () => {
             value={selectedToy?.description}
             {...form.getInputProps("description")}
           />
-          {/* select for categories later  */}
-          {/* <Select
-            label="Role"
-            radius="md"
-            data={rolesData}
-            {...form.getInputProps("role")}
-          /> */}
         </Stack>
         <Button type="submit" mt="lg" fullWidth radius="md" loading={isLoading}>
           Edit

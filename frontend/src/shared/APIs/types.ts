@@ -105,9 +105,29 @@ export interface components {
       rating: components["schemas"]["Rating"];
     };
     ToyDto: {
+      category:
+        | "FIGURES"
+        | "ANIMALS"
+        | "CARS"
+        | "RADIO_CONTROLLED"
+        | "CONSTRUCTION"
+        | "CREATIVE"
+        | "DOLLS"
+        | "EDUCATIONAL"
+        | "ELECTRONIC"
+        | "EXECUTIVE"
+        | "FOOD_RELATED"
+        | "GAMES"
+        | "PLAYGOUND"
+        | "PUZZLE"
+        | "LEGO"
+        | "SCIENCE"
+        | "SOUND"
+        | "SPINNING"
+        | "WOODEN"
+        | "OTHER";
       id: string;
       name: string;
-      category: string;
       imgUrl: string;
       description: string;
       ownerId: string;
@@ -154,17 +174,57 @@ export interface components {
       access_token: string;
     };
     BasicToyDto: {
+      category:
+        | "FIGURES"
+        | "ANIMALS"
+        | "CARS"
+        | "RADIO_CONTROLLED"
+        | "CONSTRUCTION"
+        | "CREATIVE"
+        | "DOLLS"
+        | "EDUCATIONAL"
+        | "ELECTRONIC"
+        | "EXECUTIVE"
+        | "FOOD_RELATED"
+        | "GAMES"
+        | "PLAYGOUND"
+        | "PUZZLE"
+        | "LEGO"
+        | "SCIENCE"
+        | "SOUND"
+        | "SPINNING"
+        | "WOODEN"
+        | "OTHER";
       id: string;
       name: string;
-      category: string;
       imgUrl: string;
       description: string;
       ownerId: string;
     };
     EditToyDto: {
+      category:
+        | "FIGURES"
+        | "ANIMALS"
+        | "CARS"
+        | "RADIO_CONTROLLED"
+        | "CONSTRUCTION"
+        | "CREATIVE"
+        | "DOLLS"
+        | "EDUCATIONAL"
+        | "ELECTRONIC"
+        | "EXECUTIVE"
+        | "FOOD_RELATED"
+        | "GAMES"
+        | "PLAYGOUND"
+        | "PUZZLE"
+        | "LEGO"
+        | "SCIENCE"
+        | "SOUND"
+        | "SPINNING"
+        | "WOODEN"
+        | "OTHER";
       id: string;
       name: string;
-      category: string;
       description: string;
     };
     ToyIdDto: {

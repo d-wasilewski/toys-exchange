@@ -1,10 +1,34 @@
-import { Stack, TextInput, Button, FileInput } from "@mantine/core";
+import { Stack, TextInput, Button, FileInput, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../session/sessionState";
-import { createToy } from "../../shared/APIs/toysService";
+import { createToy, ToyCategories } from "../../shared/APIs/toysService";
+
+interface CategoriesSelect {
+  value: ToyCategories;
+  label: string;
+}
+
+export const categoriesData: CategoriesSelect[] = [
+  { value: "FIGURES", label: "Figures" },
+  { value: "CARS", label: "Cars" },
+  { value: "RADIO_CONTROLLED", label: "Radio controlled" },
+  { value: "CONSTRUCTION", label: "Construction" },
+  { value: "EDUCATIONAL", label: "Educational" },
+  { value: "ELECTRONIC", label: "Electronic" },
+  { value: "EXECUTIVE", label: "Executive" },
+  { value: "FOOD_RELATED", label: "Food related" },
+  { value: "GAMES", label: "Games" },
+  { value: "PUZZLE", label: "Puzzle" },
+  { value: "LEGO", label: "Lego" },
+  { value: "SCIENCE", label: "Science" },
+  { value: "SOUND", label: "Sound" },
+  { value: "SPINNING", label: "Spinning" },
+  { value: "WOODEN", label: "Wooden" },
+  { value: "OTHER", label: "Other" },
+];
 
 export const AddNewToyForm = () => {
   const [loading, setLoading] = useState(false);
@@ -12,10 +36,10 @@ export const AddNewToyForm = () => {
 
   const form = useForm({
     initialValues: {
-      name: "Test",
-      category: "Test",
-      toyImage: "test",
-      description: "Test",
+      name: "",
+      category: "",
+      toyImage: "",
+      description: "",
     },
   });
 
@@ -60,11 +84,12 @@ export const AddNewToyForm = () => {
           placeholder="McQueen"
           {...form.getInputProps("name")}
         />
-        <TextInput
+        <Select
+          label="Category"
           required
           radius="md"
-          label="Category"
-          placeholder="Auta"
+          placeholder={categoriesData[0].label}
+          data={categoriesData}
           {...form.getInputProps("category")}
         />
         <FileInput

@@ -47,17 +47,40 @@ enum UserStatus {
 }
 
 model Toy {
-  id                 String   @id @default(uuid())
+  id                 String        @id @default(uuid())
   name               String
-  category           String
+  category           ToyCategories @default(OTHER)
   imgUrl             String
   description        String
-  owner              User     @relation(fields: [ownerId], references: [id])
+  owner              User          @relation(fields: [ownerId], references: [id])
   ownerId            String
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @default(now()) @updatedAt
-  offersFromSender   Offer[]  @relation(name: "toyFromSender")
-  offersFromReceiver Offer[]  @relation(name: "toyFromReceiver")
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now()) @updatedAt
+  offersFromSender   Offer[]       @relation(name: "toyFromSender")
+  offersFromReceiver Offer[]       @relation(name: "toyFromReceiver")
+}
+
+enum ToyCategories {
+  FIGURES
+  ANIMALS
+  CARS
+  RADIO_CONTROLLED
+  CONSTRUCTION
+  CREATIVE
+  DOLLS
+  EDUCATIONAL
+  ELECTRONIC
+  EXECUTIVE
+  FOOD_RELATED
+  GAMES
+  PLAYGOUND
+  PUZZLE
+  LEGO
+  SCIENCE
+  SOUND
+  SPINNING
+  WOODEN
+  OTHER
 }
 
 model Offer {
