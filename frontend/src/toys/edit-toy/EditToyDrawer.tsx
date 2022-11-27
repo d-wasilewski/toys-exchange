@@ -1,24 +1,21 @@
 import { Drawer } from "@mantine/core";
 import { SuspenseFallback } from "../../components/SuspenseFallback";
 import { DrawerContent } from "./DrawerContent";
-import { EditableDrawerContent } from "./EditableDrawerContent";
 
 interface UserDetailsDrawerProps {
   isOpened: boolean;
   setIsOpened: (arg: boolean) => void;
-  editable?: boolean;
 }
 
-export const UserDetailsDrawer = ({
+export const EditToyDrawer = ({
   isOpened,
   setIsOpened,
-  editable,
 }: UserDetailsDrawerProps) => {
   return (
     <Drawer
       opened={isOpened}
       onClose={() => setIsOpened(false)}
-      title="User details"
+      title="Toy details"
       padding="xl"
       size="lg"
       overlayOpacity={0.55}
@@ -27,7 +24,7 @@ export const UserDetailsDrawer = ({
       position="right"
     >
       <SuspenseFallback>
-        {editable ? <EditableDrawerContent /> : <DrawerContent />}
+        <DrawerContent />
       </SuspenseFallback>
     </Drawer>
   );

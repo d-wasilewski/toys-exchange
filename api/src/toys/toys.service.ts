@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateToyDto, OwnerIdDto } from './dtos/toys.dto';
+import { CreateToyDto, EditToyDto, OwnerIdDto } from './dtos/toys.dto';
 import { v2 } from 'cloudinary';
 import { UserService } from 'src/user/user.service';
 
@@ -81,11 +81,64 @@ export class ToysService {
     return toysWithUsersRatings;
   }
 
+  async getToy(toyId: string) {
+    return await this.prisma.toy.findFirst({
+      where: {
+        id: toyId,
+      },
+      include: {
+        owner: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  }
+
+  async editToy(toyData: EditToyDto) {
+    await this.prisma.toy.update({
+      where: {
+        id: toyData.id,
+      },
+      data: {
+        ...toyData,
+      },
+    });
+  }
+
   async getToysByUserId(ownerId: string) {
-    return this.prisma.toy.findMany({
+    const toys = await this.prisma.toy.findMany({
       where: {
         ownerId,
       },
+      include: {
+        owner: {
+          select: {
+            name: true,
+            imgUrl: true,
+          },
+        },
+      },
     });
+
+    const toysWithUsersRatings = await Promise.all(
+      toys.map(async (toy) => {
+        const userRating = await this.userService.getUserRating(toy.ownerId);
+
+        return {
+          ...toy,
+          owner: {
+            ...toy.owner,
+            rating: {
+              value: userRating._avg.value,
+              count: userRating._count.value,
+            },
+          },
+        };
+      }),
+    );
+
+    return toysWithUsersRatings;
   }
 }

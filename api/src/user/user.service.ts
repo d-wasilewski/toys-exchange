@@ -6,7 +6,11 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { RegisterUserDto, UpdateUserDto } from './dtos/user.dto';
+import {
+  RegisterUserDto,
+  UpdateUserDto,
+  UpdateUserSelfDto,
+} from './dtos/user.dto';
 import { UserStatus } from '@prisma/client';
 import { File } from 'src/toys/toys.service';
 import { v2 } from 'cloudinary';
@@ -63,7 +67,25 @@ export class UserService {
     };
   }
 
-  async editUserById(userData: UpdateUserDto) {
+  async editUserById(userData: UpdateUserSelfDto) {
+    try {
+      return this.prisma.user.update({
+        where: {
+          id: userData.id,
+        },
+        data: {
+          ...userData,
+        },
+        include: {
+          toys: true,
+        },
+      });
+    } catch (e) {
+      throw new BadRequestException('Something went wrong');
+    }
+  }
+
+  async adminEditUserById(userData: UpdateUserDto) {
     try {
       return this.prisma.user.update({
         where: {

@@ -17,7 +17,7 @@ import {
 } from "recoil";
 import { getErrorMessage } from "../../shared/APIs/baseFetch";
 import {
-  editUserData,
+  editUserDataByAdmin,
   UserRole,
   UserStatus,
 } from "../../shared/APIs/userService";
@@ -72,7 +72,7 @@ export const EditableDrawerContent = () => {
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setIsLoading(true);
-      await editUserData({ id: selectedUser.id, ...values });
+      await editUserDataByAdmin({ id: selectedUser.id, ...values });
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
@@ -131,6 +131,12 @@ export const EditableDrawerContent = () => {
             radius="md"
             label="Created at"
             value={selectedUser.createdAt}
+          />
+          <TextInput
+            disabled
+            radius="md"
+            label="Updated at"
+            value={selectedUser.updatedAt}
           />
           <Select
             label="Status"

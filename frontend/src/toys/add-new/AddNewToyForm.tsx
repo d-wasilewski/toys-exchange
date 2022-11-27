@@ -15,7 +15,6 @@ export const AddNewToyForm = () => {
       name: "Test",
       category: "Test",
       toyImage: "test",
-      address: "Test",
       description: "Test",
     },
   });
@@ -77,13 +76,6 @@ export const AddNewToyForm = () => {
           {...form.getInputProps("toyImage")}
         />
         {/* <FileDropzone {...form.getInputProps("imgUsrl")} /> */}
-        <TextInput
-          required
-          radius="md"
-          label="Address"
-          placeholder="Lodz 77"
-          {...form.getInputProps("address")}
-        />
         <TextInput
           required
           radius="md"

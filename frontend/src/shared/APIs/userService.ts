@@ -33,6 +33,12 @@ export const editUserData = (
   return fetchPost("/user/edit", userData);
 };
 
+export const editUserDataByAdmin = (
+  userData: APIRequestBody<"/user/editByAdmin">
+): Promise<APIResponse<"/user/editByAdmin">> => {
+  return fetchPost("/user/editByAdmin", userData);
+};
+
 export const logout = async () => {
   localStorage.removeItem("authToken");
 };

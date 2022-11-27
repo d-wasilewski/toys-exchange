@@ -12,9 +12,9 @@ import {
 import { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../session/sessionState";
-import { ToyOwner } from "../shared/APIs/toysService";
+import { Toy } from "../shared/APIs/toysService";
 import { SwapModal } from "./SwapModal";
-import { selectedToyIdState } from "./toysState";
+import { isEditToyDrawerOpenState, selectedToyIdState } from "./toysState";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -43,16 +43,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface ToyCardProps {
-  id: string;
-  ownerId: string;
-  owner: ToyOwner;
-  category: string;
-  name: string;
-  imgUrl: string;
+type ToyCardProps = Toy & {
   basic?: boolean;
-  description: string;
-}
+};
 
 export const ToyCard = ({
   id,
@@ -68,14 +61,17 @@ export const ToyCard = ({
   const setSelectedToyId = useSetRecoilState(selectedToyIdState);
   const currentUser = useRecoilValue(userState);
   const [opened, setOpened] = useState(false);
+  const setIsEditToyDrawerOpen = useSetRecoilState(isEditToyDrawerOpenState);
 
   const handleSwap = () => {
     setOpened(true);
     setSelectedToyId(id);
   };
 
-  // TODO: handle toy edit
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    setIsEditToyDrawerOpen(true);
+    setSelectedToyId(id);
+  };
 
   return (
     <Card withBorder p="md" radius="md" className={classes.card}>
@@ -105,7 +101,7 @@ export const ToyCard = ({
         {description}
       </Text>
 
-      {ownerId !== currentUser?.id ? (
+      {ownerId !== currentUser?.id && owner ? (
         <Group mt="lg">
           <Avatar src={owner.imgUrl} radius="sm" />
           <div>

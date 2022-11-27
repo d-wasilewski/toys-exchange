@@ -96,7 +96,31 @@ export class CreateToyDto {
   ownerId: string;
 }
 
+export class EditToyDto {
+  @IsNotEmpty()
+  @IsString()
+  id: string;
+
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  category: string;
+
+  @IsNotEmpty()
+  @IsString()
+  description: string;
+}
+
 export class OwnerIdDto {
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}
+
+export class ToyIdDto {
   @IsNotEmpty()
   @IsUUID()
   id: string;

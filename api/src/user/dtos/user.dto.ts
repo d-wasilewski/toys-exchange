@@ -154,6 +154,28 @@ export class UpdateUserDto {
   status: UserStatus;
 }
 
+export class UpdateUserSelfDto {
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  phoneNumber: string;
+
+  @IsOptional()
+  @IsString()
+  address: string | null;
+}
+
 export class UserIdDto {
   @IsNotEmpty()
   @IsUUID()

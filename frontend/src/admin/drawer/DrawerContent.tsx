@@ -45,6 +45,12 @@ export const DrawerContent = () => {
         <TextInput
           disabled
           radius="md"
+          label="Updated at"
+          value={selectedUser?.updatedAt}
+        />
+        <TextInput
+          disabled
+          radius="md"
           label="Status"
           value={selectedUser?.status}
         />

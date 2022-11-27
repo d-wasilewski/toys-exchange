@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../session/sessionState";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
-import { ToyOwner } from "../shared/APIs/toysService";
+import { Toy } from "../shared/APIs/toysService";
 import { makeAnOffer } from "../shared/APIs/offerService";
 import { AvailableToySelect } from "./AvailavleToysSelect";
 import { ToyCard } from "./ToyCard";
@@ -17,15 +17,7 @@ import {
 interface SwapModalProps {
   opened: boolean;
   setOpened: (arg: boolean) => void;
-  cardData: {
-    id: string;
-    name: string;
-    category: string;
-    imgUrl: string;
-    owner: ToyOwner;
-    ownerId: string;
-    description: string;
-  };
+  cardData: Toy;
 }
 
 export const SwapModal = ({ opened, setOpened, cardData }: SwapModalProps) => {

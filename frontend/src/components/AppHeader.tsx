@@ -1,9 +1,7 @@
 import {
   createStyles,
   Header,
-  Menu,
   Group,
-  Center,
   Burger,
   Container,
   Box,
@@ -12,9 +10,8 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconChevronDown } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../session/sessionState";
 
 const useStyles = createStyles((theme) => ({

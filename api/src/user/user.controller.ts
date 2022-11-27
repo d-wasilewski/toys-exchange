@@ -14,6 +14,7 @@ import {
   BasicUserDto,
   RegisterUserDto,
   UpdateUserDto,
+  UpdateUserSelfDto,
   UserDto,
   UserIdDto,
 } from './dtos/user.dto';
@@ -53,8 +54,13 @@ export class UserController {
     return this.userService.rateUser(payload.value, payload.userId);
   }
 
-  @Post('/edit')
+  @Post('/editByAdmin')
   async editUserById(@Body() data: UpdateUserDto): Promise<BasicUserDto> {
+    return this.userService.adminEditUserById(data);
+  }
+
+  @Post('/edit')
+  async editUserByID(@Body() data: UpdateUserSelfDto): Promise<BasicUserDto> {
     return this.userService.editUserById(data);
   }
 

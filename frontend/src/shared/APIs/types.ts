@@ -22,8 +22,11 @@ export interface paths {
   "/user/rate": {
     post: operations["UserController_rateUser"];
   };
-  "/user/edit": {
+  "/user/editByAdmin": {
     post: operations["UserController_editUserById"];
+  };
+  "/user/edit": {
+    post: operations["UserController_editUserByID"];
   };
   "/user/block": {
     post: operations["UserController_blockClient"];
@@ -45,6 +48,12 @@ export interface paths {
   };
   "/toy/toys": {
     post: operations["ToysController_getToys"];
+  };
+  "/toy/edit": {
+    post: operations["ToysController_editToy"];
+  };
+  "/toy/toy": {
+    post: operations["ToysController_getToy"];
   };
   "/toy/user-toys": {
     post: operations["ToysController_getUserToys"];
@@ -130,6 +139,13 @@ export interface components {
       phoneNumber: string;
       address: string | null;
     };
+    UpdateUserSelfDto: {
+      id: string;
+      email: string;
+      name: string;
+      phoneNumber: string;
+      address: string | null;
+    };
     UserLoginDto: {
       email: string;
       password: string;
@@ -144,6 +160,15 @@ export interface components {
       imgUrl: string;
       description: string;
       ownerId: string;
+    };
+    EditToyDto: {
+      id: string;
+      name: string;
+      category: string;
+      description: string;
+    };
+    ToyIdDto: {
+      id: string;
     };
     OwnerIdDto: {
       id: string;
@@ -250,6 +275,21 @@ export interface operations {
       };
     };
   };
+  UserController_editUserByID: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["BasicUserDto"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateUserSelfDto"];
+      };
+    };
+  };
   UserController_blockClient: {
     parameters: {};
     responses: {
@@ -335,12 +375,38 @@ export interface operations {
       };
     };
   };
+  ToysController_editToy: {
+    parameters: {};
+    responses: {
+      201: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["EditToyDto"];
+      };
+    };
+  };
+  ToysController_getToy: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["BasicToyDto"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ToyIdDto"];
+      };
+    };
+  };
   ToysController_getUserToys: {
     parameters: {};
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["BasicToyDto"][];
+          "application/json": components["schemas"]["ToyDto"][];
         };
       };
     };

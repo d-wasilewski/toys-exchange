@@ -1,10 +1,14 @@
 import { Button, Input, Stack, TextInput, Title } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
 import { IconChevronRight } from "@tabler/icons";
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../session/sessionState";
+import { getErrorMessage } from "../shared/APIs/baseFetch";
+import { editUserData } from "../shared/APIs/userService";
+import { schema } from "./userDetailsValidation";
 
 export const UserDetails = () => {
   const selectedUser = useRecoilValue(userState);
@@ -18,16 +22,33 @@ export const UserDetails = () => {
       name: selectedUser.name,
       email: selectedUser.email,
       phoneNumber: selectedUser.phoneNumber,
-      address: selectedUser.address,
+      address: selectedUser?.address ?? "",
     },
     validateInputOnBlur: true,
-    // TODO: add validation
-    // validate: zodResolver(schema),
+    validate: zodResolver(schema),
   });
 
-  //   TODO: handle data change
-  const handleSubmit = () => {
-    setIsLoading(!isLoading);
+  const handleSubmit = async (values: typeof form.values) => {
+    try {
+      setIsLoading(true);
+      await editUserData({ id: selectedUser.id, ...values });
+    } catch (e) {
+      const message = getErrorMessage(e);
+      showNotification({
+        title: "Error",
+        message: message ?? "Something went wrong",
+        color: "red",
+        autoClose: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+      showNotification({
+        title: "Success",
+        message: "User updated successfully",
+        color: "green",
+        autoClose: 3000,
+      });
+    }
   };
 
   return (
@@ -58,11 +79,6 @@ export const UserDetails = () => {
             label="Address"
             value={selectedUser.address}
             {...form.getInputProps("address")}
-          />
-          <TextInput
-            radius="md"
-            label="Date of birth"
-            value={selectedUser.createdAt}
           />
           {/* TODO: Implement changing password */}
           <Input.Wrapper label="Password">

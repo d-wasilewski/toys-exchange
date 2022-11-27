@@ -7,7 +7,6 @@ import {
   Avatar,
   Text,
   Flex,
-  Button,
   FileButton,
 } from "@mantine/core";
 import {
