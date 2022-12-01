@@ -153,6 +153,11 @@ export interface components {
     UserIdDto: {
       id: string;
     };
+    RateUserDto: {
+      userId: string;
+      offerId: string;
+      value: number;
+    };
     UpdateUserDto: {
       role: "BASIC" | "ADMIN";
       status: "ACTIVE" | "BLOCKED";
@@ -266,6 +271,13 @@ export interface components {
       name: string;
       imgUrl: string;
     };
+    RatingOfferDto: {
+      id: string;
+      userId: string;
+      offerId: string;
+      value: number;
+      createdAt: string;
+    };
     OfferDto: {
       status: "ACCEPTED" | "DECLINED" | "PENDING";
       id: string;
@@ -277,6 +289,7 @@ export interface components {
       sender: components["schemas"]["UserOfferDto"];
       toyFromReceiver: components["schemas"]["ToyOfferDto"];
       toyFromSender: components["schemas"]["ToyOfferDto"];
+      rating: components["schemas"]["RatingOfferDto"] | null;
       createdAt: string;
       updatedAt: string;
     };
@@ -365,6 +378,11 @@ export interface operations {
     parameters: {};
     responses: {
       201: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RateUserDto"];
+      };
     };
   };
   UserController_editUserById: {

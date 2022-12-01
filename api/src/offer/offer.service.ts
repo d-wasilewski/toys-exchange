@@ -56,6 +56,7 @@ export class OfferService {
             category: true,
           },
         },
+        rating: true,
       },
     });
 
@@ -144,6 +145,7 @@ export class OfferService {
             category: true,
           },
         },
+        rating: true,
       },
     });
 
@@ -194,6 +196,7 @@ export class OfferService {
             category: true,
           },
         },
+        rating: true,
       },
     });
 

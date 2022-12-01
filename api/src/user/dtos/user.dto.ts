@@ -181,3 +181,17 @@ export class UserIdDto {
   @IsUUID()
   id: string;
 }
+
+export class RateUserDto {
+  @IsNotEmpty()
+  @IsUUID()
+  userId: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  offerId: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  value: number;
+}

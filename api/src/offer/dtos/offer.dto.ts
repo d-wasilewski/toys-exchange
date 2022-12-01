@@ -4,6 +4,7 @@ import { Type } from 'class-transformer';
 import {
   IsDate,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -69,6 +70,27 @@ export class ToyOfferDto {
 
   @ApiProperty({ enum: [...toyCategories] })
   category: ToyCategories;
+}
+
+export class RatingOfferDto {
+  @IsNotEmpty()
+  @IsString()
+  id: string;
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  offerId: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  value: number;
+
+  @IsDate()
+  createdAt: Date;
 }
 
 export class BasicOfferDto {
@@ -138,6 +160,11 @@ export class OfferDto {
 
   @ApiProperty({ enum: [...offerStatuses] })
   status: OfferStatus;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => RatingOfferDto)
+  rating: RatingOfferDto | null;
 
   @IsNotEmpty()
   @IsDate()

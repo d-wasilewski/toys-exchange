@@ -12,6 +12,7 @@ import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
 import { File } from 'src/toys/toys.service';
 import {
   BasicUserDto,
+  RateUserDto,
   RegisterUserDto,
   UpdateUserDto,
   UpdateUserSelfDto,
@@ -50,8 +51,8 @@ export class UserController {
   }
 
   @Post('rate')
-  async rateUser(@Body() payload) {
-    return this.userService.rateUser(payload.value, payload.userId);
+  async rateUser(@Body() payload: RateUserDto) {
+    return this.userService.rateUser(payload);
   }
 
   @Post('/editByAdmin')

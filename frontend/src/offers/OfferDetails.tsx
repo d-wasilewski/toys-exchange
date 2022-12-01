@@ -7,6 +7,8 @@ import {
   Group,
   Rating,
   Badge,
+  Stack,
+  Flex,
 } from "@mantine/core";
 import { useRecoilValue } from "recoil";
 import { userState } from "../session/sessionState";
@@ -54,25 +56,29 @@ export function OfferDetails({ toy, user }: ArticleCardVerticalProps) {
         <Image src={toy.imgUrl} height={120} width={180} fit="contain" />
         <div className={classes.body}>
           <Badge>{toy.category}</Badge>
-          <Text className={classes.title} mt="xs" mb="md">
+          <Text className={classes.title} mt="xs" mb="xs">
             {toy.name}
           </Text>
           {currentUser?.name !== user.name ? (
-            <Group spacing="xs">
+            <Stack spacing={2}>
               <Group spacing="xs" noWrap>
                 <Avatar size={20} src={user.imgUrl} />
-                <Text size="xs">{user.name}</Text>
+                <Text size="sm">{user.name}</Text>
               </Group>
-              <Text size="xs" color="dimmed">
-                •
-              </Text>
-              <Text size="xs" color="dimmed">
-                {user.rating.value ?? 0}/5
-              </Text>
-              <Rating value={1} count={1} fractions={10} size="sm" />
-            </Group>
+              <Flex align="center" gap={2}>
+                <Text size="sm" color="dimmed">
+                  {user.rating.value ?? 0}/5
+                </Text>
+                <Rating value={1} count={1} readOnly size="xs" />
+                <Text size="sm" color="dimmed">
+                  ({user.rating.count})
+                </Text>
+              </Flex>
+            </Stack>
           ) : (
-            <Text>You</Text>
+            <Text align="center" sx={{ height: 45 }}>
+              Your toy
+            </Text>
           )}
         </div>
       </Group>

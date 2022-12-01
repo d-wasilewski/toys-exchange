@@ -7,6 +7,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import {
+  RateUserDto,
   RegisterUserDto,
   UpdateUserDto,
   UpdateUserSelfDto,
@@ -14,6 +15,7 @@ import {
 import { UserStatus } from '@prisma/client';
 import { File } from 'src/toys/toys.service';
 import { v2 } from 'cloudinary';
+import { round } from 'lodash';
 
 @Injectable()
 export class UserService {
@@ -137,11 +139,15 @@ export class UserService {
     });
   }
 
-  async rateUser(rating: number, userId: string) {
+  async rateUser({ value, userId, offerId }: RateUserDto) {
+    if (value === 0) {
+      throw new BadRequestException('Value has to be greater than 0');
+    }
     await this.prisma.rating.create({
       data: {
         userId,
-        value: rating,
+        value,
+        offerId,
       },
     });
   }
@@ -158,7 +164,14 @@ export class UserService {
         userId,
       },
     });
-    return rating;
+
+    return {
+      ...rating,
+      _avg: {
+        ...rating._avg,
+        value: round(rating._avg.value, 2),
+      },
+    };
   }
 
   async changeUserImage(image: File, userId: string) {

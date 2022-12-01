@@ -53,6 +53,7 @@ export const SwapModal = ({ opened, setOpened, cardData }: SwapModalProps) => {
         color: "green",
         autoClose: 3000,
       });
+      setOpened(false);
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({

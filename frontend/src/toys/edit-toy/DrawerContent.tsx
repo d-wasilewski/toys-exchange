@@ -80,6 +80,7 @@ export const DrawerContent = () => {
           <TextInput
             radius="md"
             label="Name"
+            required
             value={selectedToy.name}
             {...form.getInputProps("name")}
           />
@@ -94,6 +95,7 @@ export const DrawerContent = () => {
           <Textarea
             radius="md"
             label="Description"
+            required
             value={selectedToy?.description}
             {...form.getInputProps("description")}
           />

@@ -3,6 +3,7 @@ import { APIRequestBody, APIResponse, fetchPost } from "./baseFetch";
 export type Offers = APIResponse<"/offer/offers">;
 export type Offer = Offers[number];
 export type OfferStatus = Offer["status"];
+export type OfferRating = Offer["rating"];
 
 export const getAllOffers = (): Promise<Offers> => {
   return fetchPost("/offer/offers");

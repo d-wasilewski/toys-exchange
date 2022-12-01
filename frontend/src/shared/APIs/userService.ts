@@ -40,6 +40,10 @@ export const editUserDataByAdmin = (
   return fetchPost("/user/editByAdmin", userData);
 };
 
+export const rateUser = (payload: APIRequestBody<"/user/rate">) => {
+  return fetchPost("/user/rate", payload);
+};
+
 export const logout = async () => {
   localStorage.removeItem("authToken");
 };

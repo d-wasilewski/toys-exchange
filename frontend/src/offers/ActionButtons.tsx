@@ -1,23 +1,44 @@
-import { Group, Button, Text, Flex } from "@mantine/core";
+import {
+  Group,
+  Button,
+  Text,
+  Flex,
+  Popover,
+  Rating,
+  Center,
+  Stack,
+} from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
+import { useRecoilRefresher_UNSTABLE } from "recoil";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import {
   acceptOffer,
   declineOffer,
+  OfferRating,
   OfferStatus,
 } from "../shared/APIs/offerService";
+import { rateUser } from "../shared/APIs/userService";
+import { myHistoryOffersState } from "./offersState";
+
+interface ActionButtonsProps {
+  offerId: string;
+  status: OfferStatus;
+  userToRateId: string;
+  offerRating: OfferRating;
+}
 
 export const ActionButtons = ({
   offerId,
   status,
-}: {
-  offerId: string;
-  status: OfferStatus;
-}) => {
+  userToRateId,
+  offerRating,
+}: ActionButtonsProps) => {
   const [isAcceptLoading, setIsAcceptLoading] = useState(false);
   const [isDeclineLoading, setIsDeclineLoading] = useState(false);
+  // const [ratingValue, setRatingValue] = useState(0);
+  const historyListRefresh = useRecoilRefresher_UNSTABLE(myHistoryOffersState);
 
   const handleAccept = () => {
     openConfirmModal({
@@ -93,13 +114,34 @@ export const ActionButtons = ({
     });
   };
 
+  const handleUserRate = async (rateValue: number) => {
+    try {
+      await rateUser({ value: rateValue, userId: userToRateId, offerId });
+      showNotification({
+        title: "Success",
+        message: "User rated successfully",
+        color: "green",
+        autoClose: 3000,
+      });
+      historyListRefresh();
+    } catch (e) {
+      const message = getErrorMessage(e);
+      showNotification({
+        title: "Error",
+        message: message ?? "Something went wrong",
+        color: "red",
+        autoClose: 5000,
+      });
+    }
+  };
+
   return (
     <>
       {(() => {
         switch (status) {
           case "PENDING":
             return (
-              <Group sx={{ justifyContent: "center" }}>
+              <Group>
                 <Button
                   color="green"
                   onClick={handleAccept}
@@ -117,7 +159,38 @@ export const ActionButtons = ({
               </Group>
             );
           case "ACCEPTED": {
-            return <Button>Rate user</Button>;
+            return (
+              <>
+                {offerRating ? (
+                  <Stack justify="center" spacing={0}>
+                    <Text align="center">Your rate:</Text>
+                    <Rating mt={4} value={offerRating.value} readOnly />
+                  </Stack>
+                ) : (
+                  <Popover width={250} position="bottom" withArrow shadow="md">
+                    <Popover.Target>
+                      <Button>Rate user</Button>
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                      <Center>
+                        <Text size="sm">
+                          How did you like the exchange?
+                          <Rating
+                            mt={4}
+                            defaultValue={2}
+                            size="xl"
+                            fractions={2}
+                            onChange={(val) => {
+                              handleUserRate(val);
+                            }}
+                          />
+                        </Text>
+                      </Center>
+                    </Popover.Dropdown>
+                  </Popover>
+                )}
+              </>
+            );
           }
           case "DECLINED": {
             return (

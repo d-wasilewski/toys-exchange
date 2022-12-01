@@ -68,18 +68,21 @@ export const UserDetails = () => {
           <TextInput
             radius="md"
             label="Name"
+            required
             value={selectedUser.name}
             {...form.getInputProps("name")}
           />
           <TextInput
             radius="md"
             label="Email"
+            required
             value={selectedUser.email}
             {...form.getInputProps("email")}
           />
           <TextInput
             radius="md"
             label="Phone number"
+            required
             value={selectedUser.phoneNumber}
             {...form.getInputProps("phoneNumber")}
           />
