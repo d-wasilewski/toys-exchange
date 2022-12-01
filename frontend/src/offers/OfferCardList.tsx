@@ -9,16 +9,8 @@ export const OfferCardList = () => {
   return (
     <Center>
       <Flex direction="column" gap="xl" mt={50}>
-        {allOffers.map((offer: any) => {
-          return (
-            <OfferCard
-              toyFromSender={offer.toyFromSender}
-              sender={offer.sender}
-              toyFromReceiver={offer.toyFromReceiver}
-              receiver={offer.receiver}
-              offerId={offer.id}
-            />
-          );
+        {allOffers.map((offer) => {
+          return <OfferCard offer={offer} />;
         })}
       </Flex>
     </Center>

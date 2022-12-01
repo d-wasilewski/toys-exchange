@@ -4,6 +4,7 @@ export type Offers = APIResponse<"/offer/offers">;
 export type Offer = Offers[number];
 export type OfferStatus = Offer["status"];
 export type OfferRating = Offer["rating"];
+export type OfferUser = Offer["sender"];
 
 export const getAllOffers = (): Promise<Offers> => {
   return fetchPost("/offer/offers");

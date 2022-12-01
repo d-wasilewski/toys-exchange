@@ -30,6 +30,7 @@ export const OfferCard = ({ offer }: OfferCardProps) => {
               status={offer.status}
               userToRateId={userToRateId}
               offerRating={offer.rating}
+              offerSender={offer.sender}
             />
           </Flex>
         </Container>

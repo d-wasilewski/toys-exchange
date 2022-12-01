@@ -2,14 +2,14 @@ import {
   Group,
   Button,
   Text,
-  Flex,
   Popover,
   Rating,
   Center,
   Stack,
 } from "@mantine/core";
-import { openConfirmModal } from "@mantine/modals";
+import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
+import { IconCircleCheck } from "@tabler/icons";
 import { useState } from "react";
 import { useRecoilRefresher_UNSTABLE } from "recoil";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
@@ -18,6 +18,7 @@ import {
   declineOffer,
   OfferRating,
   OfferStatus,
+  OfferUser,
 } from "../shared/APIs/offerService";
 import { rateUser } from "../shared/APIs/userService";
 import { myHistoryOffersState } from "./offersState";
@@ -27,6 +28,7 @@ interface ActionButtonsProps {
   status: OfferStatus;
   userToRateId: string;
   offerRating: OfferRating;
+  offerSender: OfferUser;
 }
 
 export const ActionButtons = ({
@@ -34,15 +36,16 @@ export const ActionButtons = ({
   status,
   userToRateId,
   offerRating,
+  offerSender,
 }: ActionButtonsProps) => {
   const [isAcceptLoading, setIsAcceptLoading] = useState(false);
   const [isDeclineLoading, setIsDeclineLoading] = useState(false);
-  // const [ratingValue, setRatingValue] = useState(0);
   const historyListRefresh = useRecoilRefresher_UNSTABLE(myHistoryOffersState);
 
   const handleAccept = () => {
     openConfirmModal({
       title: "Please confirm your action",
+      closeOnConfirm: false,
       children: (
         <Text size="sm">
           This action is so important that you are required to confirm it with a
@@ -62,6 +65,34 @@ export const ActionButtons = ({
             color: "green",
             autoClose: 3000,
           });
+          openModal({
+            title: "This is modal at second layer",
+            children: (
+              <>
+                <Text>
+                  You swapped for a toy in the app, now plase contact username
+                  to finish the process
+                </Text>
+                <Text>
+                  Here is the data about the person you are swapping with:
+                </Text>
+                <Stack>
+                  <Text>{offerSender.name}</Text>
+                </Stack>
+                <Text>
+                  Please keep in mind you won't be able to comeback to this
+                  screen so save the displayed data
+                </Text>
+                <Center my={10}>
+                  <IconCircleCheck size={60} color="green" />
+                </Center>
+                <Button mt={10} fullWidth onClick={() => closeAllModals()}>
+                  Close
+                </Button>
+              </>
+            ),
+          });
+          console.log("I dupa");
         } catch (e) {
           const message = getErrorMessage(e);
           showNotification({
