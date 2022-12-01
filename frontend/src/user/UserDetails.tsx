@@ -1,4 +1,13 @@
-import { Button, Input, Stack, TextInput, Title } from "@mantine/core";
+import {
+  Button,
+  Group,
+  Input,
+  Rating,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { IconChevronRight } from "@tabler/icons";
@@ -91,6 +100,12 @@ export const UserDetails = () => {
               Change your password
             </Input>
           </Input.Wrapper>
+          <Group spacing={4} align="center">
+            <Text>Your rating: </Text>
+            <Text color="dimmed">{selectedUser.rating.value ?? 0}/5</Text>
+            <Rating value={1} count={1} fractions={10} readOnly />
+            <Text color="dimmed">({selectedUser.rating.count})</Text>
+          </Group>
         </Stack>
         {form.isDirty() && (
           <Button

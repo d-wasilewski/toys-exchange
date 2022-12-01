@@ -1,26 +1,23 @@
-import { Center, Flex } from "@mantine/core";
+import { Center, Flex, Title } from "@mantine/core";
+import { useOutletContext } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { OfferCard } from "../offers/OfferCard";
 import { myActiveOffersState } from "../offers/offersState";
 
 export const UserActiveOffers = () => {
   const allOffers = useRecoilValue(myActiveOffersState);
+  const [active] = useOutletContext<string>();
 
   return (
-    <Center>
-      <Flex direction="column" gap="xl" mt={50}>
-        {allOffers.map((offer: any) => {
-          return (
-            <OfferCard
-              toyFromSender={offer.toyFromSender}
-              sender={offer.sender}
-              toyFromReceiver={offer.toyFromReceiver}
-              receiver={offer.receiver}
-              offerId={offer.id}
-            />
-          );
-        })}
-      </Flex>
-    </Center>
+    <>
+      <Title my={20}>{active}</Title>
+      <Center>
+        <Flex direction="column" gap="xl">
+          {allOffers.map((offer) => {
+            return <OfferCard offer={offer} />;
+          })}
+        </Flex>
+      </Center>
+    </>
   );
 };

@@ -64,6 +64,9 @@ export interface paths {
   "/offer/active-offers": {
     post: operations["OfferController_getActiveOffers"];
   };
+  "/offer/history-offers": {
+    post: operations["OfferController_getHistoryOffers"];
+  };
   "/offer/send": {
     post: operations["OfferController_sendOffer"];
   };
@@ -233,6 +236,36 @@ export interface components {
     OwnerIdDto: {
       id: string;
     };
+    UserOfferDto: {
+      name: string;
+      imgUrl: string;
+      rating: components["schemas"]["Rating"];
+    };
+    ToyOfferDto: {
+      category:
+        | "FIGURES"
+        | "ANIMALS"
+        | "CARS"
+        | "RADIO_CONTROLLED"
+        | "CONSTRUCTION"
+        | "CREATIVE"
+        | "DOLLS"
+        | "EDUCATIONAL"
+        | "ELECTRONIC"
+        | "EXECUTIVE"
+        | "FOOD_RELATED"
+        | "GAMES"
+        | "PLAYGOUND"
+        | "PUZZLE"
+        | "LEGO"
+        | "SCIENCE"
+        | "SOUND"
+        | "SPINNING"
+        | "WOODEN"
+        | "OTHER";
+      name: string;
+      imgUrl: string;
+    };
     OfferDto: {
       status: "ACCEPTED" | "DECLINED" | "PENDING";
       id: string;
@@ -240,7 +273,12 @@ export interface components {
       receiverUserId: string;
       toyFromSenderId: string;
       toyFromReceiverId: string;
+      receiver: components["schemas"]["UserOfferDto"];
+      sender: components["schemas"]["UserOfferDto"];
+      toyFromReceiver: components["schemas"]["ToyOfferDto"];
+      toyFromSender: components["schemas"]["ToyOfferDto"];
       createdAt: string;
+      updatedAt: string;
     };
     ReceiverIdDto: {
       receiverId: string;
@@ -250,6 +288,15 @@ export interface components {
       receiverUserId: string;
       toyFromSenderId: string;
       toyFromReceiverId: string;
+    };
+    BasicOfferDto: {
+      status: "ACCEPTED" | "DECLINED" | "PENDING";
+      id: string;
+      senderUserId: string;
+      receiverUserId: string;
+      toyFromSenderId: string;
+      toyFromReceiverId: string;
+      createdAt: string;
     };
     OfferIdDto: {
       offerId: string;
@@ -489,7 +536,26 @@ export interface operations {
   OfferController_getActiveOffers: {
     parameters: {};
     responses: {
-      201: unknown;
+      201: {
+        content: {
+          "application/json": components["schemas"]["OfferDto"][];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReceiverIdDto"];
+      };
+    };
+  };
+  OfferController_getHistoryOffers: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["OfferDto"][];
+        };
+      };
     };
     requestBody: {
       content: {
@@ -502,7 +568,7 @@ export interface operations {
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["OfferDto"];
+          "application/json": components["schemas"]["BasicOfferDto"];
         };
       };
     };

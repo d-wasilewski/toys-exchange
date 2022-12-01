@@ -1,11 +1,21 @@
-import { Group, Button, Text } from "@mantine/core";
+import { Group, Button, Text, Flex } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
-import { acceptOffer, declineOffer } from "../shared/APIs/offerService";
+import {
+  acceptOffer,
+  declineOffer,
+  OfferStatus,
+} from "../shared/APIs/offerService";
 
-export const ActionButtons = ({ offerId }: { offerId: string }) => {
+export const ActionButtons = ({
+  offerId,
+  status,
+}: {
+  offerId: string;
+  status: OfferStatus;
+}) => {
   const [isAcceptLoading, setIsAcceptLoading] = useState(false);
   const [isDeclineLoading, setIsDeclineLoading] = useState(false);
 
@@ -84,13 +94,42 @@ export const ActionButtons = ({ offerId }: { offerId: string }) => {
   };
 
   return (
-    <Group>
-      <Button color="green" onClick={handleAccept} loading={isAcceptLoading}>
-        Accept
-      </Button>
-      <Button color="red" onClick={handleDecline} loading={isDeclineLoading}>
-        Decline
-      </Button>
-    </Group>
+    <>
+      {(() => {
+        switch (status) {
+          case "PENDING":
+            return (
+              <Group sx={{ justifyContent: "center" }}>
+                <Button
+                  color="green"
+                  onClick={handleAccept}
+                  loading={isAcceptLoading}
+                >
+                  Accept
+                </Button>
+                <Button
+                  color="red"
+                  onClick={handleDecline}
+                  loading={isDeclineLoading}
+                >
+                  Decline
+                </Button>
+              </Group>
+            );
+          case "ACCEPTED": {
+            return <Button>Rate user</Button>;
+          }
+          case "DECLINED": {
+            return (
+              <Button disabled color="grape">
+                Declined
+              </Button>
+            );
+          }
+          default:
+            break;
+        }
+      })()}
+    </>
   );
 };

@@ -6,7 +6,11 @@ import {
   Text,
   Group,
   Rating,
+  Badge,
 } from "@mantine/core";
+import { useRecoilValue } from "recoil";
+import { userState } from "../session/sessionState";
+import { RatingType } from "../shared/APIs/userService";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -23,6 +27,7 @@ const useStyles = createStyles((theme) => ({
 
   body: {
     padding: theme.spacing.md,
+    paddingTop: theme.spacing.xs,
   },
 }));
 
@@ -34,35 +39,41 @@ interface ArticleCardVerticalProps {
   };
   user: {
     name: string;
+    imgUrl: string;
+    rating: RatingType;
   };
 }
 
 export function OfferDetails({ toy, user }: ArticleCardVerticalProps) {
+  const currentUser = useRecoilValue(userState);
   const { classes } = useStyles();
+
   return (
     <Card withBorder radius="md" p={0} className={classes.card}>
       <Group noWrap spacing={0}>
         <Image src={toy.imgUrl} height={120} width={180} fit="contain" />
         <div className={classes.body}>
-          <Text transform="uppercase" color="dimmed" weight={700} size="xs">
-            {toy.category}
-          </Text>
+          <Badge>{toy.category}</Badge>
           <Text className={classes.title} mt="xs" mb="md">
             {toy.name}
           </Text>
-          <Group spacing="xs">
-            <Group spacing="xs" noWrap>
-              <Avatar size={20} src={toy.imgUrl} />
-              <Text size="xs">{user.name}</Text>
+          {currentUser?.name !== user.name ? (
+            <Group spacing="xs">
+              <Group spacing="xs" noWrap>
+                <Avatar size={20} src={user.imgUrl} />
+                <Text size="xs">{user.name}</Text>
+              </Group>
+              <Text size="xs" color="dimmed">
+                •
+              </Text>
+              <Text size="xs" color="dimmed">
+                {user.rating.value ?? 0}/5
+              </Text>
+              <Rating value={1} count={1} fractions={10} size="sm" />
             </Group>
-            <Text size="xs" color="dimmed">
-              •
-            </Text>
-            <Text size="xs" color="dimmed">
-              3/5
-            </Text>
-            <Rating value={1} count={1} fractions={10} size="sm" />
-          </Group>
+          ) : (
+            <Text>You</Text>
+          )}
         </div>
       </Group>
     </Card>

@@ -1,6 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
 import {
+  BasicOfferDto,
   OfferDto,
   OfferIdDto,
   ReceiverIdDto,
@@ -19,12 +20,17 @@ export class OfferController {
   }
 
   @Post('/active-offers')
-  async getActiveOffers(@Body() payload: ReceiverIdDto) {
+  async getActiveOffers(@Body() payload: ReceiverIdDto): Promise<OfferDto[]> {
     return this.offerService.getActiveOffers(payload.receiverId);
   }
 
+  @Post('/history-offers')
+  async getHistoryOffers(@Body() paylaod: ReceiverIdDto): Promise<OfferDto[]> {
+    return this.offerService.getHistoryOffers(paylaod.receiverId);
+  }
+
   @Post('send')
-  async sendOffer(@Body() payload: SendOfferDto): Promise<OfferDto> {
+  async sendOffer(@Body() payload: SendOfferDto): Promise<BasicOfferDto> {
     return this.offerService.sendOffer(payload);
   }
 
@@ -35,8 +41,6 @@ export class OfferController {
 
   @Post('accept')
   async acceptOffer(@Body() payload: OfferIdDto): Promise<void> {
-    console.log('dupa');
-
     return this.offerService.acceptOffer(payload.offerId);
   }
 }

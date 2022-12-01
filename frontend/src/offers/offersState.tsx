@@ -1,6 +1,10 @@
 import { selector } from "recoil";
 import { userState } from "../session/sessionState";
-import { getActiveOffers, getAllOffers } from "../shared/APIs/offerService";
+import {
+  getActiveOffers,
+  getAllOffers,
+  getHistoryOffers,
+} from "../shared/APIs/offerService";
 
 export const allOffersState = selector({
   key: "allOffersState",
@@ -18,5 +22,16 @@ export const myActiveOffersState = selector({
     if (!user) return [];
     const activeOffers = await getActiveOffers(user?.id);
     return activeOffers;
+  },
+});
+
+export const myHistoryOffersState = selector({
+  key: "myHistoryOffersState",
+  get: async ({ get }) => {
+    const user = get(userState);
+
+    if (!user) return [];
+    const historyOffers = await getHistoryOffers(user?.id);
+    return historyOffers;
   },
 });

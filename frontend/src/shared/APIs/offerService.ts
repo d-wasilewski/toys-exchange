@@ -1,10 +1,14 @@
 import { APIRequestBody, APIResponse, fetchPost } from "./baseFetch";
 
-export const getAllOffers = () => {
+export type Offers = APIResponse<"/offer/offers">;
+export type Offer = Offers[number];
+export type OfferStatus = Offer["status"];
+
+export const getAllOffers = (): Promise<Offers> => {
   return fetchPost("/offer/offers");
 };
 
-export const getUserActiveOffers = (userId: string): Promise<any> => {
+export const getUserActiveOffers = (userId: string): Promise<Offers> => {
   return fetchPost("/offer/active-offers", { receiverId: userId });
 };
 
@@ -20,12 +24,10 @@ export const makeAnOffer = (payload: APIRequestBody<"/offer/send">) => {
   return fetchPost("/offer/send", payload);
 };
 
-export const getActiveOffers = (receiverId: string) => {
+export const getActiveOffers = (receiverId: string): Promise<Offers> => {
   return fetchPost("/offer/active-offers", { receiverId });
 };
 
-export type UserList = APIResponse<"/user/users">[number];
-
-export type User = APIResponse<"/user/user">;
-export type UserStatus = User["status"];
-export type UserRole = User["role"];
+export const getHistoryOffers = (receiverId: string): Promise<Offers> => {
+  return fetchPost("/offer/history-offers", { receiverId });
+};
