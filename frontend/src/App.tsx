@@ -17,6 +17,7 @@ import { UserActiveOffers } from "./user/UserActiveOffers";
 import { UserOffersHistory } from "./user/UserOffersHistory";
 import { Layout } from "./components/Layout";
 import { SuspenseFallback } from "./components/SuspenseFallback";
+import { Homepage } from "./components/homepage/Homepage";
 
 interface IDecodedToken {
   auth: string;
@@ -43,80 +44,84 @@ if (token) {
 
 function App() {
   return (
-    <Layout>
+    <>
       <Routes>
-        <Route path="/" element={<div>Homepage</div>} />
-        <Route path={ROUTES.user} element={<UserPage />}>
-          <Route path={ROUTES.userDetails} element={<UserDetails />} />
-          <Route
-            path={ROUTES.userActiveOffers}
-            element={
-              <SuspenseFallback>
-                <UserActiveOffers />
-              </SuspenseFallback>
-            }
-          />
-          <Route
-            path={ROUTES.userOffersHistory}
-            element={
-              <SuspenseFallback>
-                <UserOffersHistory />
-              </SuspenseFallback>
-            }
-          />
-          <Route
-            path={ROUTES.userToys}
-            element={
-              <SuspenseFallback>
-                <UserToys />
-              </SuspenseFallback>
-            }
-          />
-        </Route>
-        <Route
-          path="/toys"
-          element={
-            <SuspenseFallback>
-              <ToysView />
-            </SuspenseFallback>
-          }
-        />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route
-          path="/my-toys"
-          element={
-            <SuspenseFallback>
-              <MyToysView />
-            </SuspenseFallback>
-          }
-        />
-        <Route
-          path="/my-offers"
-          element={
-            <SuspenseFallback>
-              <MyOffersView />
-            </SuspenseFallback>
-          }
-        />
-        <Route
-          path="/add-toy"
-          element={
-            <SuspenseFallback>
-              <OfferCardList />
-            </SuspenseFallback>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <SuspenseFallback>
-              <AdminPage />
-            </SuspenseFallback>
-          }
-        />
+        <Route path="/" element={<Homepage />} />
       </Routes>
-    </Layout>
+      <Layout>
+        <Routes>
+          <Route path={ROUTES.user} element={<UserPage />}>
+            <Route path={ROUTES.userDetails} element={<UserDetails />} />
+            <Route
+              path={ROUTES.userActiveOffers}
+              element={
+                <SuspenseFallback>
+                  <UserActiveOffers />
+                </SuspenseFallback>
+              }
+            />
+            <Route
+              path={ROUTES.userOffersHistory}
+              element={
+                <SuspenseFallback>
+                  <UserOffersHistory />
+                </SuspenseFallback>
+              }
+            />
+            <Route
+              path={ROUTES.userToys}
+              element={
+                <SuspenseFallback>
+                  <UserToys />
+                </SuspenseFallback>
+              }
+            />
+          </Route>
+          <Route
+            path="/toys"
+            element={
+              <SuspenseFallback>
+                <ToysView />
+              </SuspenseFallback>
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/my-toys"
+            element={
+              <SuspenseFallback>
+                <MyToysView />
+              </SuspenseFallback>
+            }
+          />
+          <Route
+            path="/my-offers"
+            element={
+              <SuspenseFallback>
+                <MyOffersView />
+              </SuspenseFallback>
+            }
+          />
+          <Route
+            path="/add-toy"
+            element={
+              <SuspenseFallback>
+                <OfferCardList />
+              </SuspenseFallback>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <SuspenseFallback>
+                <AdminPage />
+              </SuspenseFallback>
+            }
+          />
+        </Routes>
+      </Layout>
+    </>
   );
 }
 
