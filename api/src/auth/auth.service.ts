@@ -3,12 +3,14 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { UserDto, UserLoginDto, UserPayloadDto } from './dto/auth.dto';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private mailService: MailService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<UserDto> {
@@ -26,10 +28,14 @@ export class AuthService {
   async login(user: UserPayloadDto) {
     const payload = { username: user.email, sub: user.id };
 
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+    });
+
+    await this.mailService.sendUserConfirmation(user, token);
+
     return {
-      access_token: this.jwtService.sign(payload, {
-        secret: process.env.JWT_SECRET,
-      }),
+      access_token: token,
     };
   }
 }
