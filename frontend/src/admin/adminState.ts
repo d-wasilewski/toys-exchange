@@ -5,7 +5,7 @@ export const usersListState = selector({
   key: "usersListState",
   get: async () => {
     const usersList = await getAllUsers();
-    return usersList;
+    return usersList.data;
   },
 });
 
@@ -30,8 +30,9 @@ export const selectedUserState = selector({
     const userId = get(clickedUserIdState);
     if (userId) {
       const user = await getUserData(userId);
-      return user;
+      return { ...user.data, etag: user.headers["etag"] };
     }
+
     return null;
   },
 });

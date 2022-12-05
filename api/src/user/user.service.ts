@@ -1,7 +1,6 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
+  ConflictException,
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -16,6 +15,7 @@ import { UserStatus } from '@prisma/client';
 import { File } from 'src/toys/toys.service';
 import { v2 } from 'cloudinary';
 import { round } from 'lodash';
+import { encodeETag } from 'src/shared/encodeETag';
 
 @Injectable()
 export class UserService {
@@ -69,25 +69,68 @@ export class UserService {
     };
   }
 
-  async editUserById(userData: UpdateUserSelfDto) {
+  async editUserById(userData: UpdateUserSelfDto, ifMatch: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userData.id,
+      },
+    });
+
+    const currentEtag = encodeETag(user.version, user.id);
+
+    if (currentEtag !== ifMatch) {
+      console.log('XD', currentEtag, ' vs ', ifMatch);
+
+      throw new ConflictException(
+        'The data is expired. Please refresh the page',
+      );
+    }
+
     try {
-      return this.prisma.user.update({
+      const user = await this.prisma.user.update({
         where: {
           id: userData.id,
         },
         data: {
           ...userData,
+          version: {
+            increment: 1,
+          },
         },
         include: {
           toys: true,
         },
       });
+
+      const userRating = await this.getUserRating(user.id);
+
+      return {
+        ...user,
+        rating: {
+          value: userRating._avg.value,
+          count: userRating._count.value,
+        },
+      };
     } catch (e) {
       throw new BadRequestException('Something went wrong');
     }
   }
 
-  async adminEditUserById(userData: UpdateUserDto) {
+  async adminEditUserById(userData: UpdateUserDto, ifMatch: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userData.id,
+      },
+    });
+
+    const currentEtag = encodeETag(user.version, user.id);
+
+    if (currentEtag !== ifMatch) {
+      throw new ConflictException(
+        'The data is expired. Please refresh the page',
+      );
+    }
+
     try {
       return this.prisma.user.update({
         where: {
@@ -95,6 +138,9 @@ export class UserService {
         },
         data: {
           ...userData,
+          version: {
+            increment: 1,
+          },
         },
         include: {
           toys: true,

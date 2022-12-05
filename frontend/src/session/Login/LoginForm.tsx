@@ -27,7 +27,7 @@ export const LoginForm = () => {
       setIsLoading(true);
       // temp fix
       const data = await loginUser(values as never);
-      await setUserAndRedirect(data.access_token);
+      await setUserAndRedirect(data.data.access_token);
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({

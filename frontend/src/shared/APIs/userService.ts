@@ -1,16 +1,17 @@
-import { APIRequestBody, APIResponse, fetchPost } from "./baseFetch";
+import { AxiosResponse } from "axios";
+import { APIRequestBody, APIResponse, client } from "./baseFetch";
 import { paths } from "./types";
 
 export const loginUser = (userData: APIRequestBody<"/auth/login">) => {
-  return fetchPost("/auth/login", userData);
+  return client.post("/auth/login", userData);
 };
 
 export const signUp = (userData: APIRequestBody<"/user/sign-up">) => {
-  return fetchPost("/user/sign-up", userData);
+  return client.post("/user/sign-up", userData);
 };
 
 export const getAllUsers = () => {
-  return fetchPost("/user/users");
+  return client.post("/user/users");
 };
 
 export type UserList = APIResponse<"/user/users">[number];
@@ -20,28 +21,40 @@ export type UserStatus = User["status"];
 export type UserRole = User["role"];
 export type RatingType = User["rating"];
 
-export const getUserData = (userId: string): Promise<User> => {
-  return fetchPost("/user/user", { id: userId });
+export const getUserData = (userId: string): Promise<AxiosResponse<User>> => {
+  return client.post("/user/user", {
+    id: userId,
+  });
 };
 
 export const updateAvatar = (file: FormData, userId: string) => {
-  return fetchPost(`/user/image/${userId}` as keyof paths, file as never);
+  return client.post(`/user/image/${userId}` as keyof paths, file as never);
 };
 
 export const editUserData = (
-  userData: APIRequestBody<"/user/edit">
-): Promise<APIResponse<"/user/edit">> => {
-  return fetchPost("/user/edit", userData);
+  userData: APIRequestBody<"/user/edit"> & { etag?: string },
+  etag: string
+): Promise<AxiosResponse<User>> => {
+  return client.post("/user/edit", userData, {
+    headers: {
+      "If-Match": etag,
+    },
+  });
 };
 
 export const editUserDataByAdmin = (
-  userData: APIRequestBody<"/user/editByAdmin">
-): Promise<APIResponse<"/user/editByAdmin">> => {
-  return fetchPost("/user/editByAdmin", userData);
+  userData: APIRequestBody<"/user/editByAdmin"> & { etag?: string },
+  etag: string
+): Promise<AxiosResponse<APIResponse<"/user/editByAdmin">>> => {
+  return client.post("/user/editByAdmin", userData, {
+    headers: {
+      "If-Match": etag,
+    },
+  });
 };
 
 export const rateUser = (payload: APIRequestBody<"/user/rate">) => {
-  return fetchPost("/user/rate", payload);
+  return client.post("/user/rate", payload);
 };
 
 export const logout = async () => {

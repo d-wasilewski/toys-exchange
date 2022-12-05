@@ -13,16 +13,23 @@ import { showNotification } from "@mantine/notifications";
 import { IconChevronRight } from "@tabler/icons";
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import {
+  useRecoilRefresher_UNSTABLE,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
+import { selectedUserState } from "../admin/adminState";
 import { userState } from "../session/sessionState";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import { editUserData } from "../shared/APIs/userService";
 import { schema } from "./userDetailsValidation";
 
 export const UserDetails = () => {
-  const selectedUser = useRecoilValue(userState);
+  const selectedUser = useRecoilValue(selectedUserState);
+  const refreshSelectedUser = useRecoilRefresher_UNSTABLE(selectedUserState);
   const [isLoading, setIsLoading] = useState(false);
   const [active] = useOutletContext<string>();
+  const setUser = useSetRecoilState(userState);
 
   if (!selectedUser) return null;
 
@@ -40,7 +47,18 @@ export const UserDetails = () => {
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setIsLoading(true);
-      await editUserData({ id: selectedUser.id, ...values });
+      const editedUser = await editUserData(
+        { id: selectedUser.id, ...values },
+        selectedUser.etag
+      );
+      showNotification({
+        title: "Success",
+        message: "User updated successfully",
+        color: "green",
+        autoClose: 3000,
+      });
+      setUser(editedUser.data);
+      refreshSelectedUser();
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
@@ -51,12 +69,6 @@ export const UserDetails = () => {
       });
     } finally {
       setIsLoading(false);
-      showNotification({
-        title: "Success",
-        message: "User updated successfully",
-        color: "green",
-        autoClose: 3000,
-      });
     }
   };
 

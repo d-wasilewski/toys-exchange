@@ -10,7 +10,7 @@ export const toysListState = selector({
   key: "toysListState",
   get: async () => {
     const toysList = await fetchToysList();
-    return toysList;
+    return toysList.data;
   },
 });
 
@@ -20,7 +20,7 @@ export const currentToysListState = selector({
     const user = get(userState);
     if (user) {
       const toysByOwner = await fetchToysByOwner(user?.id);
-      return toysByOwner;
+      return toysByOwner.data;
     }
     return [];
   },
@@ -47,7 +47,7 @@ export const selectedToyState = selector({
     const toyId = get(selectedToyIdState);
     if (toyId) {
       const user = await getToyData(toyId);
-      return user;
+      return user.data;
     }
     return null;
   },

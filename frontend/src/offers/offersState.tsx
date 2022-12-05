@@ -10,7 +10,7 @@ export const allOffersState = selector({
   key: "allOffersState",
   get: async () => {
     const allOffers = await getAllOffers();
-    return allOffers;
+    return allOffers.data;
   },
 });
 
@@ -21,7 +21,7 @@ export const myActiveOffersState = selector({
 
     if (!user) return [];
     const activeOffers = await getActiveOffers(user?.id);
-    return activeOffers;
+    return activeOffers.data;
   },
 });
 
@@ -32,6 +32,6 @@ export const myHistoryOffersState = selector({
 
     if (!user) return [];
     const historyOffers = await getHistoryOffers(user?.id);
-    return historyOffers;
+    return historyOffers.data;
   },
 });

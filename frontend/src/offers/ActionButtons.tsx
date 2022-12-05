@@ -6,6 +6,7 @@ import {
   Rating,
   Center,
   Stack,
+  Badge,
 } from "@mantine/core";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
@@ -29,6 +30,7 @@ interface ActionButtonsProps {
   userToRateId: string;
   offerRating: OfferRating;
   offerSender: OfferUser;
+  adminPage?: boolean;
 }
 
 export const ActionButtons = ({
@@ -37,6 +39,7 @@ export const ActionButtons = ({
   userToRateId,
   offerRating,
   offerSender,
+  adminPage,
 }: ActionButtonsProps) => {
   const [isAcceptLoading, setIsAcceptLoading] = useState(false);
   const [isDeclineLoading, setIsDeclineLoading] = useState(false);
@@ -168,72 +171,111 @@ export const ActionButtons = ({
 
   return (
     <>
-      {(() => {
-        switch (status) {
-          case "PENDING":
-            return (
-              <Group>
-                <Button
-                  color="green"
-                  onClick={handleAccept}
-                  loading={isAcceptLoading}
-                >
-                  Accept
-                </Button>
-                <Button
-                  color="red"
-                  onClick={handleDecline}
-                  loading={isDeclineLoading}
-                >
-                  Decline
-                </Button>
-              </Group>
-            );
-          case "ACCEPTED": {
-            return (
-              <>
-                {offerRating ? (
-                  <Stack justify="center" spacing={0}>
-                    <Text align="center">Your rate:</Text>
-                    <Rating mt={4} value={offerRating.value} readOnly />
+      {adminPage
+        ? (() => {
+            switch (status) {
+              case "PENDING":
+                return (
+                  <Badge color="yellow" size="xl">
+                    PENDING
+                  </Badge>
+                );
+              case "ACCEPTED":
+                return (
+                  <Stack spacing={0} justify="center">
+                    <Badge color="green" size="xl">
+                      Accepted
+                    </Badge>
+                    {offerRating && (
+                      <Group spacing={2} mt={4}>
+                        <Text align="center">Rated: </Text>
+                        <Rating value={offerRating.value} readOnly />
+                      </Group>
+                    )}
                   </Stack>
-                ) : (
-                  <Popover width={250} position="bottom" withArrow shadow="md">
-                    <Popover.Target>
-                      <Button>Rate user</Button>
-                    </Popover.Target>
-                    <Popover.Dropdown>
-                      <Center>
-                        <Text size="sm">
-                          How did you like the exchange?
-                          <Rating
-                            mt={4}
-                            defaultValue={2}
-                            size="xl"
-                            fractions={2}
-                            onChange={(val) => {
-                              handleUserRate(val);
-                            }}
-                          />
-                        </Text>
-                      </Center>
-                    </Popover.Dropdown>
-                  </Popover>
-                )}
-              </>
-            );
-          }
-          case "DECLINED": {
-            return (
-              <Button disabled color="grape">
-                Declined
-              </Button>
-            );
-          }
-          default:
-            break;
-        }
-      })()}
+                );
+              case "DECLINED":
+                return (
+                  <Badge color="gray" size="xl">
+                    DECLINED
+                  </Badge>
+                );
+
+              default:
+                break;
+            }
+          })()
+        : (() => {
+            switch (status) {
+              case "PENDING":
+                return (
+                  <Group>
+                    <Button
+                      color="green"
+                      onClick={handleAccept}
+                      loading={isAcceptLoading}
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      color="red"
+                      onClick={handleDecline}
+                      loading={isDeclineLoading}
+                    >
+                      Decline
+                    </Button>
+                  </Group>
+                );
+              case "ACCEPTED": {
+                return (
+                  <>
+                    {offerRating ? (
+                      <Stack justify="center" spacing={0}>
+                        <Text align="center">Your rate:</Text>
+                        <Rating mt={4} value={offerRating.value} readOnly />
+                      </Stack>
+                    ) : (
+                      <Popover
+                        width={250}
+                        position="bottom"
+                        withArrow
+                        shadow="md"
+                      >
+                        <Popover.Target>
+                          <Button>Rate user</Button>
+                        </Popover.Target>
+                        <Popover.Dropdown>
+                          <Center>
+                            <Text size="sm">
+                              How did you like the exchange?
+                              <Rating
+                                mt={4}
+                                defaultValue={2}
+                                size="xl"
+                                fractions={2}
+                                onChange={(val) => {
+                                  handleUserRate(val);
+                                }}
+                              />
+                            </Text>
+                          </Center>
+                        </Popover.Dropdown>
+                      </Popover>
+                    )}
+                  </>
+                );
+              }
+              case "DECLINED": {
+                return (
+                  <Button disabled color="grape">
+                    Declined
+                  </Button>
+                );
+              }
+              default:
+                break;
+            }
+          })()}
     </>
   );
 };

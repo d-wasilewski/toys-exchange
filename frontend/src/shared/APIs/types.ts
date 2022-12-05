@@ -149,6 +149,7 @@ export interface components {
       createdAt: string;
       updatedAt: string;
       rating: components["schemas"]["Rating"];
+      version: number;
     };
     UserIdDto: {
       id: string;
@@ -405,7 +406,7 @@ export interface operations {
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["BasicUserDto"];
+          "application/json": components["schemas"]["UserDto"];
         };
       };
     };

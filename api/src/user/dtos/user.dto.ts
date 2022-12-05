@@ -124,6 +124,10 @@ export class UserDto {
   @ValidateNested()
   @Type(() => Rating)
   rating: Rating;
+
+  @IsNotEmpty()
+  @IsNumber()
+  version: number;
 }
 
 export class UpdateUserDto {

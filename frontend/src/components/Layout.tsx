@@ -15,7 +15,6 @@ const adminLinks = [
   { label: "Homepage", link: ROUTES.root },
   { label: "Toys", link: ROUTES.toys },
   { label: "Admin page", link: ROUTES.admin },
-  { label: "All offers", link: ROUTES.addToy },
   { label: "Logout", link: ROUTES.root },
 ];
 

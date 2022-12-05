@@ -21,7 +21,7 @@ export const useSuccessfulLoginHandler = () => {
 
     const userData = await getUserData(decodedToken.sub);
 
-    setUser(userData);
+    setUser(userData.data);
 
     navigate("/toys");
   };

@@ -18,6 +18,7 @@ model User {
   address     String?
   role        UserRole   @default(BASIC)
   status      UserStatus @default(ACTIVE)
+  version     Int        @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -49,17 +50,20 @@ enum UserStatus {
 }
 
 model Toy {
-  id                 String        @id @default(uuid())
-  name               String
-  category           ToyCategories @default(OTHER)
-  imgUrl             String
-  description        String
-  owner              User          @relation(fields: [ownerId], references: [id])
-  ownerId            String
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @default(now()) @updatedAt
-  offersFromSender   Offer[]       @relation(name: "toyFromSender")
-  offersFromReceiver Offer[]       @relation(name: "toyFromReceiver")
+  id          String        @id @default(uuid())
+  name        String
+  category    ToyCategories @default(OTHER)
+  imgUrl      String
+  description String
+  owner       User          @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  version     Int           @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  offersFromSender   Offer[] @relation(name: "toyFromSender")
+  offersFromReceiver Offer[] @relation(name: "toyFromReceiver")
 }
 
 enum ToyCategories {
@@ -97,8 +101,10 @@ model Offer {
   toyFromReceiverId String
   status            OfferStatus @default(PENDING)
   rating            Rating?
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @default(now()) @updatedAt
+  version           Int         @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum OfferStatus {

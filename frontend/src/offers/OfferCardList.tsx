@@ -8,9 +8,9 @@ export const OfferCardList = () => {
 
   return (
     <Center>
-      <Flex direction="column" gap="xl" mt={50}>
+      <Flex direction="column" gap="xl" mt={20}>
         {allOffers.map((offer) => {
-          return <OfferCard offer={offer} />;
+          return <OfferCard offer={offer} adminPage />;
         })}
       </Flex>
     </Center>

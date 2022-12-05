@@ -3,11 +3,14 @@ import {
   Controller,
   Param,
   Post,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Headers,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { encodeETag } from 'src/shared/encodeETag';
 import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
 import { File } from 'src/toys/toys.service';
 import {
@@ -37,8 +40,16 @@ export class UserController {
   }
 
   @Post('user')
-  async getUserById(@Body() data: UserIdDto): Promise<UserDto> {
-    return this.userService.getUserById(data.id);
+  async getUserById(@Body() data: UserIdDto, @Res() res): Promise<UserDto> {
+    const user = await this.userService.getUserById(data.id);
+    const tag = encodeETag(user.version, user.id);
+
+    return res
+      .set({
+        ETag: tag,
+        'Access-Control-Expose-Headers': 'ETag',
+      })
+      .json(user);
   }
 
   @UseInterceptors(FileInterceptor('file'))
@@ -56,13 +67,19 @@ export class UserController {
   }
 
   @Post('/editByAdmin')
-  async editUserById(@Body() data: UpdateUserDto): Promise<BasicUserDto> {
-    return this.userService.adminEditUserById(data);
+  async editUserById(
+    @Body() data: UpdateUserDto,
+    @Headers('If-Match') ifMatch,
+  ): Promise<BasicUserDto> {
+    return this.userService.adminEditUserById(data, ifMatch);
   }
 
   @Post('/edit')
-  async editUserByID(@Body() data: UpdateUserSelfDto): Promise<BasicUserDto> {
-    return this.userService.editUserById(data);
+  async editUserByID(
+    @Body() data: UpdateUserSelfDto,
+    @Headers('If-Match') ifMatch,
+  ): Promise<UserDto> {
+    return this.userService.editUserById(data, ifMatch);
   }
 
   @UseGuards(AdminPermissionGuard)

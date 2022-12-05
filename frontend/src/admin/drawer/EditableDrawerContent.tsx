@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Container,
+  ScrollArea,
   Select,
   Stack,
   TextInput,
@@ -50,6 +51,7 @@ const statusData: StatusSelect[] = [
 
 export const EditableDrawerContent = () => {
   const selectedUser = useRecoilValue(selectedUserState);
+  const refreshSelectedUser = useRecoilRefresher_UNSTABLE(selectedUserState);
   const refreshTable = useRecoilRefresher_UNSTABLE(usersListState);
   const [isLoading, setIsLoading] = useState(false);
   const setIsDrawerOpen = useSetRecoilState(isAdminDrawerOpenedState);
@@ -72,7 +74,17 @@ export const EditableDrawerContent = () => {
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setIsLoading(true);
-      await editUserDataByAdmin({ id: selectedUser.id, ...values });
+      await editUserDataByAdmin(
+        { id: selectedUser.id, ...values },
+        selectedUser.etag
+      );
+      showNotification({
+        title: "Success",
+        message: "User updated successfully",
+        color: "green",
+        autoClose: 3000,
+      });
+      refreshSelectedUser();
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
@@ -85,12 +97,6 @@ export const EditableDrawerContent = () => {
       setIsLoading(false);
       setIsDrawerOpen(false);
       refreshTable();
-      showNotification({
-        title: "Success",
-        message: "User updated successfully",
-        color: "green",
-        autoClose: 3000,
-      });
     }
   };
 

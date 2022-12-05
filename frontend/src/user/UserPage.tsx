@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createStyles,
   Navbar,
@@ -17,9 +17,12 @@ import {
   IconHistory,
 } from "@tabler/icons";
 import { userState } from "../session/sessionState";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Outlet, useNavigate } from "react-router-dom";
 import { updateAvatar } from "../shared/APIs/userService";
+import { clickedUserIdState } from "../admin/adminState";
+import { showNotification } from "@mantine/notifications";
+import { getErrorMessage } from "../shared/APIs/baseFetch";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -119,9 +122,16 @@ export function UserPage() {
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Your data");
   const user = useRecoilValue(userState);
+  const setSelectedUserId = useSetRecoilState(clickedUserIdState);
   const navigate = useNavigate();
   // const location = useLocation();
   // console.log({ location: location.pathname.split("/").at(-1) });
+
+  useEffect(() => {
+    if (!user) return;
+    console.log("Dupa");
+    setSelectedUserId(user?.id);
+  }, [user?.id]);
 
   const links = data.map((item) => (
     <a
@@ -133,7 +143,9 @@ export function UserPage() {
       onClick={(event) => {
         event.preventDefault();
         setActive(item.label);
-        navigate(`/user/${user?.id}/${item.link}`);
+        if (user && user.id) {
+          navigate(`/user/${user.id}/${item.link}`);
+        }
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
@@ -147,8 +159,20 @@ export function UserPage() {
     formData.set("file", file);
     try {
       await updateAvatar(formData, user.id);
+      showNotification({
+        title: "Success",
+        message: "Avatar updated successfully",
+        color: "green",
+        autoClose: 3000,
+      });
     } catch (e) {
-    } finally {
+      const message = getErrorMessage(e);
+      showNotification({
+        title: "Error",
+        message: message ?? "Something went wrong",
+        color: "red",
+        autoClose: 5000,
+      });
     }
   };
 

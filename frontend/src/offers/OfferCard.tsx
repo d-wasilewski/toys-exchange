@@ -8,9 +8,10 @@ import { OfferDetails } from "./OfferDetails";
 
 interface OfferCardProps {
   offer: Offer;
+  adminPage?: boolean;
 }
 
-export const OfferCard = ({ offer }: OfferCardProps) => {
+export const OfferCard = ({ offer, adminPage }: OfferCardProps) => {
   const currentUser = useRecoilValue(userState);
 
   const userToRateId =
@@ -31,6 +32,7 @@ export const OfferCard = ({ offer }: OfferCardProps) => {
               userToRateId={userToRateId}
               offerRating={offer.rating}
               offerSender={offer.sender}
+              adminPage={adminPage}
             />
           </Flex>
         </Container>

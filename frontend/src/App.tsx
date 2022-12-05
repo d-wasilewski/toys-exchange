@@ -5,11 +5,8 @@ import { LoginPage } from "./session/Login/LoginPage";
 import { RegisterPage } from "./session/Register/RegisterPage";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
-import { MyToysView } from "./toys/MyToysView";
 import { logout } from "./shared/APIs/userService";
 import { AdminPage } from "./admin/AdminPage";
-import { OfferCardList } from "./offers/OfferCardList";
-import { MyOffersView } from "./offers/MyOffersView";
 import { UserPage } from "./user/UserPage";
 import { UserDetails } from "./user/UserDetails";
 import { UserToys } from "./user/UserToys";
@@ -51,7 +48,14 @@ function App() {
       <Layout>
         <Routes>
           <Route path={ROUTES.user} element={<UserPage />}>
-            <Route path={ROUTES.userDetails} element={<UserDetails />} />
+            <Route
+              path={ROUTES.userDetails}
+              element={
+                <SuspenseFallback>
+                  <UserDetails />
+                </SuspenseFallback>
+              }
+            />
             <Route
               path={ROUTES.userActiveOffers}
               element={
@@ -78,41 +82,18 @@ function App() {
             />
           </Route>
           <Route
-            path="/toys"
+            path={ROUTES.toys}
             element={
               <SuspenseFallback>
                 <ToysView />
               </SuspenseFallback>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path={ROUTES.login} element={<LoginPage />} />
+          <Route path={ROUTES.register} element={<RegisterPage />} />
+
           <Route
-            path="/my-toys"
-            element={
-              <SuspenseFallback>
-                <MyToysView />
-              </SuspenseFallback>
-            }
-          />
-          <Route
-            path="/my-offers"
-            element={
-              <SuspenseFallback>
-                <MyOffersView />
-              </SuspenseFallback>
-            }
-          />
-          <Route
-            path="/add-toy"
-            element={
-              <SuspenseFallback>
-                <OfferCardList />
-              </SuspenseFallback>
-            }
-          />
-          <Route
-            path="/admin"
+            path={ROUTES.admin}
             element={
               <SuspenseFallback>
                 <AdminPage />
