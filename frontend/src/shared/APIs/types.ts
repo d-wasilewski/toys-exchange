@@ -37,11 +37,17 @@ export interface paths {
   "/auth/login": {
     post: operations["AuthController_login"];
   };
+  "/auth/confirmAccount": {
+    post: operations["AuthController_confirmAccount"];
+  };
+  "/auth/sendResetPasswordLink": {
+    post: operations["AuthController_resetPasswordLink"];
+  };
+  "/auth/resetPassword": {
+    post: operations["AuthController_resetPassword"];
+  };
   "/auth/protected": {
     get: operations["AuthController_protectedRoute"];
-  };
-  "/auth/test": {
-    post: operations["AuthController_getTest"];
   };
   "/toy/create-toy": {
     post: operations["ToysController_createToy"];
@@ -461,22 +467,38 @@ export interface operations {
       };
     };
   };
+  AuthController_confirmAccount: {
+    parameters: {
+      query: {
+        token: string;
+      };
+    };
+    responses: {
+      201: unknown;
+    };
+  };
+  AuthController_resetPasswordLink: {
+    parameters: {};
+    responses: {
+      201: unknown;
+    };
+  };
+  AuthController_resetPassword: {
+    parameters: {
+      query: {
+        token: string;
+      };
+    };
+    responses: {
+      201: unknown;
+    };
+  };
   AuthController_protectedRoute: {
     parameters: {};
     responses: {
       200: {
         content: {
           "application/json": string;
-        };
-      };
-    };
-  };
-  AuthController_getTest: {
-    parameters: {};
-    responses: {
-      201: {
-        content: {
-          "application/json": components["schemas"]["UserLoginDto"];
         };
       };
     };

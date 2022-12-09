@@ -1,4 +1,4 @@
-import axios, { AxiosError, ResponseType, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import { paths } from "./types";
 
 export const client = axios.create({

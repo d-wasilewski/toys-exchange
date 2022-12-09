@@ -15,6 +15,8 @@ import { UserOffersHistory } from "./user/UserOffersHistory";
 import { Layout } from "./components/Layout";
 import { SuspenseFallback } from "./components/SuspenseFallback";
 import { Homepage } from "./components/homepage/Homepage";
+import { ConfirmedAccount } from "./session/auth/ConfirmedAccount";
+import { ResetPassword } from "./session/auth/resetPassword/ResetPassword";
 
 interface IDecodedToken {
   auth: string;
@@ -81,6 +83,10 @@ function App() {
               }
             />
           </Route>
+
+          <Route path={ROUTES.authConfirm} element={<ConfirmedAccount />} />
+          <Route path={ROUTES.authResetPassword} element={<ResetPassword />} />
+
           <Route
             path={ROUTES.toys}
             element={

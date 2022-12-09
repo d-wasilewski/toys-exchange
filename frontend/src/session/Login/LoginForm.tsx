@@ -1,17 +1,27 @@
 import { loginUser } from "../../shared/APIs/userService";
 import { useSuccessfulLoginHandler } from "../useSuccessfulLoginHandler";
-import { Button, Paper, PasswordInput, Stack, TextInput } from "@mantine/core";
+import {
+  Anchor,
+  Button,
+  Paper,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { schema } from "./validateSchema";
 import { getErrorMessage } from "../../shared/APIs/baseFetch";
 import { showNotification } from "@mantine/notifications";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
   const [visible, { toggle }] = useDisclosure(false);
   const [isLoading, setIsLoading] = useState(false);
   const { setUserAndRedirect } = useSuccessfulLoginHandler();
+  const navigate = useNavigate();
 
   const form = useForm({
     initialValues: {
@@ -63,7 +73,16 @@ export const LoginForm = () => {
             {...form.getInputProps("password")}
           />
         </Stack>
-        <Button type="submit" mt="md" fullWidth radius="md" loading={isLoading}>
+        <Text color="dimmed" size="sm" align="center" mt={5}>
+          <Anchor
+            component="button"
+            type="button"
+            onClick={() => navigate("/auth/resetPassword")}
+          >
+            Reset password
+          </Anchor>
+        </Text>
+        <Button type="submit" mt="sm" fullWidth radius="md" loading={isLoading}>
           Submit
         </Button>
       </form>

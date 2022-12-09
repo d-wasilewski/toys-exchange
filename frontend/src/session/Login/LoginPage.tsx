@@ -1,7 +1,10 @@
 import { Anchor, Container, Text, Title } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import { LoginForm } from "./LoginForm";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+
   return (
     <Container size={420} my={80}>
       <Title
@@ -15,10 +18,10 @@ export const LoginPage = () => {
       </Title>
       <Text color="dimmed" size="sm" align="center" mt={5}>
         Don't have an account?{" "}
-        <Anchor<"a">
-          href="/login"
-          size="sm"
-          onClick={(event) => event.preventDefault()}
+        <Anchor
+          component="button"
+          type="button"
+          onClick={() => navigate("/register")}
         >
           Register
         </Anchor>

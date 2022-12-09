@@ -118,7 +118,7 @@ export function AppHeader({ links }: HeaderSearchProps) {
     <Header height={56} className={classes.header} mb={120}>
       <Container>
         <div className={classes.inner}>
-          <div>logo</div>
+          <div>Toylink</div>
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>

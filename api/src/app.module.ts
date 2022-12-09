@@ -17,9 +17,10 @@ import { OfferController } from './offer/offer.controller';
 import { OfferService } from './offer/offer.service';
 import { OfferModule } from './offer/offer.module';
 import { LoggerMiddleware } from './shared/middleware/logger.middleware';
+import { MailModule } from './mail/mail.module';
 
 @Module({
-  imports: [PrismaModule, UserModule, AuthModule, ToysModule, OfferModule],
+  imports: [PrismaModule, UserModule, AuthModule, ToysModule, OfferModule, MailModule],
   controllers: [
     AppController,
     UserController,
