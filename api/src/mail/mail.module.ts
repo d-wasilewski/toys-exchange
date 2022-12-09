@@ -8,13 +8,12 @@ import { join } from 'path';
 @Module({
   imports: [
     MailerModule.forRoot({
-      // transport: process.env.MAIL_TRANSPORT,
       transport: {
-        host: 'smtp.sendgrid.net',
+        host: process.env.MAIL_HOST,
         secure: false,
         auth: {
-          user: 'apikey',
-          pass: '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',
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASSWORD,
         },
       },
       defaults: {
@@ -22,7 +21,7 @@ import { join } from 'path';
       },
       template: {
         dir: join(__dirname, 'templates'),
-        adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+        adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
         },
@@ -30,6 +29,6 @@ import { join } from 'path';
     }),
   ],
   providers: [MailService],
-  exports: [MailService], // 👈 export for DI
+  exports: [MailService],
 })
 export class MailModule {}

@@ -2,6 +2,8 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -16,27 +18,70 @@ import { File } from 'src/toys/toys.service';
 import { v2 } from 'cloudinary';
 import { round } from 'lodash';
 import { encodeETag } from 'src/shared/encodeETag';
+import { MailService } from 'src/mail/mail.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mailService: MailService,
+    private jwtService: JwtService,
+  ) {}
 
   async register(data: RegisterUserDto) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    try {
-      const createdUser = await this.prisma.user.create({
-        data: {
-          ...data,
-          password: hashedPassword,
-        },
-        include: {
-          toys: true,
-        },
-      });
 
-      return createdUser;
+    try {
+      return await this.prisma.$transaction(async (tx) => {
+        const createdUser = await tx.user.create({
+          data: {
+            ...data,
+            password: hashedPassword,
+          },
+          include: {
+            toys: true,
+          },
+        });
+
+        if (!createdUser)
+          throw new NotFoundException('Error while creating user');
+
+        const payload = { username: createdUser.email, sub: createdUser.id };
+
+        const token = this.jwtService.sign(payload, {
+          secret: process.env.JWT_SECRET,
+        });
+
+        try {
+          await this.mailService.sendUserConfirmation(createdUser, token);
+        } catch (e) {
+          throw e;
+        }
+
+        return createdUser;
+      });
     } catch (error) {
       throw new BadRequestException('Something went wrong');
+    }
+  }
+
+  async changePassword(email: string, newPassword: string) {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    if (!email) throw new BadRequestException('No email provided');
+
+    try {
+      await this.prisma.user.update({
+        where: {
+          email,
+        },
+        data: {
+          password: hashedPassword,
+        },
+      });
+    } catch {
+      throw new InternalServerErrorException('Something went wrong');
     }
   }
 
@@ -242,5 +287,20 @@ export class UserService {
         imgUrl: uploadResponse.url,
       },
     });
+  }
+
+  async confirmUserAccount(email: string) {
+    try {
+      await this.prisma.user.update({
+        where: {
+          email,
+        },
+        data: {
+          confirmed: true,
+        },
+      });
+    } catch (e) {
+      throw new Error('Something went wrong');
+    }
   }
 }

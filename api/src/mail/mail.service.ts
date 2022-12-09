@@ -1,28 +1,44 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { UserPayloadDto } from 'src/auth/dto/auth.dto';
 
 @Injectable()
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
-  async sendUserConfirmation(user: UserPayloadDto, token: string) {
-    const url = `example.com/auth/confirm?token=${token}`;
+  async sendUserConfirmation(user: User, token: string) {
+    const url = `http://localhost:5173/auth/confirmAccount?token=${token}`;
+    try {
+      await this.mailerService.sendMail({
+        to: user.email,
+        from: `Noreply <support@example.com>`,
+        subject: 'Welcome to Toylink App! Confirm your Email',
+        template: './confirmation',
+        context: {
+          name: user.name,
+          url,
+        },
+      });
+    } catch (e) {
+      throw new Error('Error while sending email');
+    }
+  }
 
-    await this.mailerService.sendMail({
-      // to: user.email,
-      to: 'd.wasilewski@interia.eu',
-      from: 'd.wasilewski@samorzad.p.lodz.pl',
-      // from: '"Support Team" <support@example.com>', // override default from
-      subject: 'Welcome to Nice App! Confirm your Email',
-      template: './confirmation', // `.hbs` extension is appended automatically
-      context: {
-        // ✏️ filling curly brackets with content
-        name: 'user name ',
-        url,
-      },
-    });
-    console.log('Email sent');
+  async sendUserResetPassword(user: User, token: string) {
+    const url = `http://localhost:5173/auth/resetPassword?token=${token}`;
+    try {
+      await this.mailerService.sendMail({
+        to: user.email,
+        from: `Noreply <support@example.com>`,
+        subject: 'Password reset',
+        template: './resetPassword',
+        context: {
+          name: user.name,
+          url,
+        },
+      });
+    } catch (e) {
+      throw new Error('Error while sending email');
+    }
   }
 }
