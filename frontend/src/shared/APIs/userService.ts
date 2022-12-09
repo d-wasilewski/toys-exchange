@@ -53,6 +53,20 @@ export const editUserDataByAdmin = (
   });
 };
 
+export const confirmAccount = (token: string) => {
+  return client.post(`/auth/confirmAccount?token=${token}`);
+};
+
+export const sendResetPasswordEmail = (email: string) => {
+  return client.post("/auth/sendResetPasswordLink", { email });
+};
+
+export const resetPassword = (token: string, newPassword: string) => {
+  return client.post(`/auth/resetPassword?token=${token}`, {
+    newPassword,
+  });
+};
+
 export const rateUser = (payload: APIRequestBody<"/user/rate">) => {
   return client.post("/user/rate", payload);
 };

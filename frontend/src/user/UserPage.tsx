@@ -129,7 +129,6 @@ export function UserPage() {
 
   useEffect(() => {
     if (!user) return;
-    console.log("Dupa");
     setSelectedUserId(user?.id);
   }, [user?.id]);
 

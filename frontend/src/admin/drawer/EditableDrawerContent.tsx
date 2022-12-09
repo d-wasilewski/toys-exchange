@@ -3,7 +3,6 @@ import {
   Button,
   Center,
   Container,
-  ScrollArea,
   Select,
   Stack,
   TextInput,

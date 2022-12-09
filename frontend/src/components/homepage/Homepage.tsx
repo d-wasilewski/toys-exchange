@@ -86,9 +86,7 @@ export function Homepage() {
           zIndex={0}
         />
         <Container className={classes.container}>
-          <Title className={classes.title}>
-            Swap and enjoy your toys for longer
-          </Title>
+          <Title className={classes.title}>Play & Swap & Repeat</Title>
           <Text className={classes.description} size="xl" mt="xl">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
             dolores. Ipsa delectus quasi laudantium itaque id tenetur odit
