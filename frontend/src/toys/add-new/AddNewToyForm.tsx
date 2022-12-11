@@ -7,7 +7,7 @@ import { userState } from "../../session/sessionState";
 import { createToy, ToyCategories } from "../../shared/APIs/toysService";
 
 interface CategoriesSelect {
-  value: ToyCategories;
+  value: ToyCategories | "ALL CATEGORIES";
   label: string;
 }
 

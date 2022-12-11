@@ -177,58 +177,56 @@ export function UserPage() {
 
   return (
     // 1214 952
-    <Container size={1514} mt={30}>
-      <Flex>
-        <Navbar
-          height={700}
-          width={{ sm: 300 }}
-          p="md"
-          className={classes.navbar}
-        >
-          <Navbar.Section grow>
-            <Group className={classes.header}>
-              <FileButton
-                onChange={(file) => handleAvatarClick(file)}
-                accept="image/png,image/jpeg"
-              >
-                {(props) => (
-                  <Avatar
-                    src={user?.imgUrl}
-                    size="lg"
-                    radius="xl"
-                    className={classes.avatar}
-                    {...props}
-                  />
-                )}
-              </FileButton>
-              <Flex direction="column">
-                <Text fw={500} fz="lg">
-                  {user?.name}
-                </Text>
-                <Text c="dimmed" fz="xs">
-                  {user?.email}
-                </Text>
-              </Flex>
-            </Group>
-            {links}
-          </Navbar.Section>
-
-          <Navbar.Section className={classes.footer}>
-            <a
-              href="#"
-              className={classes.link}
-              onClick={(event) => event.preventDefault()}
+    <Flex>
+      <Navbar
+        height={700}
+        width={{ sm: 300 }}
+        p="md"
+        className={classes.navbar}
+      >
+        <Navbar.Section grow>
+          <Group className={classes.header}>
+            <FileButton
+              onChange={(file) => handleAvatarClick(file)}
+              accept="image/png,image/jpeg"
             >
-              <IconLogout className={classes.linkIcon} stroke={1.5} />
-              <span>Logout</span>
-            </a>
-          </Navbar.Section>
-        </Navbar>
-        {/* TODO: might want to exclude fluid */}
-        <Container m={0} px={30} fluid miw={1000}>
-          <Outlet context={[active]} />
-        </Container>
-      </Flex>
-    </Container>
+              {(props) => (
+                <Avatar
+                  src={user?.imgUrl}
+                  size="lg"
+                  radius="xl"
+                  className={classes.avatar}
+                  {...props}
+                />
+              )}
+            </FileButton>
+            <Flex direction="column">
+              <Text fw={500} fz="lg">
+                {user?.name}
+              </Text>
+              <Text c="dimmed" fz="xs">
+                {user?.email}
+              </Text>
+            </Flex>
+          </Group>
+          {links}
+        </Navbar.Section>
+
+        <Navbar.Section className={classes.footer}>
+          <a
+            href="#"
+            className={classes.link}
+            onClick={(event) => event.preventDefault()}
+          >
+            <IconLogout className={classes.linkIcon} stroke={1.5} />
+            <span>Logout</span>
+          </a>
+        </Navbar.Section>
+      </Navbar>
+      {/* TODO: might want to exclude fluid */}
+      <Container m={0} px={30} fluid miw={1000}>
+        <Outlet context={[active]} />
+      </Container>
+    </Flex>
   );
 }

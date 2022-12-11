@@ -3,16 +3,18 @@ import {
   Header,
   Group,
   Burger,
-  Container,
   Box,
   UnstyledButton,
   Avatar,
   Text,
+  Image,
+  Center,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../session/sessionState";
+import Logo from "../assets/logo.png";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -28,6 +30,7 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    width: 1400,
   },
 
   links: {
@@ -116,9 +119,16 @@ export function AppHeader({ links }: HeaderSearchProps) {
 
   return (
     <Header height={56} className={classes.header} mb={120}>
-      <Container>
+      <Center>
         <div className={classes.inner}>
-          <div>Toylink</div>
+          <Image
+            radius="md"
+            src={Logo}
+            alt="Random unsplash image"
+            height={25}
+            fit="contain"
+            width={100}
+          />
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>
@@ -127,7 +137,7 @@ export function AppHeader({ links }: HeaderSearchProps) {
               className={classes.user}
               onClick={() => navigate(`/user/${user?.id}/details`)}
             >
-              <Group spacing={7}>
+              <Group spacing={7} mr={100}>
                 <Avatar
                   src={user?.imgUrl}
                   alt={user?.name}
@@ -137,7 +147,6 @@ export function AppHeader({ links }: HeaderSearchProps) {
                 <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
                   {user?.name}
                 </Text>
-                {/* <IconChevronDown size={12} stroke={1.5} /> */}
               </Group>
             </UnstyledButton>
           )}
@@ -149,7 +158,7 @@ export function AppHeader({ links }: HeaderSearchProps) {
             color="#fff"
           />
         </div>
-      </Container>
+      </Center>
     </Header>
   );
 }
