@@ -18,10 +18,11 @@ export const AdminPage = () => {
   const isDrawerEditable = useRecoilValue(isDrawerEditableState);
 
   return (
-    <Container mt={40} size="lg">
+    <Container mt={40} pr={16} size="lg">
       <Tabs variant="outline" radius="md" defaultValue="users">
         <Tabs.List>
           <Tabs.Tab value="users" icon={<IconUser size={14} />}>
+            {/* {LL.Hello()} */}
             Users
           </Tabs.Tab>
           <Tabs.Tab value="offers" icon={<IconArrowsLeftRight size={14} />}>

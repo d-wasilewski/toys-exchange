@@ -5,30 +5,31 @@ import { ROUTES } from "../routes";
 import { userState } from "../session/sessionState";
 import { AppHeader } from "./AppHeader";
 
-const publicLinks = [
-  { label: "Homepage", link: ROUTES.root },
-  { label: "Toys", link: ROUTES.toys },
-  { label: "Logout", link: ROUTES.root },
-];
-
-const adminLinks = [
-  { label: "Homepage", link: ROUTES.root },
-  { label: "Toys", link: ROUTES.toys },
-  { label: "Admin page", link: ROUTES.admin },
-  { label: "Logout", link: ROUTES.root },
-];
-
-const unauthenticatedLinks = [
-  { label: "Login", link: ROUTES.login },
-  { label: "Register", link: ROUTES.register },
-];
-
 interface AppLayoutProps {
   children: ReactNode;
 }
 
 export const Layout = ({ children }: AppLayoutProps) => {
   const user = useRecoilValue(userState);
+
+  const publicLinks = [
+    { label: "Homepage", link: ROUTES.root },
+    { label: "Toys", link: ROUTES.toys },
+    { label: "Logout", link: ROUTES.root },
+  ];
+
+  const adminLinks = [
+    { label: "Homepage", link: ROUTES.root },
+    { label: "Toys", link: ROUTES.toys },
+    { label: "Admin page", link: ROUTES.admin },
+    { label: "Logout", link: ROUTES.root },
+  ];
+
+  const unauthenticatedLinks = [
+    { label: "Login", link: ROUTES.login },
+    { label: "Register", link: ROUTES.register },
+  ];
+
   const links = user
     ? user?.role === "ADMIN"
       ? adminLinks

@@ -6,7 +6,9 @@ import {
   Button,
   Text,
 } from "@mantine/core";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { I18nContext, useI18nContext } from "../../i18n/i18n-react";
 import { AccordionFAQ } from "./AccordionFAQ";
 import { ContactUs } from "./ContactUs";
 import { Features } from "./Features";

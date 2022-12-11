@@ -137,7 +137,7 @@ export function AppHeader({ links }: HeaderSearchProps) {
               className={classes.user}
               onClick={() => navigate(`/user/${user?.id}/details`)}
             >
-              <Group spacing={7} mr={100}>
+              <Group spacing={7}>
                 <Avatar
                   src={user?.imgUrl}
                   alt={user?.name}

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "typecheck": "yarn tsc -p tsconfig.typecheck.json"
+    "typecheck": "yarn tsc -p tsconfig.typecheck.json",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -27,6 +28,7 @@
     "react-router-dom": "6.3.0",
     "recoil": "^0.7.6",
     "recoil-persist": "^4.2.0",
+    "typesafe-i18n": "^5.17.1",
     "zod": "^3.19.1"
   },
   "devDependencies": {
