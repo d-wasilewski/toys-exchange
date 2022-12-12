@@ -4,9 +4,6 @@
  */
 
 export interface paths {
-  "/": {
-    get: operations["AppController_getHello"];
-  };
   "/user/sign-up": {
     post: operations["UserController_signupUser"];
   };
@@ -156,6 +153,7 @@ export interface components {
       updatedAt: string;
       rating: components["schemas"]["Rating"];
       version: number;
+      confirmed: boolean;
     };
     UserIdDto: {
       id: string;
@@ -325,16 +323,6 @@ export interface components {
 }
 
 export interface operations {
-  AppController_getHello: {
-    parameters: {};
-    responses: {
-      200: {
-        content: {
-          "application/json": string;
-        };
-      };
-    };
-  };
   UserController_signupUser: {
     parameters: {};
     responses: {

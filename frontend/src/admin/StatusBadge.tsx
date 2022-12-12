@@ -3,9 +3,14 @@ import { UserStatus } from "../shared/APIs/userService";
 
 interface StatusBadgeProps {
   status: UserStatus;
+  confirmed: boolean;
 }
 
-export const StatusBadge = ({ status }: StatusBadgeProps) => {
+export const StatusBadge = ({ status, confirmed }: StatusBadgeProps) => {
   const color = status === "ACTIVE" ? "green" : "pink";
-  return <Badge color={color}>{status}</Badge>;
+  return (
+    <Badge color={confirmed ? color : "yellow"}>
+      {confirmed ? status : "Unconfirmed"}
+    </Badge>
+  );
 };

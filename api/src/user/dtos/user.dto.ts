@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Toy, UserRole, UserStatus } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsDate,
   IsEmail,
   IsNotEmpty,
@@ -128,6 +129,10 @@ export class UserDto {
   @IsNotEmpty()
   @IsNumber()
   version: number;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  confirmed: boolean;
 }
 
 export class UpdateUserDto {

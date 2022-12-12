@@ -30,7 +30,7 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    width: 1400,
+    width: "80vw",
   },
 
   links: {

@@ -18,9 +18,18 @@ import { OfferService } from './offer/offer.service';
 import { OfferModule } from './offer/offer.module';
 import { LoggerMiddleware } from './shared/middleware/logger.middleware';
 import { MailModule } from './mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [PrismaModule, UserModule, AuthModule, ToysModule, OfferModule, MailModule],
+  imports: [
+    PrismaModule,
+    UserModule,
+    AuthModule,
+    ToysModule,
+    OfferModule,
+    MailModule,
+    ScheduleModule.forRoot(),
+  ],
   controllers: [
     AppController,
     UserController,

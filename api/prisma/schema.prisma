@@ -19,7 +19,6 @@ model User {
   role        UserRole   @default(BASIC)
   status      UserStatus @default(ACTIVE)
   version     Int        @default(0)
-  confirmed   Boolean    @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

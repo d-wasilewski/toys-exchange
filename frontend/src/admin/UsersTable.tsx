@@ -147,7 +147,7 @@ export function UsersTable({ data }: TableSortProps) {
           <RoleBadge role={row.role} />
         </td>
         <td>
-          <StatusBadge status={row.status} />
+          <StatusBadge status={row.status} confirmed={row.confirmed} />
         </td>
         <td>
           <UserActions userId={row.id} />
