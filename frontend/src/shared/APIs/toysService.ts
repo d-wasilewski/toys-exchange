@@ -20,6 +20,14 @@ export const createToy = (toyData: FormData) => {
   return client.post("/toy/create-toy", toyData as never);
 };
 
+export const confirmToy = (toyId: string): Promise<void> => {
+  return client.post("/toy/confirm", { id: toyId });
+};
+
+export const blockToy = (toyId: string): Promise<void> => {
+  return client.post("/toy/block", { id: toyId });
+};
+
 export const getToyData = (
   toyId: string
 ): Promise<AxiosResponse<APIResponse<"/toy/toy">>> => {

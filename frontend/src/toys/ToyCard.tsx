@@ -9,12 +9,23 @@ import {
   Button,
   Rating,
 } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  useRecoilRefresher_UNSTABLE,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { userState } from "../session/sessionState";
-import { Toy } from "../shared/APIs/toysService";
+import { getErrorMessage } from "../shared/APIs/baseFetch";
+import { blockToy, confirmToy, Toy } from "../shared/APIs/toysService";
 import { SwapModal } from "./SwapModal";
-import { isEditToyDrawerOpenState, selectedToyIdState } from "./toysState";
+import {
+  isEditToyDrawerOpenState,
+  selectedToyIdState,
+  toysListState,
+} from "./toysState";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -44,7 +55,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 type ToyCardProps = Toy & {
-  basic?: boolean;
+  basicView?: boolean;
 };
 
 export const ToyCard = ({
@@ -54,18 +65,80 @@ export const ToyCard = ({
   imgUrl,
   ownerId,
   owner,
-  basic,
+  basicView,
   description,
+  status,
 }: ToyCardProps) => {
   const { classes } = useStyles();
   const setSelectedToyId = useSetRecoilState(selectedToyIdState);
   const currentUser = useRecoilValue(userState);
   const [opened, setOpened] = useState(false);
   const setIsEditToyDrawerOpen = useSetRecoilState(isEditToyDrawerOpenState);
+  const refreshToyList = useRecoilRefresher_UNSTABLE(toysListState);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSwap = () => {
     setOpened(true);
     setSelectedToyId(id);
+  };
+
+  const handleBlock = async () => {
+    openConfirmModal({
+      title: "Deactivate this toy",
+      children: (
+        <Text size="sm">Are you sure you want to deactivate this toy?</Text>
+      ),
+      labels: { confirm: "Deactivate toy", cancel: "No don't deactivate it" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: async () => {
+        try {
+          setIsLoading(true);
+          await blockToy(id);
+          refreshToyList();
+          showNotification({
+            title: "Success",
+            message: "Status changed successfully",
+            color: "green",
+            autoClose: 3000,
+          });
+        } catch (e) {
+          const message = getErrorMessage(e);
+          showNotification({
+            title: "Error",
+            message: message ?? "Something went wrong",
+            color: "red",
+            autoClose: 5000,
+          });
+        } finally {
+          setIsLoading(false);
+        }
+      },
+    });
+  };
+
+  const handleConfirm = async () => {
+    try {
+      setIsLoading(true);
+      await confirmToy(id);
+      refreshToyList();
+      showNotification({
+        title: "Success",
+        message: "Status changed successfully",
+        color: "green",
+        autoClose: 3000,
+      });
+    } catch (e) {
+      const message = getErrorMessage(e);
+      showNotification({
+        title: "Error",
+        message: message ?? "Something went wrong",
+        color: "red",
+        autoClose: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleEdit = () => {
@@ -123,28 +196,55 @@ export const ToyCard = ({
         </Button>
       )}
 
-      {!basic && ownerId !== currentUser?.id && (
-        <>
-          <Card.Section className={classes.footer} pb={0} pt="sm">
-            <Button fullWidth onClick={handleSwap}>
-              Swap
-            </Button>
-          </Card.Section>
+      {!basicView &&
+        ownerId !== currentUser?.id &&
+        currentUser?.role !== "ADMIN" && (
+          <>
+            <Card.Section className={classes.footer} pb={0} pt="sm">
+              <Button fullWidth onClick={handleSwap}>
+                Swap
+              </Button>
+            </Card.Section>
 
-          <SwapModal
-            opened={opened}
-            setOpened={setOpened}
-            cardData={{
-              id,
-              name,
-              category,
-              imgUrl,
-              owner,
-              ownerId,
-              description,
-            }}
-          />
-        </>
+            <SwapModal
+              opened={opened}
+              setOpened={setOpened}
+              cardData={{
+                id,
+                name,
+                category,
+                imgUrl,
+                owner,
+                ownerId,
+                description,
+                status,
+              }}
+            />
+          </>
+        )}
+
+      {currentUser?.role === "ADMIN" && (
+        <Card.Section className={classes.footer} pt="sm">
+          {status === "UNCONFIRMED" ? (
+            <Button
+              fullWidth
+              color="green"
+              onClick={handleConfirm}
+              loading={isLoading}
+            >
+              Confirm
+            </Button>
+          ) : (
+            <Button
+              fullWidth
+              color="red"
+              onClick={handleBlock}
+              loading={isLoading}
+            >
+              Block
+            </Button>
+          )}
+        </Card.Section>
       )}
     </Card>
   );

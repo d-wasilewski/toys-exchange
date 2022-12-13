@@ -58,6 +58,12 @@ export interface paths {
   "/toy/toy": {
     post: operations["ToysController_getToy"];
   };
+  "/toy/confirm": {
+    post: operations["ToysController_confirmToy"];
+  };
+  "/toy/block": {
+    post: operations["ToysController_blockToy"];
+  };
   "/toy/user-toys": {
     post: operations["ToysController_getUserToys"];
   };
@@ -132,6 +138,7 @@ export interface components {
         | "SPINNING"
         | "WOODEN"
         | "OTHER";
+      status: "ACTIVE" | "UNCONFIRMED" | "FINISHED";
       id: string;
       name: string;
       imgUrl: string;
@@ -208,6 +215,7 @@ export interface components {
         | "SPINNING"
         | "WOODEN"
         | "OTHER";
+      status: "ACTIVE" | "UNCONFIRMED" | "FINISHED";
       id: string;
       name: string;
       imgUrl: string;
@@ -530,6 +538,28 @@ export interface operations {
           "application/json": components["schemas"]["BasicToyDto"];
         };
       };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ToyIdDto"];
+      };
+    };
+  };
+  ToysController_confirmToy: {
+    parameters: {};
+    responses: {
+      201: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ToyIdDto"];
+      };
+    };
+  };
+  ToysController_blockToy: {
+    parameters: {};
+    responses: {
+      201: unknown;
     };
     requestBody: {
       content: {

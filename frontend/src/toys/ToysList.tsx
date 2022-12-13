@@ -24,6 +24,7 @@ export const ToysList = ({ toysList }: ToysListProps) => {
             imgUrl={toy.imgUrl}
             category={toy.category}
             description={toy.description}
+            status={toy.status}
           />
         );
       })}

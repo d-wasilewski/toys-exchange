@@ -55,7 +55,9 @@ export const ToysView = () => {
         <Container m={0} px={30} fluid miw={1000}>
           <h1>List of all toys</h1>
           <ToysList
-            toysList={toysList.filter((toy) => toy.ownerId !== user?.id)}
+            toysList={toysList
+              .filter((toy) => toy.ownerId !== user?.id)
+              .filter((toy) => toy.status === "ACTIVE")}
           />
         </Container>
       </Flex>

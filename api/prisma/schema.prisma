@@ -18,6 +18,7 @@ model User {
   address     String?
   role        UserRole   @default(BASIC)
   status      UserStatus @default(ACTIVE)
+  confirmed   Boolean    @default(false)
   version     Int        @default(0)
 
   createdAt DateTime @default(now())
@@ -57,6 +58,7 @@ model Toy {
   description String
   owner       User          @relation(fields: [ownerId], references: [id])
   ownerId     String
+  status      ToyStatus     @default(UNCONFIRMED)
   version     Int           @default(0)
 
   createdAt DateTime @default(now())
@@ -64,6 +66,12 @@ model Toy {
 
   offersFromSender   Offer[] @relation(name: "toyFromSender")
   offersFromReceiver Offer[] @relation(name: "toyFromReceiver")
+}
+
+enum ToyStatus {
+  ACTIVE
+  UNCONFIRMED
+  FINISHED
 }
 
 enum ToyCategories {

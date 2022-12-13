@@ -1,11 +1,9 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import bodyParser from 'body-parser';
 import { AppModule } from './app.module';
 import { attachDocumentation } from './documentation/attach-documentation';
 import { PrismaService } from './prisma/prisma.service';
-// import cloudinary from "cloudinary"
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 

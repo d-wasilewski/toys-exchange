@@ -111,6 +111,8 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
+const adminData = [{ link: "details", label: "Your data", icon: IconUser }];
+
 const data = [
   { link: "details", label: "Your data", icon: IconUser },
   { link: "active", label: "Active offers", icon: IconArrowsExchange },
@@ -132,7 +134,9 @@ export function UserPage() {
     setSelectedUserId(user?.id);
   }, [user?.id]);
 
-  const links = data.map((item) => (
+  const dataToDisplay = user?.role === "ADMIN" ? adminData : data;
+
+  const links = dataToDisplay.map((item) => (
     <a
       className={cx(classes.link, {
         [classes.linkActive]: item.label === active,

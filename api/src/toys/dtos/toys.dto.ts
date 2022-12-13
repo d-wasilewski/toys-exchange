@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ToyCategories } from '@prisma/client';
+import { ToyCategories, ToyStatus } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
@@ -11,6 +11,8 @@ import {
 import { Rating } from 'src/user/dtos/user.dto';
 
 const toyCategories = Object.values(ToyCategories);
+const toyStatuses = Object.values(ToyStatus);
+
 export class BasicToyDto {
   @IsNotEmpty()
   @IsUUID()
@@ -34,6 +36,9 @@ export class BasicToyDto {
   @IsNotEmpty()
   @IsUUID()
   ownerId: string;
+
+  @ApiProperty({ enum: [...toyStatuses] })
+  status: ToyStatus;
 }
 
 class Owner {
@@ -77,6 +82,9 @@ export class ToyDto {
   @ValidateNested()
   @Type(() => Owner)
   owner: Owner;
+
+  @ApiProperty({ enum: [...toyStatuses] })
+  status: ToyStatus;
 }
 
 export class CreateToyDto {

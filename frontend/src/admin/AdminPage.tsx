@@ -1,5 +1,5 @@
 import { Container, Tabs } from "@mantine/core";
-import { IconUser, IconArrowsLeftRight } from "@tabler/icons";
+import { IconUser, IconArrowsLeftRight, IconHorseToy } from "@tabler/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { OfferCardList } from "../offers/OfferCardList";
 import {
@@ -8,6 +8,7 @@ import {
   usersListState,
 } from "./adminState";
 import { UserDetailsDrawer } from "./drawer/UserDetailsDrawer";
+import { UnconfirmedToysList } from "./UnconfirmedToysList";
 import { UsersTable } from "./UsersTable";
 
 export const AdminPage = () => {
@@ -22,20 +23,24 @@ export const AdminPage = () => {
       <Tabs variant="outline" radius="md" defaultValue="users">
         <Tabs.List>
           <Tabs.Tab value="users" icon={<IconUser size={14} />}>
-            {/* {LL.Hello()} */}
             Users
           </Tabs.Tab>
           <Tabs.Tab value="offers" icon={<IconArrowsLeftRight size={14} />}>
             Offers
+          </Tabs.Tab>
+          <Tabs.Tab value="toys" icon={<IconHorseToy size={14} />}>
+            Unconfirmed toys
           </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="users" pt="xs">
           <UsersTable data={usersList} />
         </Tabs.Panel>
-
         <Tabs.Panel value="offers" pt="xs">
           <OfferCardList />
+        </Tabs.Panel>
+        <Tabs.Panel value="toys" pt="xs">
+          <UnconfirmedToysList />
         </Tabs.Panel>
       </Tabs>
       <UserDetailsDrawer

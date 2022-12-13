@@ -1,13 +1,9 @@
-import {
-  BadRequestException,
-  ConsoleLogger,
-  HttpException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateToyDto, EditToyDto, OwnerIdDto } from './dtos/toys.dto';
+import { CreateToyDto, EditToyDto } from './dtos/toys.dto';
 import { v2 } from 'cloudinary';
 import { UserService } from 'src/user/user.service';
+import { ToyStatus } from '@prisma/client';
 
 export interface File {
   fieldname: string;
@@ -47,6 +43,13 @@ export class ToysService {
     } catch (error) {
       throw new BadRequestException('Something went wrong');
     }
+  }
+
+  async changeToyStatus(toyId: string, status: ToyStatus) {
+    await this.prisma.toy.update({
+      where: { id: toyId },
+      data: { status },
+    });
   }
 
   async getToys() {

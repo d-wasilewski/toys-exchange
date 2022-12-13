@@ -45,6 +45,16 @@ export class ToysController {
     return this.toysService.getToy(toyId.id);
   }
 
+  @Post('confirm')
+  async confirmToy(@Body() toyId: ToyIdDto): Promise<void> {
+    return this.toysService.changeToyStatus(toyId.id, 'ACTIVE');
+  }
+
+  @Post('block')
+  async blockToy(@Body() toyId: ToyIdDto): Promise<void> {
+    return this.toysService.changeToyStatus(toyId.id, 'UNCONFIRMED');
+  }
+
   @Post('user-toys')
   async getUserToys(@Body() ownerId: OwnerIdDto): Promise<ToyDto[]> {
     return this.toysService.getToysByUserId(ownerId.id);
