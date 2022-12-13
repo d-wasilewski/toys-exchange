@@ -8,10 +8,12 @@ import {
   createStyles,
   Button,
   Rating,
+  Anchor,
 } from "@mantine/core";
-import { openConfirmModal } from "@mantine/modals";
+import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   useRecoilRefresher_UNSTABLE,
   useRecoilValue,
@@ -22,6 +24,7 @@ import { getErrorMessage } from "../shared/APIs/baseFetch";
 import { blockToy, confirmToy, Toy } from "../shared/APIs/toysService";
 import { SwapModal } from "./SwapModal";
 import {
+  currentToysListState,
   isEditToyDrawerOpenState,
   selectedToyIdState,
   toysListState,
@@ -76,10 +79,40 @@ export const ToyCard = ({
   const setIsEditToyDrawerOpen = useSetRecoilState(isEditToyDrawerOpenState);
   const refreshToyList = useRecoilRefresher_UNSTABLE(toysListState);
   const [isLoading, setIsLoading] = useState(false);
+  const currentUserToys = useRecoilValue(currentToysListState);
+  const navigate = useNavigate();
 
   const handleSwap = () => {
-    setOpened(true);
-    setSelectedToyId(id);
+    if (currentUserToys.length === 0) {
+      openModal({
+        title: "You dont have any toys!",
+        children: (
+          <>
+            <Text>
+              Please go{" "}
+              <Anchor
+                component="button"
+                type="button"
+                onClick={() => {
+                  closeAllModals();
+                  navigate(`/user/${currentUser?.id}/toys`);
+                }}
+              >
+                to your profile
+              </Anchor>{" "}
+              first and add a toy or two to be able to make swaps with other
+              users!
+            </Text>
+            <Button fullWidth onClick={() => closeAllModals()} mt="md">
+              Ok
+            </Button>
+          </>
+        ),
+      });
+    } else {
+      setOpened(true);
+      setSelectedToyId(id);
+    }
   };
 
   const handleBlock = async () => {

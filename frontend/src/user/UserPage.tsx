@@ -18,7 +18,7 @@ import {
 } from "@tabler/icons";
 import { userState } from "../session/sessionState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { updateAvatar } from "../shared/APIs/userService";
 import { clickedUserIdState } from "../admin/adminState";
 import { showNotification } from "@mantine/notifications";
@@ -120,14 +120,23 @@ const data = [
   { link: "toys", label: "Your toys", icon: IconHorseToy },
 ];
 
+const activePage = {
+  details: "Your data",
+  active: "Active offers",
+  history: "Offers history",
+  toys: "Your toys",
+} as const;
+
 export function UserPage() {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Your data");
   const user = useRecoilValue(userState);
   const setSelectedUserId = useSetRecoilState(clickedUserIdState);
   const navigate = useNavigate();
-  // const location = useLocation();
-  // console.log({ location: location.pathname.split("/").at(-1) });
+  const location = useLocation();
+  const pageFromLocation = location.pathname.split("/").at(-1);
+  const [active, setActive] = useState(
+    pageFromLocation ? (activePage as any)[pageFromLocation] : "Your data"
+  );
 
   useEffect(() => {
     if (!user) return;
