@@ -11,10 +11,12 @@ export enum Status {
 
 type OfferWithoutUserRatings = Omit<OfferDto, 'sender' | 'receiver'> & {
   sender: {
+    id: string;
     name: string;
     imgUrl: string;
   };
   receiver: {
+    id: string;
     name: string;
     imgUrl: string;
   };
@@ -32,12 +34,14 @@ export class OfferService {
       include: {
         sender: {
           select: {
+            id: true,
             name: true,
             imgUrl: true,
           },
         },
         receiver: {
           select: {
+            id: true,
             name: true,
             imgUrl: true,
           },
@@ -56,7 +60,8 @@ export class OfferService {
             category: true,
           },
         },
-        rating: true,
+        senderRating: true,
+        receiverRating: true,
       },
     });
 
@@ -121,12 +126,14 @@ export class OfferService {
       include: {
         sender: {
           select: {
+            id: true,
             imgUrl: true,
             name: true,
           },
         },
         receiver: {
           select: {
+            id: true,
             imgUrl: true,
             name: true,
           },
@@ -145,7 +152,8 @@ export class OfferService {
             category: true,
           },
         },
-        rating: true,
+        senderRating: true,
+        receiverRating: true,
       },
     });
 
@@ -172,12 +180,14 @@ export class OfferService {
       include: {
         sender: {
           select: {
+            id: true,
             imgUrl: true,
             name: true,
           },
         },
         receiver: {
           select: {
+            id: true,
             imgUrl: true,
             name: true,
           },
@@ -196,7 +206,8 @@ export class OfferService {
             category: true,
           },
         },
-        rating: true,
+        senderRating: true,
+        receiverRating: true,
       },
     });
 

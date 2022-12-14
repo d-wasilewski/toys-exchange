@@ -23,6 +23,7 @@ import { updateAvatar } from "../shared/APIs/userService";
 import { clickedUserIdState } from "../admin/adminState";
 import { showNotification } from "@mantine/notifications";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
+import { SuspenseFallback } from "../components/SuspenseFallback";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -120,7 +121,11 @@ const data = [
   { link: "toys", label: "Your toys", icon: IconHorseToy },
 ];
 
-const activePage = {
+interface activePageI {
+  [key: string]: string | undefined;
+}
+
+const activePage: activePageI = {
   details: "Your data",
   active: "Active offers",
   history: "Offers history",
@@ -133,9 +138,10 @@ export function UserPage() {
   const setSelectedUserId = useSetRecoilState(clickedUserIdState);
   const navigate = useNavigate();
   const location = useLocation();
-  const pageFromLocation = location.pathname.split("/").at(-1);
+  const pageFromLocation =
+    location.pathname.split("/")[location.pathname.split("/").length - 1];
   const [active, setActive] = useState(
-    pageFromLocation ? (activePage as any)[pageFromLocation] : "Your data"
+    pageFromLocation ? activePage[pageFromLocation] : "Your data"
   );
 
   useEffect(() => {
@@ -222,18 +228,7 @@ export function UserPage() {
               </Text>
             </Flex>
           </Group>
-          {links}
-        </Navbar.Section>
-
-        <Navbar.Section className={classes.footer}>
-          <a
-            href="#"
-            className={classes.link}
-            onClick={(event) => event.preventDefault()}
-          >
-            <IconLogout className={classes.linkIcon} stroke={1.5} />
-            <span>Logout</span>
-          </a>
+          <SuspenseFallback>{links}</SuspenseFallback>
         </Navbar.Section>
       </Navbar>
       {/* TODO: might want to exclude fluid */}

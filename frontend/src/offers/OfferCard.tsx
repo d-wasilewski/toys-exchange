@@ -22,7 +22,11 @@ export const OfferCard = ({ offer, adminPage }: OfferCardProps) => {
   return (
     <Paper p="md" shadow="xs">
       <Flex gap="sm" justify="center" align="center">
-        <OfferDetails toy={offer.toyFromSender} user={offer.sender} />
+        <OfferDetails
+          toy={offer.toyFromSender}
+          user={offer.sender}
+          type="sender"
+        />
         <Container>
           <Flex direction="column" align="center" justify="flex-start" gap="md">
             <IconArrowsLeftRight size={40} />
@@ -30,8 +34,10 @@ export const OfferCard = ({ offer, adminPage }: OfferCardProps) => {
               offerId={offer.id}
               status={offer.status}
               userToRateId={userToRateId}
-              offerRating={offer.rating}
+              offerSenderRating={offer.senderRating}
+              offerReceiverRating={offer.receiverRating}
               offerSender={offer.sender}
+              offerReceiver={offer.receiver}
               adminPage={adminPage}
             />
           </Flex>

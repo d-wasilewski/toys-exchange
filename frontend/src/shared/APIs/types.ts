@@ -166,6 +166,7 @@ export interface components {
       id: string;
     };
     RateUserDto: {
+      sentBy: "sender" | "receiver";
       userId: string;
       offerId: string;
       value: number;
@@ -255,6 +256,7 @@ export interface components {
       id: string;
     };
     UserOfferDto: {
+      id: string;
       name: string;
       imgUrl: string;
       rating: components["schemas"]["Rating"];
@@ -287,7 +289,8 @@ export interface components {
     RatingOfferDto: {
       id: string;
       userId: string;
-      offerId: string;
+      receiverOfferId: string;
+      senderOfferId: string;
       value: number;
       createdAt: string;
     };
@@ -302,7 +305,8 @@ export interface components {
       sender: components["schemas"]["UserOfferDto"];
       toyFromReceiver: components["schemas"]["ToyOfferDto"];
       toyFromSender: components["schemas"]["ToyOfferDto"];
-      rating: components["schemas"]["RatingOfferDto"] | null;
+      senderRating: components["schemas"]["RatingOfferDto"] | null;
+      receiverRating: components["schemas"]["RatingOfferDto"] | null;
       createdAt: string;
       updatedAt: string;
     };

@@ -49,7 +49,14 @@ function App() {
       </Routes>
       <Layout>
         <Routes>
-          <Route path={ROUTES.user} element={<UserPage />}>
+          <Route
+            path={ROUTES.user}
+            element={
+              <SuspenseFallback>
+                <UserPage />
+              </SuspenseFallback>
+            }
+          >
             <Route
               path={ROUTES.userDetails}
               element={

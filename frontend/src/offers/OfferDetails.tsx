@@ -9,6 +9,7 @@ import {
   Badge,
   Stack,
   Flex,
+  Title,
 } from "@mantine/core";
 import { useRecoilValue } from "recoil";
 import { userState } from "../session/sessionState";
@@ -44,44 +45,52 @@ interface ArticleCardVerticalProps {
     imgUrl: string;
     rating: RatingType;
   };
+  type?: string;
 }
 
-export function OfferDetails({ toy, user }: ArticleCardVerticalProps) {
+export function OfferDetails({ toy, user, type }: ArticleCardVerticalProps) {
   const currentUser = useRecoilValue(userState);
   const { classes } = useStyles();
 
   return (
-    <Card withBorder radius="md" p={0} className={classes.card}>
-      <Group noWrap spacing={0}>
-        <Image src={toy.imgUrl} height={120} width={180} fit="contain" />
-        <div className={classes.body}>
-          <Badge>{toy.category}</Badge>
-          <Text className={classes.title} mt="xs" mb="xs">
-            {toy.name}
-          </Text>
-          {currentUser?.name !== user.name ? (
-            <Stack spacing={2}>
-              <Group spacing="xs" noWrap>
-                <Avatar size={20} src={user.imgUrl} />
-                <Text size="sm">{user.name}</Text>
-              </Group>
-              <Flex align="center" gap={2}>
-                <Text size="sm" color="dimmed">
-                  {user.rating.value ?? 0}/5
-                </Text>
-                <Rating value={1} count={1} readOnly size="xs" />
-                <Text size="sm" color="dimmed">
-                  ({user.rating.count})
-                </Text>
-              </Flex>
-            </Stack>
-          ) : (
-            <Text align="center" sx={{ height: 45 }}>
-              Your toy
+    <Stack spacing={4}>
+      {type === "sender" ? (
+        <Text align="center">Sender</Text>
+      ) : (
+        <Text align="center">Receiver</Text>
+      )}
+      <Card withBorder radius="md" p={0} className={classes.card}>
+        <Group noWrap spacing={0}>
+          <Image src={toy.imgUrl} height={120} width={180} fit="contain" />
+          <div className={classes.body}>
+            <Badge>{toy.category}</Badge>
+            <Text className={classes.title} mt="xs" mb="xs">
+              {toy.name}
             </Text>
-          )}
-        </div>
-      </Group>
-    </Card>
+            {currentUser?.name !== user.name ? (
+              <Stack spacing={2}>
+                <Group spacing="xs" noWrap>
+                  <Avatar size={20} src={user.imgUrl} />
+                  <Text size="sm">{user.name}</Text>
+                </Group>
+                <Flex align="center" gap={2}>
+                  <Text size="sm" color="dimmed">
+                    {user.rating.value ?? 0}/5
+                  </Text>
+                  <Rating value={1} count={1} readOnly size="xs" />
+                  <Text size="sm" color="dimmed">
+                    ({user.rating.count})
+                  </Text>
+                </Flex>
+              </Stack>
+            ) : (
+              <Text align="center" sx={{ height: 45 }}>
+                Your toy
+              </Text>
+            )}
+          </div>
+        </Group>
+      </Card>
+    </Stack>
   );
 }

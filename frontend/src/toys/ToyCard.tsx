@@ -178,7 +178,7 @@ export const ToyCard = ({
     setIsEditToyDrawerOpen(true);
     setSelectedToyId(id);
   };
-
+  // TODO: display status of the toy!
   return (
     <Card withBorder p="md" radius="md" className={classes.card}>
       <Card.Section mb="sm">

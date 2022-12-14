@@ -230,17 +230,27 @@ export class UserService {
     });
   }
 
-  async rateUser({ value, userId, offerId }: RateUserDto) {
+  async rateUser({ value, userId, offerId, sentBy }: RateUserDto) {
     if (value === 0) {
       throw new BadRequestException('Value has to be greater than 0');
     }
-    await this.prisma.rating.create({
-      data: {
-        userId,
-        value,
-        offerId,
-      },
-    });
+    if (sentBy === 'receiver') {
+      await this.prisma.rating.create({
+        data: {
+          userId,
+          value,
+          receiverOfferId: offerId,
+        },
+      });
+    } else if (sentBy === 'sender') {
+      await this.prisma.rating.create({
+        data: {
+          userId,
+          value,
+          senderOfferId: offerId,
+        },
+      });
+    }
   }
 
   async getUserRating(userId: string) {

@@ -26,14 +26,16 @@ export const SwapModal = ({ opened, setOpened, cardData }: SwapModalProps) => {
   const [selectedToyId, setSelectedToyId] = useRecoilState(selectedToyIdState);
   const currentUser = useRecoilValue(userState);
   const availableToys = useRecoilValue(currentToysListState);
-  const selectData = availableToys.map((toy) => {
-    return {
-      value: toy.id,
-      label: toy.name,
-      description: toy.category,
-      image: toy.imgUrl,
-    };
-  });
+  const selectData = availableToys
+    .filter((x) => x.status === "ACTIVE")
+    .map((toy) => {
+      return {
+        value: toy.id,
+        label: toy.name,
+        description: toy.category,
+        image: toy.imgUrl,
+      };
+    });
 
   const handleSubmit = async () => {
     if (!currentUser || !offeredToyId || !selectedToyId) return null;
@@ -79,7 +81,7 @@ export const SwapModal = ({ opened, setOpened, cardData }: SwapModalProps) => {
     >
       <Text>You are trying to swap for</Text>
       <Center mt={16} mb={16}>
-        <ToyCard {...cardData} basic />
+        <ToyCard {...cardData} basicView />
       </Center>
       <AvailableToySelect data={selectData}></AvailableToySelect>
       <Button mt={20} fullWidth onClick={handleSubmit} loading={loading}>

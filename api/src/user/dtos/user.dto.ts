@@ -203,4 +203,8 @@ export class RateUserDto {
   @IsNotEmpty()
   @IsNumber()
   value: number;
+
+  @IsNotEmpty()
+  @ApiProperty({ enum: ['sender', 'receiver'] })
+  sentBy: 'sender' | 'receiver';
 }

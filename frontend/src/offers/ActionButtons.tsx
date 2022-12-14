@@ -8,11 +8,12 @@ import {
   Stack,
   Badge,
 } from "@mantine/core";
-import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
+import { openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { IconCircleCheck } from "@tabler/icons";
 import { useState } from "react";
-import { useRecoilRefresher_UNSTABLE } from "recoil";
+import { useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
+import { SuspenseFallback } from "../components/SuspenseFallback";
+import { userState } from "../session/sessionState";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import {
   acceptOffer,
@@ -23,13 +24,16 @@ import {
 } from "../shared/APIs/offerService";
 import { rateUser } from "../shared/APIs/userService";
 import { myHistoryOffersState } from "./offersState";
+import { SecondLayerSwapModal } from "./SecondLayerSwapModal";
 
 interface ActionButtonsProps {
   offerId: string;
   status: OfferStatus;
   userToRateId: string;
-  offerRating: OfferRating;
+  offerSenderRating: OfferRating;
+  offerReceiverRating: OfferRating;
   offerSender: OfferUser;
+  offerReceiver: OfferUser;
   adminPage?: boolean;
 }
 
@@ -37,13 +41,19 @@ export const ActionButtons = ({
   offerId,
   status,
   userToRateId,
-  offerRating,
+  offerSenderRating,
+  offerReceiverRating,
   offerSender,
+  offerReceiver,
   adminPage,
 }: ActionButtonsProps) => {
   const [isAcceptLoading, setIsAcceptLoading] = useState(false);
   const [isDeclineLoading, setIsDeclineLoading] = useState(false);
+  const currentUser = useRecoilValue(userState);
   const historyListRefresh = useRecoilRefresher_UNSTABLE(myHistoryOffersState);
+
+  const isSender = offerSender.id === currentUser?.id;
+  const isReceiver = offerReceiver.id === currentUser?.id;
 
   const handleAccept = () => {
     openConfirmModal({
@@ -69,33 +79,13 @@ export const ActionButtons = ({
             autoClose: 3000,
           });
           openModal({
-            title: "This is modal at second layer",
+            title: "Swap complete",
             children: (
-              <>
-                <Text>
-                  You swapped for a toy in the app, now plase contact username
-                  to finish the process
-                </Text>
-                <Text>
-                  Here is the data about the person you are swapping with:
-                </Text>
-                <Stack>
-                  <Text>{offerSender.name}</Text>
-                </Stack>
-                <Text>
-                  Please keep in mind you won't be able to comeback to this
-                  screen so save the displayed data
-                </Text>
-                <Center my={10}>
-                  <IconCircleCheck size={60} color="green" />
-                </Center>
-                <Button mt={10} fullWidth onClick={() => closeAllModals()}>
-                  Close
-                </Button>
-              </>
+              <SuspenseFallback>
+                <SecondLayerSwapModal userId={offerSender.id} />
+              </SuspenseFallback>
             ),
           });
-          console.log("I dupa");
         } catch (e) {
           const message = getErrorMessage(e);
           showNotification({
@@ -150,7 +140,12 @@ export const ActionButtons = ({
 
   const handleUserRate = async (rateValue: number) => {
     try {
-      await rateUser({ value: rateValue, userId: userToRateId, offerId });
+      await rateUser({
+        value: rateValue,
+        userId: userToRateId,
+        offerId,
+        sentBy: isSender ? "sender" : "receiver",
+      });
       showNotification({
         title: "Success",
         message: "User rated successfully",
@@ -186,10 +181,16 @@ export const ActionButtons = ({
                     <Badge color="green" size="xl">
                       Accepted
                     </Badge>
-                    {offerRating && (
+                    {offerSenderRating && (
                       <Group spacing={2} mt={4}>
-                        <Text align="center">Rated: </Text>
-                        <Rating value={offerRating.value} readOnly />
+                        <Text align="center">Sender rate: </Text>
+                        <Rating value={offerSenderRating.value} readOnly />
+                      </Group>
+                    )}
+                    {offerReceiverRating && (
+                      <Group spacing={2} mt={4}>
+                        <Text align="center">Receiver rate: </Text>
+                        <Rating value={offerReceiverRating.value} readOnly />
                       </Group>
                     )}
                   </Stack>
@@ -229,39 +230,84 @@ export const ActionButtons = ({
               case "ACCEPTED": {
                 return (
                   <>
-                    {offerRating ? (
-                      <Stack justify="center" spacing={0}>
-                        <Text align="center">Your rate:</Text>
-                        <Rating mt={4} value={offerRating.value} readOnly />
-                      </Stack>
-                    ) : (
-                      <Popover
-                        width={250}
-                        position="bottom"
-                        withArrow
-                        shadow="md"
-                      >
-                        <Popover.Target>
-                          <Button>Rate user</Button>
-                        </Popover.Target>
-                        <Popover.Dropdown>
-                          <Center>
-                            <Text size="sm">
-                              How did you like the exchange?
-                              <Rating
-                                mt={4}
-                                defaultValue={2}
-                                size="xl"
-                                fractions={2}
-                                onChange={(val) => {
-                                  handleUserRate(val);
-                                }}
-                              />
-                            </Text>
-                          </Center>
-                        </Popover.Dropdown>
-                      </Popover>
-                    )}
+                    {isReceiver ? (
+                      offerReceiverRating ? (
+                        <Stack justify="center" spacing={0}>
+                          <Text align="center">Your rate:</Text>
+                          <Rating
+                            mt={4}
+                            value={offerReceiverRating.value}
+                            readOnly
+                          />
+                        </Stack>
+                      ) : (
+                        <Popover
+                          width={250}
+                          position="bottom"
+                          withArrow
+                          shadow="md"
+                        >
+                          <Popover.Target>
+                            <Button>Rate user</Button>
+                          </Popover.Target>
+                          <Popover.Dropdown>
+                            <Center>
+                              <Text size="sm">
+                                How did you like the exchange?
+                                <Rating
+                                  mt={4}
+                                  defaultValue={2}
+                                  size="xl"
+                                  fractions={2}
+                                  onChange={(val) => {
+                                    handleUserRate(val);
+                                  }}
+                                />
+                              </Text>
+                            </Center>
+                          </Popover.Dropdown>
+                        </Popover>
+                      )
+                    ) : null}
+                    {isSender ? (
+                      offerSenderRating ? (
+                        <Stack justify="center" spacing={0}>
+                          <Text align="center">Your rate:</Text>
+                          <Rating
+                            mt={4}
+                            value={offerSenderRating.value}
+                            readOnly
+                          />
+                        </Stack>
+                      ) : (
+                        <Popover
+                          width={250}
+                          position="bottom"
+                          withArrow
+                          shadow="md"
+                        >
+                          <Popover.Target>
+                            <Button>Rate user</Button>
+                          </Popover.Target>
+                          <Popover.Dropdown>
+                            <Center>
+                              <Text size="sm">
+                                How did you like the exchange?
+                                <Rating
+                                  mt={4}
+                                  defaultValue={2}
+                                  size="xl"
+                                  fractions={2}
+                                  onChange={(val) => {
+                                    handleUserRate(val);
+                                  }}
+                                />
+                              </Text>
+                            </Center>
+                          </Popover.Dropdown>
+                        </Popover>
+                      )
+                    ) : null}
                   </>
                 );
               }

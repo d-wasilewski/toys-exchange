@@ -12,23 +12,23 @@ import { MantineGlobalStyles } from "./MantineGlobalStyles";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <TypesafeI18n locale={"en"}>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <MantineGlobalStyles />
-        <NotificationsProvider>
-          <ModalsProvider
-            modalProps={{
-              overlayOpacity: 0.55,
-              overlayBlur: 3,
-            }}
-          >
-            <RecoilRoot>
+      <RecoilRoot>
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+          <MantineGlobalStyles />
+          <NotificationsProvider>
+            <ModalsProvider
+              modalProps={{
+                overlayOpacity: 0.55,
+                overlayBlur: 3,
+              }}
+            >
               <Router>
                 <App />
               </Router>
-            </RecoilRoot>
-          </ModalsProvider>
-        </NotificationsProvider>
-      </MantineProvider>
+            </ModalsProvider>
+          </NotificationsProvider>
+        </MantineProvider>
+      </RecoilRoot>
     </TypesafeI18n>
   </React.StrictMode>
 );

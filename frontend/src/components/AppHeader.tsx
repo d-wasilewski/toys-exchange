@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../session/sessionState";
 import Logo from "../assets/logo.png";
+import { logout } from "../shared/APIs/userService";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -108,6 +109,7 @@ export function AppHeader({ links }: HeaderSearchProps) {
         onClick={() => {
           if (link.label === "Logout") {
             setUser(null);
+            logout();
           }
           navigate(link.link);
         }}

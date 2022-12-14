@@ -31,13 +31,15 @@ model User {
 }
 
 model Rating {
-  id        String   @id @default(uuid())
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
-  Offer     Offer?   @relation(fields: [offerId], references: [id])
-  offerId   String?  @unique
-  value     Float
-  createdAt DateTime @default(now())
+  id              String   @id @default(uuid())
+  User            User?    @relation(fields: [userId], references: [id])
+  userId          String?
+  senderOffer     Offer?   @relation(fields: [senderOfferId], references: [id], name: "senderRating")
+  receiverOffer   Offer?   @relation(fields: [receiverOfferId], references: [id], name: "receiverRating")
+  senderOfferId   String?  @unique
+  receiverOfferId String?  @unique
+  value           Float
+  createdAt       DateTime @default(now())
 }
 
 enum UserRole {
@@ -108,7 +110,8 @@ model Offer {
   toyFromReceiver   Toy         @relation(name: "toyFromReceiver", fields: [toyFromReceiverId], references: [id])
   toyFromReceiverId String
   status            OfferStatus @default(PENDING)
-  rating            Rating?
+  senderRating      Rating?     @relation(name: "senderRating")
+  receiverRating    Rating?     @relation(name: "receiverRating")
   version           Int         @default(0)
 
   createdAt DateTime @default(now())

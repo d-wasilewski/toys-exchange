@@ -46,6 +46,10 @@ export class SendOfferDto {
 }
 
 class UserOfferDto {
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -83,7 +87,11 @@ export class RatingOfferDto {
 
   @IsNotEmpty()
   @IsString()
-  offerId: string;
+  receiverOfferId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  senderOfferId: string;
 
   @IsNotEmpty()
   @IsNumber()
@@ -164,7 +172,12 @@ export class OfferDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => RatingOfferDto)
-  rating: RatingOfferDto | null;
+  senderRating: RatingOfferDto | null;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => RatingOfferDto)
+  receiverRating: RatingOfferDto | null;
 
   @IsNotEmpty()
   @IsDate()
