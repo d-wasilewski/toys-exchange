@@ -28,7 +28,7 @@
     "react-router-dom": "6.3.0",
     "recoil": "^0.7.6",
     "recoil-persist": "^4.2.0",
-    "typesafe-i18n": "^5.17.1",
+    "typesafe-i18n": "^5.18.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {

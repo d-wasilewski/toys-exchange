@@ -29,7 +29,6 @@ export const Filters = ({ setToysList }: FiltersProps) => {
     setSearch(value);
     const filteredData = filterData(toysList, value);
     setToysList(filteredData);
-    console.log(filteredData);
   };
 
   const categoriesDataWithAllOption = [

@@ -1,9 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateToyDto, EditToyDto } from './dtos/toys.dto';
 import { v2 } from 'cloudinary';
 import { UserService } from 'src/user/user.service';
 import { ToyStatus } from '@prisma/client';
+import { encodeETag } from 'src/shared/encodeETag';
 
 export interface File {
   fieldname: string;
@@ -45,10 +51,26 @@ export class ToysService {
     }
   }
 
-  async changeToyStatus(toyId: string, status: ToyStatus) {
+  async changeToyStatus(toyId: string, status: ToyStatus, ifMatch: string) {
+    const toy = await this.prisma.toy.findFirst({
+      where: { id: toyId },
+    });
+
+    if (!toy) {
+      throw new NotFoundException('Toy not found. Please refresh the page');
+    }
+
+    const currentEtag = encodeETag(toy.version, toy.id);
+
+    if (currentEtag !== ifMatch) {
+      throw new ConflictException(
+        'The data is expired. Please refresh the page',
+      );
+    }
+
     await this.prisma.toy.update({
       where: { id: toyId },
-      data: { status },
+      data: { status, version: { increment: 1 } },
     });
   }
 
@@ -99,13 +121,50 @@ export class ToysService {
     });
   }
 
-  async editToy(toyData: EditToyDto) {
+  async editToy(toyData: EditToyDto, ifMatch: string) {
+    const toy = await this.prisma.toy.findFirst({
+      where: { id: toyData.id },
+    });
+
+    if (!toy) {
+      throw new NotFoundException('Toy not found. Please refresh the page');
+    }
+
+    const currentEtag = encodeETag(toy.version, toy.id);
+
+    if (currentEtag !== ifMatch) {
+      throw new ConflictException(
+        'The data is expired. Please refresh the page',
+      );
+    }
+
     await this.prisma.toy.update({
       where: {
         id: toyData.id,
       },
       data: {
         ...toyData,
+        version: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
+  async deleteToy(toyId: string) {
+    const toy = await this.prisma.toy.findFirst({
+      where: { id: toyId },
+    });
+
+    if (!toy) {
+      throw new ConflictException(
+        'The data is expired. Please refresh the page',
+      );
+    }
+
+    await this.prisma.toy.delete({
+      where: {
+        id: toyId,
       },
     });
   }

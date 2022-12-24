@@ -55,6 +55,9 @@ export interface paths {
   "/toy/edit": {
     post: operations["ToysController_editToy"];
   };
+  "/toy/delete": {
+    post: operations["ToysController_deleteToy"];
+  };
   "/toy/toy": {
     post: operations["ToysController_getToy"];
   };
@@ -531,6 +534,17 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["EditToyDto"];
+      };
+    };
+  };
+  ToysController_deleteToy: {
+    parameters: {};
+    responses: {
+      201: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ToyIdDto"];
       };
     };
   };

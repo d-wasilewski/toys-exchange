@@ -46,8 +46,8 @@ export const selectedToyState = selector({
   get: async ({ get }) => {
     const toyId = get(selectedToyIdState);
     if (toyId) {
-      const user = await getToyData(toyId);
-      return user.data;
+      const toy = await getToyData(toyId);
+      return { ...toy.data, etag: toy.headers["etag"] };
     }
     return null;
   },

@@ -34,6 +34,17 @@ export const getToyData = (
   return client.post("/toy/toy", { id: toyId });
 };
 
-export const editToyData = (values: APIRequestBody<"/toy/edit">) => {
-  return client.post("/toy/edit", values);
+export const editToyData = (
+  values: APIRequestBody<"/toy/edit">,
+  etag: string
+) => {
+  return client.post("/toy/edit", values, {
+    headers: {
+      "If-Match": etag,
+    },
+  });
+};
+
+export const deleteToyById = (toyId: string) => {
+  return client.post("/toy/delete", { id: toyId });
 };

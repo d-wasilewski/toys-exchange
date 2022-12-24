@@ -124,8 +124,6 @@ export class UserService {
     const currentEtag = encodeETag(user.version, user.id);
 
     if (currentEtag !== ifMatch) {
-      console.log('XD', currentEtag, ' vs ', ifMatch);
-
       throw new ConflictException(
         'The data is expired. Please refresh the page',
       );

@@ -131,7 +131,7 @@ export const EditableDrawerContent = () => {
             value={selectedUser?.address}
             {...form.getInputProps("address")}
           />
-          <TextInput
+          {/* <TextInput
             disabled
             radius="md"
             label="Created at"
@@ -142,7 +142,7 @@ export const EditableDrawerContent = () => {
             radius="md"
             label="Updated at"
             value={selectedUser.updatedAt}
-          />
+          /> */}
           <Select
             label="Status"
             radius="md"

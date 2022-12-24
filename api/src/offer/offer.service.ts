@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { OfferDto, SendOfferDto } from './dtos/offer.dto';
@@ -222,7 +226,17 @@ export class OfferService {
         where: {
           id: offerId,
         },
+        include: {
+          toyFromReceiver: true,
+          toyFromSender: true,
+        },
       });
+
+      if (!offer.toyFromSender || !offer.toyFromReceiver) {
+        throw new NotFoundException(
+          'Data is expired. Please refresh the page.',
+        );
+      }
 
       if (offer.status !== Status.PENDING) {
         throw new ConflictException(`Offer is not active anymore`);

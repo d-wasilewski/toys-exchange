@@ -29,6 +29,7 @@ import { schema } from "./validateSchema";
 export const DrawerContent = () => {
   const selectedToy = useRecoilValue(selectedToyState);
   const refreshToys = useRecoilRefresher_UNSTABLE(currentToysListState);
+  const refreshSelectedToy = useRecoilRefresher_UNSTABLE(selectedToyState);
   const [isLoading, setIsLoading] = useState(false);
   const setIsDrawerOpen = useSetRecoilState(isEditToyDrawerOpenState);
 
@@ -48,8 +49,15 @@ export const DrawerContent = () => {
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setIsLoading(true);
-      await editToyData({ id: selectedToy.id, ...values });
+      await editToyData({ id: selectedToy.id, ...values }, selectedToy.etag);
       refreshToys();
+      refreshSelectedToy();
+      showNotification({
+        title: "Success",
+        message: "Toy updated successfully",
+        color: "green",
+        autoClose: 3000,
+      });
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
@@ -61,12 +69,6 @@ export const DrawerContent = () => {
     } finally {
       setIsLoading(false);
       setIsDrawerOpen(false);
-      showNotification({
-        title: "Success",
-        message: "Toy updated successfully",
-        color: "green",
-        autoClose: 3000,
-      });
     }
   };
 

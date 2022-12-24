@@ -43,6 +43,6 @@ export const getErrorMessage = (error: unknown): string | null => {
   return null;
 };
 
-export const getAuthToken = async () => {
+export const getAuthToken = () => {
   return localStorage.authToken;
 };

@@ -2,9 +2,10 @@ import { Stack, TextInput, Button, FileInput, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
 import { userState } from "../../session/sessionState";
 import { createToy, ToyCategories } from "../../shared/APIs/toysService";
+import { currentToysListState } from "../toysState";
 
 interface CategoriesSelect {
   value: ToyCategories | "ALL CATEGORIES";
@@ -33,6 +34,7 @@ export const categoriesData: CategoriesSelect[] = [
 export const AddNewToyForm = () => {
   const [loading, setLoading] = useState(false);
   const user = useRecoilValue(userState);
+  const refreshMyToysList = useRecoilRefresher_UNSTABLE(currentToysListState);
 
   const form = useForm({
     initialValues: {
@@ -56,6 +58,8 @@ export const AddNewToyForm = () => {
 
       await createToy(dataForm);
 
+      form.reset();
+      refreshMyToysList();
       showNotification({
         title: "Success",
         message: "Toy added successfully",

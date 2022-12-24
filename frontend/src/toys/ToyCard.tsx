@@ -9,6 +9,7 @@ import {
   Button,
   Rating,
   Anchor,
+  Stack,
 } from "@mantine/core";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
@@ -21,7 +22,12 @@ import {
 } from "recoil";
 import { userState } from "../session/sessionState";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
-import { blockToy, confirmToy, Toy } from "../shared/APIs/toysService";
+import {
+  blockToy,
+  confirmToy,
+  deleteToyById,
+  Toy,
+} from "../shared/APIs/toysService";
 import { SwapModal } from "./SwapModal";
 import {
   currentToysListState,
@@ -48,6 +54,13 @@ const useStyles = createStyles((theme) => ({
     pointerEvents: "none",
   },
 
+  status: {
+    position: "absolute",
+    top: theme.spacing.xs,
+    left: theme.spacing.xs + 1,
+    pointerEvents: "none",
+  },
+
   footer: {
     padding: `${theme.spacing.xs}px ${theme.spacing.lg}px`,
     marginTop: theme.spacing.md,
@@ -59,6 +72,7 @@ const useStyles = createStyles((theme) => ({
 
 type ToyCardProps = Toy & {
   basicView?: boolean;
+  etag?: string;
 };
 
 export const ToyCard = ({
@@ -71,6 +85,7 @@ export const ToyCard = ({
   basicView,
   description,
   status,
+  etag,
 }: ToyCardProps) => {
   const { classes } = useStyles();
   const setSelectedToyId = useSetRecoilState(selectedToyIdState);
@@ -79,7 +94,9 @@ export const ToyCard = ({
   const setIsEditToyDrawerOpen = useSetRecoilState(isEditToyDrawerOpenState);
   const refreshToyList = useRecoilRefresher_UNSTABLE(toysListState);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const currentUserToys = useRecoilValue(currentToysListState);
+  const refreshMyToysList = useRecoilRefresher_UNSTABLE(currentToysListState);
   const navigate = useNavigate();
 
   const handleSwap = () => {
@@ -178,6 +195,47 @@ export const ToyCard = ({
     setIsEditToyDrawerOpen(true);
     setSelectedToyId(id);
   };
+
+  const handleDelete = () => {
+    openConfirmModal({
+      title: "Please confirm your action",
+      closeOnConfirm: false,
+      children: (
+        <Text size="sm">
+          This action is so important that you are required to confirm it with a
+          modal. Please click one of these buttons to proceed.
+        </Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: async () => {
+        try {
+          setIsDeleteLoading(true);
+          await deleteToyById(id);
+          showNotification({
+            title: "Success",
+            message: "Toy deleted successfully",
+            color: "green",
+            autoClose: 3000,
+          });
+          refreshMyToysList();
+          closeAllModals();
+        } catch (e) {
+          const message = getErrorMessage(e);
+          showNotification({
+            title: "Error",
+            message: message ?? "Something went wrong",
+            color: "red",
+            autoClose: 5000,
+          });
+        } finally {
+          setIsDeleteLoading(false);
+        }
+      },
+    });
+  };
+
   // TODO: display status of the toy!
   return (
     <Card withBorder p="md" radius="md" className={classes.card}>
@@ -198,6 +256,16 @@ export const ToyCard = ({
       >
         {category}
       </Badge>
+
+      {ownerId == currentUser?.id && (
+        <Badge
+          className={classes.status}
+          variant="gradient"
+          gradient={{ from: "teal", to: "blue", deg: 60 }}
+        >
+          {status}
+        </Badge>
+      )}
 
       <Text weight={700} className={classes.title} mt="xs">
         {name}
@@ -224,9 +292,19 @@ export const ToyCard = ({
           </div>
         </Group>
       ) : (
-        <Button mt={20} fullWidth onClick={handleEdit}>
-          Edit
-        </Button>
+        <Stack>
+          <Button mt={20} fullWidth onClick={handleEdit}>
+            Edit
+          </Button>
+          <Button
+            fullWidth
+            color="red"
+            onClick={handleDelete}
+            loading={isDeleteLoading}
+          >
+            Delete
+          </Button>
+        </Stack>
       )}
 
       {!basicView &&
