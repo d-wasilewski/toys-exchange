@@ -2,12 +2,14 @@ import { Stack, TextInput, Button, Text } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
+import { useI18nContext } from "../../../i18n/i18n-react";
 import { getErrorMessage } from "../../../shared/APIs/baseFetch";
 import { sendResetPasswordEmail } from "../../../shared/APIs/userService";
 import { schema } from "./emailSchema";
 
 export const EmailForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { LL } = useI18nContext();
 
   const form = useForm({
     initialValues: {
@@ -22,16 +24,15 @@ export const EmailForm = () => {
       setIsLoading(true);
       await sendResetPasswordEmail(values.email);
       showNotification({
-        title: "Success",
-        message:
-          "If your email exists, we sent you a link to reset your password",
+        title: LL.notifications.success(),
+        message: LL.notifications.resetPasswordEmail(),
         color: "green",
         autoClose: 5000,
       });
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message,
         color: "red",
         autoClose: 5000,
@@ -44,17 +45,17 @@ export const EmailForm = () => {
     <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
       <Stack>
         <Text size="lg" weight={500}>
-          Reset your password
+          {LL.login.reset()}
         </Text>
         <TextInput
           required
           radius="md"
-          label="Email"
-          placeholder="your@email.com"
+          label={LL.form.email()}
+          placeholder={LL.form.placeholder.email()}
           {...form.getInputProps("email")}
         />
         <Button type="submit" mt="sm" fullWidth radius="md" loading={isLoading}>
-          Submit
+          {LL.login.reset()}
         </Button>
       </Stack>
     </form>

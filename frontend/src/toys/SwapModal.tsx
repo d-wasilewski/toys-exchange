@@ -13,6 +13,7 @@ import {
   offeredToyIdState,
   selectedToyIdState,
 } from "./toysState";
+import { useI18nContext } from "../i18n/i18n-react";
 
 interface SwapModalProps {
   opened: boolean;
@@ -26,6 +27,8 @@ export const SwapModal = ({ opened, setOpened, cardData }: SwapModalProps) => {
   const [selectedToyId, setSelectedToyId] = useRecoilState(selectedToyIdState);
   const currentUser = useRecoilValue(userState);
   const availableToys = useRecoilValue(currentToysListState);
+  const { LL } = useI18nContext();
+
   const selectData = availableToys
     .filter((x) => x.status === "ACTIVE")
     .map((toy) => {
@@ -50,8 +53,8 @@ export const SwapModal = ({ opened, setOpened, cardData }: SwapModalProps) => {
       setLoading(true);
       await makeAnOffer(offerPayload);
       showNotification({
-        title: "Success",
-        message: "Offer made successfully",
+        title: LL.notifications.success(),
+        message: LL.notifications.created({ name: "Offer" }),
         color: "green",
         autoClose: 3000,
       });
@@ -59,7 +62,7 @@ export const SwapModal = ({ opened, setOpened, cardData }: SwapModalProps) => {
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message: message ?? "Something went wrong",
         color: "red",
         autoClose: 5000,
@@ -77,15 +80,15 @@ export const SwapModal = ({ opened, setOpened, cardData }: SwapModalProps) => {
         setOfferedToyId(null);
         setSelectedToyId(null);
       }}
-      title="Swap offer"
+      title={LL.toy.swap.offer()}
     >
-      <Text>You are trying to swap for</Text>
+      <Text>{LL.toy.swap.tryingSwap()}</Text>
       <Center mt={16} mb={16}>
         <ToyCard {...cardData} basicView />
       </Center>
       <AvailableToySelect data={selectData}></AvailableToySelect>
       <Button mt={20} fullWidth onClick={handleSubmit} loading={loading}>
-        Make an offer
+        {LL.toy.swap.make()}
       </Button>
     </Modal>
   );

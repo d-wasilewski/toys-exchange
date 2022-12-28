@@ -20,6 +20,7 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
+import { useI18nContext } from "../i18n/i18n-react";
 import { userState } from "../session/sessionState";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import {
@@ -85,7 +86,6 @@ export const ToyCard = ({
   basicView,
   description,
   status,
-  etag,
 }: ToyCardProps) => {
   const { classes } = useStyles();
   const setSelectedToyId = useSetRecoilState(selectedToyIdState);
@@ -98,6 +98,7 @@ export const ToyCard = ({
   const currentUserToys = useRecoilValue(currentToysListState);
   const refreshMyToysList = useRecoilRefresher_UNSTABLE(currentToysListState);
   const navigate = useNavigate();
+  const { LL } = useI18nContext();
 
   const handleSwap = () => {
     if (currentUserToys.length === 0) {
@@ -147,15 +148,15 @@ export const ToyCard = ({
           await blockToy(id);
           refreshToyList();
           showNotification({
-            title: "Success",
-            message: "Status changed successfully",
+            title: LL.notifications.success(),
+            message: LL.notifications.statusChanged(),
             color: "green",
             autoClose: 3000,
           });
         } catch (e) {
           const message = getErrorMessage(e);
           showNotification({
-            title: "Error",
+            title: LL.notifications.error(),
             message: message ?? "Something went wrong",
             color: "red",
             autoClose: 5000,
@@ -173,15 +174,15 @@ export const ToyCard = ({
       await confirmToy(id);
       refreshToyList();
       showNotification({
-        title: "Success",
-        message: "Status changed successfully",
+        title: LL.notifications.success(),
+        message: LL.notifications.statusChanged(),
         color: "green",
         autoClose: 3000,
       });
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message: message ?? "Something went wrong",
         color: "red",
         autoClose: 5000,
@@ -214,8 +215,8 @@ export const ToyCard = ({
           setIsDeleteLoading(true);
           await deleteToyById(id);
           showNotification({
-            title: "Success",
-            message: "Toy deleted successfully",
+            title: LL.notifications.success(),
+            message: LL.notifications.deleted({ name: "Toy" }),
             color: "green",
             autoClose: 3000,
           });
@@ -224,7 +225,7 @@ export const ToyCard = ({
         } catch (e) {
           const message = getErrorMessage(e);
           showNotification({
-            title: "Error",
+            title: LL.notifications.error(),
             message: message ?? "Something went wrong",
             color: "red",
             autoClose: 5000,
@@ -254,7 +255,7 @@ export const ToyCard = ({
         variant="gradient"
         gradient={{ from: "yellow", to: "red" }}
       >
-        {category}
+        {LL.toy.category({ category })}
       </Badge>
 
       {ownerId == currentUser?.id && (
@@ -263,7 +264,7 @@ export const ToyCard = ({
           variant="gradient"
           gradient={{ from: "teal", to: "blue", deg: 60 }}
         >
-          {status}
+          {LL.toy.status({ status })}
         </Badge>
       )}
 
@@ -294,7 +295,7 @@ export const ToyCard = ({
       ) : (
         <Stack>
           <Button mt={20} fullWidth onClick={handleEdit}>
-            Edit
+            {LL.general.edit()}
           </Button>
           <Button
             fullWidth
@@ -302,7 +303,7 @@ export const ToyCard = ({
             onClick={handleDelete}
             loading={isDeleteLoading}
           >
-            Delete
+            {LL.general.delete()}
           </Button>
         </Stack>
       )}

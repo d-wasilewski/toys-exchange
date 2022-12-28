@@ -20,18 +20,21 @@ import { signUp } from "../../shared/APIs/userService";
 import { isEmpty } from "lodash";
 import { getErrorMessage } from "../../shared/APIs/baseFetch";
 import { showNotification } from "@mantine/notifications";
+import { useI18nContext } from "../../i18n/i18n-react";
+import { TranslationFunctions } from "../../i18n/i18n-types";
 
-const requirements = [
-  { re: /[0-9]/, label: "Includes number" },
-  { re: /[a-z]/, label: "Includes lowercase letter" },
-  { re: /[A-Z]/, label: "Includes uppercase letter" },
-  { re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: "Includes special symbol" },
+const getRequirements = (LL: TranslationFunctions) => [
+  { re: /[0-9]/, label: LL.register.requirements.number() },
+  { re: /[a-z]/, label: LL.register.requirements.lower() },
+  { re: /[A-Z]/, label: LL.register.requirements.upper() },
+  { re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: LL.register.requirements.special() },
 ];
 
 export const RegisterForm = () => {
   const [visible, { toggle }] = useDisclosure(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { LL } = useI18nContext();
 
   const form = useForm({
     initialValues: {
@@ -50,6 +53,8 @@ export const RegisterForm = () => {
       phoneNumber: values.phoneNumber.replaceAll("-", "").substring(4),
     }),
   });
+
+  const requirements = getRequirements(LL);
 
   const checks = requirements.map((requirement, index) => (
     <PasswordRequirement
@@ -82,7 +87,7 @@ export const RegisterForm = () => {
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message,
         color: "red",
         autoClose: 5000,
@@ -99,19 +104,19 @@ export const RegisterForm = () => {
           <TextInput
             required
             radius="md"
-            label="Name"
-            placeholder="Damian"
+            label={LL.form.name()}
+            placeholder={LL.form.placeholder.name()}
             {...form.getInputProps("name")}
           />
           <TextInput
             required
             radius="md"
-            label="Email"
-            placeholder="your@email.com"
+            label={LL.form.email()}
+            placeholder={LL.form.placeholder.email()}
             {...form.getInputProps("email")}
           />
           <Input.Wrapper
-            label="Phone number"
+            label={LL.form.phone()}
             id="phoneNumber"
             required
             {...form.getInputProps("phoneNumber")}
@@ -121,14 +126,14 @@ export const RegisterForm = () => {
               radius="md"
               mask="+48 999-999-999"
               id="phoneNumber"
-              placeholder="Your phone"
+              placeholder={LL.form.placeholder.phone()}
               {...form.getInputProps("phoneNumber")}
             />
           </Input.Wrapper>
           <TextInput
             radius="md"
-            label="Address"
-            placeholder="Lodz al. Politechniki 1"
+            label={LL.form.address()}
+            placeholder={LL.form.placeholder.address()}
             {...form.getInputProps("address")}
           />
           <Popover
@@ -145,8 +150,8 @@ export const RegisterForm = () => {
                 <PasswordInput
                   withAsterisk
                   radius="md"
-                  label="Password"
-                  placeholder="strongPassword123"
+                  label={LL.form.password()}
+                  placeholder={LL.form.placeholder.password()}
                   visible={visible}
                   onVisibilityChange={toggle}
                   {...form.getInputProps("password")}
@@ -161,7 +166,7 @@ export const RegisterForm = () => {
                 style={{ marginBottom: 10 }}
               />
               <PasswordRequirement
-                label="Includes at least 6 characters"
+                label={LL.register.requirements.characters()}
                 meets={form.values.password.length > 5}
               />
               {checks}
@@ -171,21 +176,21 @@ export const RegisterForm = () => {
           <PasswordInput
             withAsterisk
             radius="md"
-            label="Password"
-            placeholder="strongPassword123"
+            label={LL.form.confirmPassword()}
+            placeholder={LL.form.placeholder.password()}
             visible={visible}
             onVisibilityChange={toggle}
             {...form.getInputProps("confirmPassword")}
           />
           <Checkbox
             mt="sm"
-            label="I accept terms and conditions"
+            label={LL.register.terms()}
             {...form.getInputProps("terms", { type: "checkbox" })}
             error={form.errors.terms}
           />
         </Stack>
         <Button type="submit" mt="md" fullWidth radius="md" loading={isLoading}>
-          Submit
+          {LL.register.register()}
         </Button>
       </form>
     </Paper>

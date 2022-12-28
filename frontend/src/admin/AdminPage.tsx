@@ -1,6 +1,7 @@
 import { Container, Tabs } from "@mantine/core";
 import { IconUser, IconArrowsLeftRight, IconHorseToy } from "@tabler/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { useI18nContext } from "../i18n/i18n-react";
 import { OfferCardList } from "../offers/OfferCardList";
 import {
   isAdminDrawerOpenedState,
@@ -17,19 +18,20 @@ export const AdminPage = () => {
     isAdminDrawerOpenedState
   );
   const isDrawerEditable = useRecoilValue(isDrawerEditableState);
+  const { LL } = useI18nContext();
 
   return (
     <Container mt={40} pr={16} size="lg">
       <Tabs variant="outline" radius="md" defaultValue="users">
         <Tabs.List>
           <Tabs.Tab value="users" icon={<IconUser size={14} />}>
-            Users
+            {LL.admin.users()}
           </Tabs.Tab>
           <Tabs.Tab value="offers" icon={<IconArrowsLeftRight size={14} />}>
-            Offers
+            {LL.admin.offers()}
           </Tabs.Tab>
           <Tabs.Tab value="toys" icon={<IconHorseToy size={14} />}>
-            Unconfirmed toys
+            {LL.admin.reported()}
           </Tabs.Tab>
         </Tabs.List>
 

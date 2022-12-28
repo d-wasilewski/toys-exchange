@@ -7,8 +7,8 @@ import {
   Text,
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { useI18nContext } from "../../i18n/i18n-react";
 import { AccordionFAQ } from "./AccordionFAQ";
-import { ContactUs } from "./ContactUs";
 import { Features } from "./Features";
 
 const useStyles = createStyles((theme) => ({
@@ -76,6 +76,7 @@ const useStyles = createStyles((theme) => ({
 export function Homepage() {
   const { classes } = useStyles();
   const navigate = useNavigate();
+  const { LL } = useI18nContext();
 
   return (
     <>
@@ -86,12 +87,9 @@ export function Homepage() {
           zIndex={0}
         />
         <Container className={classes.container}>
-          <Title className={classes.title}>Play & Swap & Repeat</Title>
+          <Title className={classes.title}>{LL.homepage.titleMain()}</Title>
           <Text className={classes.description} size="xl" mt="xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
-            dolores. Ipsa delectus quasi laudantium itaque id tenetur odit
-            necessitatibus reiciendis ratione doloribus dolor neque laborum
-            voluptas quisquam dicta, rerum aliquam.
+            {LL.homepage.titleText()}
           </Text>
 
           <Button
@@ -101,7 +99,7 @@ export function Homepage() {
             className={classes.control}
             onClick={() => navigate("/toys")}
           >
-            Get started
+            {LL.homepage.gettingStarted()}
           </Button>
         </Container>
       </div>
@@ -109,9 +107,9 @@ export function Homepage() {
       <Container>
         <AccordionFAQ />
       </Container>
-      <Container>
+      {/* <Container>
         <ContactUs />
-      </Container>
+      </Container> */}
     </>
   );
 }

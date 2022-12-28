@@ -10,6 +10,7 @@ import {
   Headers,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Language, User } from '@prisma/client';
 import { encodeETag } from 'src/shared/encodeETag';
 import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
 import { File } from 'src/toys/toys.service';
@@ -92,5 +93,12 @@ export class UserController {
   @Post('activate')
   async activateClient(@Body() data: UserIdDto): Promise<any> {
     return this.userService.changeUserStatus(data.id, 'ACTIVE');
+  }
+
+  @Post('/changeLanguage')
+  async changeLanguage(
+    @Body() data: { id: User['id']; lang: Language },
+  ): Promise<UserDto> {
+    return this.userService.changeLanguage(data.id, data.lang);
   }
 }

@@ -19,6 +19,7 @@ import {
   useSetRecoilState,
 } from "recoil";
 import { selectedUserState } from "../admin/adminState";
+import { useI18nContext } from "../i18n/i18n-react";
 import { userState } from "../session/sessionState";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import { editUserData } from "../shared/APIs/userService";
@@ -30,6 +31,7 @@ export const UserDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [active] = useOutletContext<string>();
   const setUser = useSetRecoilState(userState);
+  const { LL } = useI18nContext();
 
   if (!selectedUser) return null;
 
@@ -52,8 +54,8 @@ export const UserDetails = () => {
         selectedUser.etag
       );
       showNotification({
-        title: "Success",
-        message: "User updated successfully",
+        title: LL.notifications.success(),
+        message: LL.notifications.updated({ name: "User" }),
         color: "green",
         autoClose: 3000,
       });
@@ -62,7 +64,7 @@ export const UserDetails = () => {
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message: message ?? "Something went wrong",
         color: "red",
         autoClose: 5000,
@@ -79,44 +81,48 @@ export const UserDetails = () => {
         <Stack spacing="md">
           <TextInput
             radius="md"
-            label="Name"
+            label={LL.form.name()}
+            placeholder={LL.form.placeholder.name()}
             required
             value={selectedUser.name}
             {...form.getInputProps("name")}
           />
           <TextInput
             radius="md"
-            label="Email"
+            label={LL.form.email()}
+            placeholder={LL.form.placeholder.email()}
             required
             value={selectedUser.email}
             {...form.getInputProps("email")}
           />
           <TextInput
             radius="md"
-            label="Phone number"
+            label={LL.form.phone()}
+            placeholder={LL.form.placeholder.phone()}
             required
             value={selectedUser.phoneNumber}
             {...form.getInputProps("phoneNumber")}
           />
           <TextInput
             radius="md"
-            label="Address"
+            label={LL.form.address()}
+            placeholder={LL.form.placeholder.address()}
             value={selectedUser.address}
             {...form.getInputProps("address")}
           />
           {/* TODO: Implement changing password */}
-          <Input.Wrapper label="Password">
+          <Input.Wrapper label={LL.profile.details.changePassword()}>
             <Input
               component="button"
               rightSection={<IconChevronRight stroke={1} />}
               onClick={() => console.log("Change password")}
               radius="md"
             >
-              Change your password
+              {LL.profile.details.changePassword()}
             </Input>
           </Input.Wrapper>
           <Group spacing={4} align="center">
-            <Text>Your rating: </Text>
+            <Text>{LL.profile.details.rating()}: </Text>
             <Text color="dimmed">{selectedUser.rating.value ?? 0}/5</Text>
             <Rating value={1} count={1} fractions={10} readOnly />
             <Text color="dimmed">({selectedUser.rating.count})</Text>
@@ -130,7 +136,7 @@ export const UserDetails = () => {
             radius="md"
             loading={isLoading}
           >
-            Edit
+            {LL.general.edit()}
           </Button>
         )}
       </form>

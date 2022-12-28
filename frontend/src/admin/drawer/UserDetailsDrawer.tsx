@@ -1,5 +1,6 @@
 import { Drawer } from "@mantine/core";
 import { SuspenseFallback } from "../../components/SuspenseFallback";
+import { useI18nContext } from "../../i18n/i18n-react";
 import { DrawerContent } from "./DrawerContent";
 import { EditableDrawerContent } from "./EditableDrawerContent";
 
@@ -14,11 +15,12 @@ export const UserDetailsDrawer = ({
   setIsOpened,
   editable,
 }: UserDetailsDrawerProps) => {
+  const { LL } = useI18nContext();
   return (
     <Drawer
       opened={isOpened}
       onClose={() => setIsOpened(false)}
-      title="User details"
+      title={LL.admin.userDetails()}
       padding="xl"
       size="lg"
       overlayOpacity={0.55}

@@ -3,6 +3,7 @@ import { IconPlus } from "@tabler/icons";
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import { useI18nContext } from "../i18n/i18n-react";
 import { AddNewToyForm } from "../toys/add-new/AddNewToyForm";
 import { ToysList } from "../toys/ToysList";
 import { currentToysListState } from "../toys/toysState";
@@ -11,6 +12,7 @@ export const UserToys = () => {
   const [opened, setOpened] = useState(false);
   const myToysList = useRecoilValue(currentToysListState);
   const [active] = useOutletContext<string>();
+  const { LL } = useI18nContext();
 
   return (
     <>
@@ -20,14 +22,14 @@ export const UserToys = () => {
           onClick={() => setOpened(true)}
           rightIcon={<IconPlus size={20} />}
         >
-          Add new toy
+          {LL.profile.toys.new()}
         </Button>
       </Group>
       <ToysList toysList={myToysList} />
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Add a new toy"
+        title={LL.profile.toys.new()}
       >
         <AddNewToyForm />
       </Modal>

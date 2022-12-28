@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { ToysView } from "./toys/ToysView";
 import { ROUTES } from "./routes";
 import { LoginPage } from "./session/Login/LoginPage";
@@ -17,6 +17,11 @@ import { SuspenseFallback } from "./components/SuspenseFallback";
 import { Homepage } from "./components/homepage/Homepage";
 import { ConfirmedAccount } from "./session/auth/ConfirmedAccount";
 import { ResetPassword } from "./session/auth/resetPassword/ResetPassword";
+import { useI18nContext } from "./i18n/i18n-react";
+import { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { languageState, userState } from "./session/sessionState";
+import { Locales } from "./i18n/i18n-types";
 
 interface IDecodedToken {
   auth: string;
@@ -26,22 +31,35 @@ interface IDecodedToken {
   sub: string;
 }
 
-const token = localStorage.authToken;
-
-if (token) {
-  const decodedToken = jwtDecode<IDecodedToken>(token);
-  if (decodedToken.exp * 1000 < Date.now()) {
-    logout();
-    window.location.href = "/login";
-  } else {
-    axios.defaults.headers.common.Authorization = token;
-    // get user data here
-    // store.dispatch(updateUser());
-    // store.dispatch(setActiveView(activeView));
-  }
-}
-
 function App() {
+  const { setLocale } = useI18nContext();
+  const locale = useRecoilValue(languageState);
+  const [user, setUser] = useRecoilState(userState);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.authToken;
+
+    if (token) {
+      const decodedToken = jwtDecode<IDecodedToken>(token);
+      console.log(decodedToken.exp < Date.now(), decodedToken.exp);
+      if (decodedToken.exp < Date.now()) {
+        logout();
+        setUser(null);
+        navigate("/login");
+      } else {
+        axios.defaults.headers.common.Authorization = token;
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    console.log(locale);
+    const userLocale = user?.language.toLowerCase() as Locales;
+    setLocale(userLocale ?? locale);
+  }, [locale]);
+
+  // probably might be changed based on user status here
   return (
     <>
       <Routes>

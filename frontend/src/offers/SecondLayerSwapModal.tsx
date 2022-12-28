@@ -2,33 +2,37 @@ import { Button, Center, Stack, Text } from "@mantine/core";
 import { closeAllModals } from "@mantine/modals";
 import { IconCircleCheck } from "@tabler/icons";
 import { useRecoilValue } from "recoil";
+import { useI18nContext } from "../i18n/i18n-react";
 import { getUserByIdState } from "../session/sessionState";
 
 export const SecondLayerSwapModal = ({ userId }: { userId: string }) => {
   const user = useRecoilValue(getUserByIdState(userId));
+  const { LL } = useI18nContext();
 
   return (
     <>
-      <Text>
-        You swapped for a toy in the app, now plase contact the person you made
-        a swap with to finish the process
-      </Text>
-      <Text>Here is the data about the person you are swapping with:</Text>
+      <Text>{LL.offer.swapComplete.textIntr()}</Text>
+      <Text> {LL.offer.swapComplete.textInfo()}:</Text>
       <Stack py="md">
-        <Text fw={500}>Name: {user?.name}</Text>
-        <Text fw={500}>Address: {user?.address}</Text>
-        <Text fw={500}>Phone number: {user?.phoneNumber}</Text>
-        <Text fw={500}>Email: {user?.email}</Text>
+        <Text fw={500}>
+          {LL.form.name()}: {user?.name}
+        </Text>
+        <Text fw={500}>
+          {LL.form.address()}: {user?.address}
+        </Text>
+        <Text fw={500}>
+          {LL.form.phone()}: {user?.phoneNumber}
+        </Text>
+        <Text fw={500}>
+          {LL.form.email()}: {user?.email}
+        </Text>
       </Stack>
-      <Text>
-        Please keep in mind you won't be able to comeback to this screen so save
-        the displayed data
-      </Text>
+      <Text>{LL.offer.swapComplete.textFinish()}</Text>
       <Center my={16}>
         <IconCircleCheck size={60} color="green" />
       </Center>
       <Button mt={10} fullWidth onClick={() => closeAllModals()}>
-        Close
+        {LL.general.close()}
       </Button>
     </>
   );

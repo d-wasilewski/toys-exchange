@@ -9,9 +9,9 @@ import {
   Badge,
   Stack,
   Flex,
-  Title,
 } from "@mantine/core";
 import { useRecoilValue } from "recoil";
+import { useI18nContext } from "../i18n/i18n-react";
 import { userState } from "../session/sessionState";
 import { RatingType } from "../shared/APIs/userService";
 
@@ -51,13 +51,14 @@ interface ArticleCardVerticalProps {
 export function OfferDetails({ toy, user, type }: ArticleCardVerticalProps) {
   const currentUser = useRecoilValue(userState);
   const { classes } = useStyles();
+  const { LL } = useI18nContext();
 
   return (
     <Stack spacing={4}>
       {type === "sender" ? (
-        <Text align="center">Sender</Text>
+        <Text align="center">{LL.offer.sender()}</Text>
       ) : (
-        <Text align="center">Receiver</Text>
+        <Text align="center">{LL.offer.receiver()}</Text>
       )}
       <Card withBorder radius="md" p={0} className={classes.card}>
         <Group noWrap spacing={0}>
@@ -85,7 +86,7 @@ export function OfferDetails({ toy, user, type }: ArticleCardVerticalProps) {
               </Stack>
             ) : (
               <Text align="center" sx={{ height: 45 }}>
-                Your toy
+                {LL.offer.yourToy()}
               </Text>
             )}
           </div>

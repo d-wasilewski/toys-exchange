@@ -31,6 +31,9 @@ export interface paths {
   "/user/activate": {
     post: operations["UserController_activateClient"];
   };
+  "/user/changeLanguage": {
+    post: operations["UserController_changeLanguage"];
+  };
   "/auth/login": {
     post: operations["AuthController_login"];
   };
@@ -102,6 +105,7 @@ export interface components {
     BasicUserDto: {
       role: "BASIC" | "ADMIN";
       status: "ACTIVE" | "BLOCKED";
+      language: "EN" | "PL";
       id: string;
       email: string;
       name: string;
@@ -152,6 +156,7 @@ export interface components {
     UserDto: {
       role: "BASIC" | "ADMIN";
       status: "ACTIVE" | "BLOCKED";
+      language: "EN" | "PL";
       toys: components["schemas"]["ToyDto"][];
       id: string;
       email: string;
@@ -452,6 +457,16 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["UserIdDto"];
+      };
+    };
+  };
+  UserController_changeLanguage: {
+    parameters: {};
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["UserDto"];
+        };
       };
     };
   };

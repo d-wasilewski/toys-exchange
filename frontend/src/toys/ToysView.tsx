@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
+import { useI18nContext } from "../i18n/i18n-react";
 import { userState } from "../session/sessionState";
 import { Filters } from "./filters/Filters";
 import { ToysList } from "./ToysList";
@@ -35,6 +36,7 @@ export const ToysView = () => {
   const user = useRecoilValue(userState);
   const [toysList, setToysList] = useState(toysListValue);
   const { classes } = useStyles();
+  const { LL } = useI18nContext();
 
   return (
     <>
@@ -46,7 +48,7 @@ export const ToysView = () => {
           className={classes.navbar}
         >
           <Navbar.Section grow>
-            <Title>Filters</Title>
+            <Title>{LL.filters.filters()}</Title>
             <Group className={classes.header}></Group>
             <Filters setToysList={setToysList} />
           </Navbar.Section>

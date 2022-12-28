@@ -13,6 +13,7 @@ import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 import { useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
 import { SuspenseFallback } from "../components/SuspenseFallback";
+import { useI18nContext } from "../i18n/i18n-react";
 import { userState } from "../session/sessionState";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import {
@@ -51,21 +52,17 @@ export const ActionButtons = ({
   const [isDeclineLoading, setIsDeclineLoading] = useState(false);
   const currentUser = useRecoilValue(userState);
   const historyListRefresh = useRecoilRefresher_UNSTABLE(myHistoryOffersState);
+  const { LL } = useI18nContext();
 
   const isSender = offerSender.id === currentUser?.id;
   const isReceiver = offerReceiver.id === currentUser?.id;
 
   const handleAccept = () => {
     openConfirmModal({
-      title: "Please confirm your action",
+      title: LL.offer.confirmModal.title(),
       closeOnConfirm: false,
-      children: (
-        <Text size="sm">
-          This action is so important that you are required to confirm it with a
-          modal. Please click one of these buttons to proceed.
-        </Text>
-      ),
-      labels: { confirm: "Confirm", cancel: "Cancel" },
+      children: <Text size="sm">{LL.offer.confirmModal.text()}</Text>,
+      labels: { confirm: LL.general.confirm(), cancel: LL.general.cancel() },
       confirmProps: { color: "green" },
       onCancel: () => console.log("Cancel"),
       onConfirm: async () => {
@@ -73,13 +70,13 @@ export const ActionButtons = ({
           setIsDeclineLoading(true);
           await acceptOffer(offerId);
           showNotification({
-            title: "Success",
-            message: "Offer accepted successfully",
+            title: LL.notifications.success(),
+            message: LL.notifications.created({ name: "Offer" }),
             color: "green",
             autoClose: 3000,
           });
           openModal({
-            title: "Swap complete",
+            title: LL.toy.swap.complete(),
             children: (
               <SuspenseFallback>
                 <SecondLayerSwapModal userId={offerSender.id} />
@@ -89,7 +86,7 @@ export const ActionButtons = ({
         } catch (e) {
           const message = getErrorMessage(e);
           showNotification({
-            title: "Error",
+            title: LL.notifications.error(),
             message: message ?? "Something went wrong",
             color: "red",
             autoClose: 5000,
@@ -103,14 +100,12 @@ export const ActionButtons = ({
 
   const handleDecline = () => {
     openConfirmModal({
-      title: "Delete your profile",
-      children: (
-        <Text size="sm">
-          Are you sure you want to delete your profile? This action is
-          destructive and you will have to contact support to restore your data.
-        </Text>
-      ),
-      labels: { confirm: "Delete account", cancel: "No don't delete it" },
+      title: LL.offer.declineModal.title(),
+      children: <Text size="sm">{LL.offer.declineModal.text()}</Text>,
+      labels: {
+        confirm: LL.offer.declineModal.yes(),
+        cancel: LL.offer.declineModal.no(),
+      },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: async () => {
@@ -118,15 +113,15 @@ export const ActionButtons = ({
           setIsAcceptLoading(true);
           await declineOffer(offerId);
           showNotification({
-            title: "Success",
-            message: "Offer declined successfully",
+            title: LL.notifications.success(),
+            message: LL.notifications.created({ name: "Offer" }),
             color: "green",
             autoClose: 3000,
           });
         } catch (e) {
           const message = getErrorMessage(e);
           showNotification({
-            title: "Error",
+            title: LL.notifications.error(),
             message: message ?? "Something went wrong",
             color: "red",
             autoClose: 5000,
@@ -147,8 +142,8 @@ export const ActionButtons = ({
         sentBy: isSender ? "sender" : "receiver",
       });
       showNotification({
-        title: "Success",
-        message: "User rated successfully",
+        title: LL.notifications.success(),
+        message: LL.notifications.created({ name: "User" }),
         color: "green",
         autoClose: 3000,
       });
@@ -156,8 +151,8 @@ export const ActionButtons = ({
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
-        message: message ?? "Something went wrong",
+        title: LL.notifications.error(),
+        message: message ?? LL.notifications.generalError(),
         color: "red",
         autoClose: 5000,
       });
@@ -172,24 +167,24 @@ export const ActionButtons = ({
               case "PENDING":
                 return (
                   <Badge color="yellow" size="xl">
-                    PENDING
+                    {LL.offer.statuses({ status: "PENDING" })}
                   </Badge>
                 );
               case "ACCEPTED":
                 return (
                   <Stack spacing={0} justify="center">
                     <Badge color="green" size="xl">
-                      Accepted
+                      {LL.offer.statuses({ status: "ACCEPTED" })}
                     </Badge>
                     {offerSenderRating && (
                       <Group spacing={2} mt={4}>
-                        <Text align="center">Sender rate: </Text>
+                        <Text align="center">{LL.offer.senderRate()}: </Text>
                         <Rating value={offerSenderRating.value} readOnly />
                       </Group>
                     )}
                     {offerReceiverRating && (
                       <Group spacing={2} mt={4}>
-                        <Text align="center">Receiver rate: </Text>
+                        <Text align="center">{LL.offer.receiverRate()}: </Text>
                         <Rating value={offerReceiverRating.value} readOnly />
                       </Group>
                     )}
@@ -198,7 +193,7 @@ export const ActionButtons = ({
               case "DECLINED":
                 return (
                   <Badge color="gray" size="xl">
-                    DECLINED
+                    {LL.offer.statuses({ status: "DECLINED" })}
                   </Badge>
                 );
 
@@ -216,14 +211,14 @@ export const ActionButtons = ({
                       onClick={handleAccept}
                       loading={isAcceptLoading}
                     >
-                      Accept
+                      {LL.general.accept()}
                     </Button>
                     <Button
                       color="red"
                       onClick={handleDecline}
                       loading={isDeclineLoading}
                     >
-                      Decline
+                      {LL.general.decline()}
                     </Button>
                   </Group>
                 );
@@ -233,7 +228,7 @@ export const ActionButtons = ({
                     {isReceiver ? (
                       offerReceiverRating ? (
                         <Stack justify="center" spacing={0}>
-                          <Text align="center">Your rate:</Text>
+                          <Text align="center">{LL.offer.yourRate()}:</Text>
                           <Rating
                             mt={4}
                             value={offerReceiverRating.value}
@@ -248,12 +243,12 @@ export const ActionButtons = ({
                           shadow="md"
                         >
                           <Popover.Target>
-                            <Button>Rate user</Button>
+                            <Button>{LL.offer.rateUser()}</Button>
                           </Popover.Target>
                           <Popover.Dropdown>
                             <Center>
                               <Text size="sm">
-                                How did you like the exchange?
+                                {LL.offer.exchangeLike()}
                                 <Rating
                                   mt={4}
                                   defaultValue={2}
@@ -272,7 +267,7 @@ export const ActionButtons = ({
                     {isSender ? (
                       offerSenderRating ? (
                         <Stack justify="center" spacing={0}>
-                          <Text align="center">Your rate:</Text>
+                          <Text align="center">{LL.offer.yourRate()}:</Text>
                           <Rating
                             mt={4}
                             value={offerSenderRating.value}
@@ -287,12 +282,12 @@ export const ActionButtons = ({
                           shadow="md"
                         >
                           <Popover.Target>
-                            <Button>Rate user</Button>
+                            <Button>{LL.offer.rateUser()}</Button>
                           </Popover.Target>
                           <Popover.Dropdown>
                             <Center>
                               <Text size="sm">
-                                How did you like the exchange?
+                                {LL.offer.exchangeLike()}
                                 <Rating
                                   mt={4}
                                   defaultValue={2}
@@ -314,7 +309,7 @@ export const ActionButtons = ({
               case "DECLINED": {
                 return (
                   <Button disabled color="grape">
-                    Declined
+                    {LL.offer.statuses({ status: "DECLINED" })}
                   </Button>
                 );
               }

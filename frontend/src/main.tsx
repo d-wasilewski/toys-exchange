@@ -5,13 +5,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { RecoilRoot } from "recoil";
+import { detectLocale, navigatorDetector } from "typesafe-i18n/detectors";
 import App from "./App";
 import TypesafeI18n from "./i18n/i18n-react";
+import { loadAllLocales } from "./i18n/i18n-util.sync";
 import { MantineGlobalStyles } from "./MantineGlobalStyles";
+
+loadAllLocales();
+const detectedLocale = detectLocale("pl", ["en", "pl"], navigatorDetector);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <TypesafeI18n locale={"en"}>
+    <TypesafeI18n locale={detectedLocale}>
       <RecoilRoot>
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <MantineGlobalStyles />

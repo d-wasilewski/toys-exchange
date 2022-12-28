@@ -16,6 +16,8 @@ import { useRecoilState } from "recoil";
 import { userState } from "../session/sessionState";
 import Logo from "../assets/logo.png";
 import { logout } from "../shared/APIs/userService";
+import { useI18nContext } from "../i18n/i18n-react";
+import { LanguagePicker } from "./LanguagePicker";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -49,7 +51,7 @@ const useStyles = createStyles((theme) => ({
   user: {
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
-    borderRadius: theme.radius.sm,
+    borderRadius: theme.radius.md,
     transition: "background-color 100ms ease",
 
     "&:hover": {
@@ -100,6 +102,7 @@ export function AppHeader({ links }: HeaderSearchProps) {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+  const { LL } = useI18nContext();
 
   const items = links.map((link) => {
     return (
@@ -107,7 +110,7 @@ export function AppHeader({ links }: HeaderSearchProps) {
         key={link.label}
         className={classes.link}
         onClick={() => {
-          if (link.label === "Logout") {
+          if (link.label === LL.links.logout()) {
             setUser(null);
             logout();
           }
@@ -134,24 +137,28 @@ export function AppHeader({ links }: HeaderSearchProps) {
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>
-          {user && (
-            <UnstyledButton
-              className={classes.user}
-              onClick={() => navigate(`/user/${user?.id}/details`)}
-            >
-              <Group spacing={7}>
-                <Avatar
-                  src={user?.imgUrl}
-                  alt={user?.name}
-                  radius="xl"
-                  size={20}
-                />
-                <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
-                  {user?.name}
-                </Text>
-              </Group>
-            </UnstyledButton>
-          )}
+          <Group spacing={10}>
+            {user && (
+              <UnstyledButton
+                className={classes.user}
+                onClick={() => navigate(`/user/${user?.id}/details`)}
+              >
+                <Group spacing={7}>
+                  <Avatar
+                    src={user?.imgUrl}
+                    alt={user?.name}
+                    radius="xl"
+                    size={20}
+                  />
+                  <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
+                    {user?.name}
+                  </Text>
+                </Group>
+              </UnstyledButton>
+            )}
+            <LanguagePicker />
+          </Group>
+
           <Burger
             opened={opened}
             onClick={toggle}

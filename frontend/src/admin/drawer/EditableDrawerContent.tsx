@@ -15,6 +15,8 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
+import { useI18nContext } from "../../i18n/i18n-react";
+import { TranslationFunctions } from "../../i18n/i18n-types";
 import { getErrorMessage } from "../../shared/APIs/baseFetch";
 import {
   editUserDataByAdmin,
@@ -33,9 +35,9 @@ interface RoleSelect {
   label: string;
 }
 
-const rolesData: RoleSelect[] = [
-  { value: "BASIC", label: "Basic" },
-  { value: "ADMIN", label: "Admin" },
+const getRolesData = (LL: TranslationFunctions): RoleSelect[] => [
+  { value: "BASIC", label: LL.admin.roles({ role: "BASIC" }) },
+  { value: "ADMIN", label: LL.admin.roles({ role: "ADMIN" }) },
 ];
 
 interface StatusSelect {
@@ -43,9 +45,9 @@ interface StatusSelect {
   label: string;
 }
 
-const statusData: StatusSelect[] = [
-  { value: "ACTIVE", label: "Active" },
-  { value: "BLOCKED", label: "Blocked" },
+const getStatusData = (LL: TranslationFunctions): StatusSelect[] => [
+  { value: "ACTIVE", label: LL.admin.statuses({ status: "ACTIVE" }) },
+  { value: "BLOCKED", label: LL.admin.statuses({ status: "BLOCKED" }) },
 ];
 
 export const EditableDrawerContent = () => {
@@ -54,6 +56,7 @@ export const EditableDrawerContent = () => {
   const refreshTable = useRecoilRefresher_UNSTABLE(usersListState);
   const [isLoading, setIsLoading] = useState(false);
   const setIsDrawerOpen = useSetRecoilState(isAdminDrawerOpenedState);
+  const { LL } = useI18nContext();
 
   if (!selectedUser) return null;
 
@@ -78,8 +81,8 @@ export const EditableDrawerContent = () => {
         selectedUser.etag
       );
       showNotification({
-        title: "Success",
-        message: "User updated successfully",
+        title: LL.notifications.success(),
+        message: LL.notifications.updated({ name: "User" }),
         color: "green",
         autoClose: 3000,
       });
@@ -87,7 +90,7 @@ export const EditableDrawerContent = () => {
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message: message ?? "Something went wrong",
         color: "red",
         autoClose: 5000,
@@ -106,64 +109,73 @@ export const EditableDrawerContent = () => {
           <Center>
             <Avatar src={selectedUser.imgUrl} size="xl" radius="xl" />
           </Center>
-          <TextInput disabled radius="md" label="Id" value={selectedUser.id} />
+          <TextInput
+            disabled
+            radius="md"
+            label={LL.form.id()}
+            value={selectedUser.id}
+          />
           <TextInput
             radius="md"
-            label="Name"
+            label={LL.form.name()}
+            placeholder={LL.form.placeholder.name()}
             value={selectedUser.name}
             {...form.getInputProps("name")}
           />
           <TextInput
             radius="md"
-            label="Email"
+            label={LL.form.email()}
+            placeholder={LL.form.placeholder.email()}
             value={selectedUser.email}
             {...form.getInputProps("email")}
           />
           <TextInput
             radius="md"
-            label="Phone number"
+            label={LL.form.phone()}
+            placeholder={LL.form.placeholder.phone()}
             value={selectedUser.phoneNumber}
             {...form.getInputProps("phoneNumber")}
           />
           <TextInput
             radius="md"
-            label="Address"
+            label={LL.form.address()}
+            placeholder={LL.form.placeholder.address()}
             value={selectedUser?.address}
             {...form.getInputProps("address")}
           />
           {/* <TextInput
-            disabled
-            radius="md"
-            label="Created at"
-            value={selectedUser.createdAt}
-          />
-          <TextInput
-            disabled
-            radius="md"
-            label="Updated at"
-            value={selectedUser.updatedAt}
-          /> */}
+          disabled
+          radius="md"
+          label={LL.form.created()}
+          value={selectedUser?.createdAt}
+        />
+        <TextInput
+          disabled
+          radius="md"
+          label={LL.form.updated()}
+          value={selectedUser?.updatedAt}
+        /> */}
           <Select
-            label="Status"
+            label={LL.form.status()}
             radius="md"
-            data={statusData}
+            data={getStatusData(LL)}
             {...form.getInputProps("status")}
           />
           <Select
-            label="Role"
+            label={LL.form.role()}
             radius="md"
-            data={rolesData}
+            data={getRolesData(LL)}
             {...form.getInputProps("role")}
           />
           <TextInput
             disabled
             radius="md"
-            label="Number of toys"
+            label={LL.form.toysNumber()}
             value={selectedUser.toys.length}
           />
         </Stack>
         <Button type="submit" mt="lg" fullWidth radius="md" loading={isLoading}>
-          Edit
+          {LL.general.edit()}
         </Button>
       </form>
     </Container>

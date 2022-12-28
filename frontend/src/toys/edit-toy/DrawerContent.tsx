@@ -16,9 +16,10 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
+import { useI18nContext } from "../../i18n/i18n-react";
 import { getErrorMessage } from "../../shared/APIs/baseFetch";
 import { editToyData } from "../../shared/APIs/toysService";
-import { categoriesData } from "../add-new/AddNewToyForm";
+import { generateCategoriesData } from "../add-new/AddNewToyForm";
 import {
   currentToysListState,
   isEditToyDrawerOpenState,
@@ -32,6 +33,7 @@ export const DrawerContent = () => {
   const refreshSelectedToy = useRecoilRefresher_UNSTABLE(selectedToyState);
   const [isLoading, setIsLoading] = useState(false);
   const setIsDrawerOpen = useSetRecoilState(isEditToyDrawerOpenState);
+  const { LL } = useI18nContext();
 
   if (!selectedToy) return null;
 
@@ -53,15 +55,15 @@ export const DrawerContent = () => {
       refreshToys();
       refreshSelectedToy();
       showNotification({
-        title: "Success",
-        message: "Toy updated successfully",
+        title: LL.notifications.success(),
+        message: LL.notifications.updated({ name: "Toy" }),
         color: "green",
         autoClose: 3000,
       });
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message: message ?? "Something went wrong",
         color: "red",
         autoClose: 5000,
@@ -81,29 +83,31 @@ export const DrawerContent = () => {
           </Center>
           <TextInput
             radius="md"
-            label="Name"
+            label={LL.form.name()}
+            placeholder={LL.form.placeholder.toy.name()}
             required
             value={selectedToy.name}
             {...form.getInputProps("name")}
           />
           <Select
-            label="Category"
+            label={LL.filters.category()}
             required
             radius="md"
-            placeholder={categoriesData[0].label}
-            data={categoriesData}
+            placeholder={generateCategoriesData(LL)[0].label}
+            data={generateCategoriesData(LL)}
             {...form.getInputProps("category")}
           />
           <Textarea
             radius="md"
-            label="Description"
+            label={LL.form.description()}
+            placeholder={LL.form.placeholder.toy.description()}
             required
             value={selectedToy?.description}
             {...form.getInputProps("description")}
           />
         </Stack>
         <Button type="submit" mt="lg" fullWidth radius="md" loading={isLoading}>
-          Edit
+          {LL.general.edit()}
         </Button>
       </form>
     </Container>

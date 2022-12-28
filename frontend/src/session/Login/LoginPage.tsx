@@ -1,9 +1,11 @@
 import { Anchor, Container, Text, Title } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { useI18nContext } from "../../i18n/i18n-react";
 import { LoginForm } from "./LoginForm";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const { LL } = useI18nContext();
 
   return (
     <Container size={420} my={80}>
@@ -14,16 +16,16 @@ export const LoginPage = () => {
           fontWeight: 900,
         })}
       >
-        Welcome back!
+        {LL.login.welcomeBack()}
       </Title>
       <Text color="dimmed" size="sm" align="center" mt={5}>
-        Don't have an account?{" "}
+        {LL.login.noAccount()}{" "}
         <Anchor
           component="button"
           type="button"
           onClick={() => navigate("/register")}
         >
-          Register
+          {LL.register.register()}
         </Anchor>
       </Text>
 

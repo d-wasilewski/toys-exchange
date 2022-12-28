@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Toy, UserRole, UserStatus } from '@prisma/client';
+import { Language, Toy, UserRole, UserStatus } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -16,6 +16,7 @@ import { ToyDto } from 'src/toys/dtos/toys.dto';
 
 const userRoles = Object.values(UserRole);
 const userStatuses = Object.values(UserStatus);
+const languages = Object.values(Language);
 
 export class RegisterUserDto {
   @IsNotEmpty()
@@ -80,6 +81,9 @@ export class BasicUserDto {
 
   @ApiProperty({ enum: [...userStatuses] })
   status: UserStatus;
+
+  @ApiProperty({ enum: [...languages] })
+  language: Language;
 }
 
 export class UserDto {
@@ -118,6 +122,9 @@ export class UserDto {
 
   @ApiProperty({ enum: [...userStatuses] })
   status: UserStatus;
+
+  @ApiProperty({ enum: [...languages] })
+  language: Language;
 
   @ApiProperty({ type: [ToyDto] })
   toys: Toy[];

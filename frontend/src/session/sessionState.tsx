@@ -1,6 +1,7 @@
 import { atom, selectorFamily } from "recoil";
 import { getUserData, User } from "../shared/APIs/userService";
 import { recoilPersist } from "recoil-persist";
+import { Locales } from "../i18n/i18n-types";
 
 const { persistAtom } = recoilPersist();
 
@@ -19,4 +20,10 @@ export const getUserByIdState = selectorFamily({
     }
     return null;
   },
+});
+
+export const languageState = atom<Locales>({
+  key: "languageState",
+  default: "pl",
+  effects: [persistAtom],
 });

@@ -21,6 +21,7 @@ import { UserList } from "../shared/APIs/userService";
 import { StatusBadge } from "./StatusBadge";
 import { RoleBadge } from "./RoleBadge";
 import { UserActions } from "./UserActions";
+import { useI18nContext } from "../i18n/i18n-react";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -114,6 +115,7 @@ export function UsersTable({ data }: TableSortProps) {
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof UserList | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const { LL } = useI18nContext();
 
   useEffect(() => {
     setSortedData(data);
@@ -159,7 +161,7 @@ export function UsersTable({ data }: TableSortProps) {
   return (
     <ScrollArea>
       <TextInput
-        placeholder="Search by any field"
+        placeholder={LL.filters.searchByAny()}
         mb="md"
         icon={<IconSearch size={14} stroke={1.5} />}
         value={search}
@@ -180,35 +182,35 @@ export function UsersTable({ data }: TableSortProps) {
               reversed={reverseSortDirection}
               onSort={() => setSorting("name")}
             >
-              Name
+              {LL.admin.name()}
             </Th>
             <Th
               sorted={sortBy === "email"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("email")}
             >
-              Email
+              {LL.admin.email()}
             </Th>
             <Th
               sorted={sortBy === "phoneNumber"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("phoneNumber")}
             >
-              Phone number
+              {LL.admin.phone()}
             </Th>
             <Th
               sorted={sortBy === "role"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("role")}
             >
-              Role
+              {LL.admin.role()}
             </Th>
             <Th
               sorted={sortBy === "status"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("status")}
             >
-              Status
+              {LL.admin.status()}
             </Th>
             <th></th>
           </tr>
@@ -220,7 +222,7 @@ export function UsersTable({ data }: TableSortProps) {
             <tr>
               <td colSpan={Object.keys(data[0]).length}>
                 <Text weight={500} align="center">
-                  Nothing found
+                  {LL.general.nothingFound()}
                 </Text>
               </td>
             </tr>

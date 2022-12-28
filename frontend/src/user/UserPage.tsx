@@ -10,7 +10,6 @@ import {
   FileButton,
 } from "@mantine/core";
 import {
-  IconLogout,
   IconHorseToy,
   IconArrowsExchange,
   IconUser,
@@ -24,6 +23,8 @@ import { clickedUserIdState } from "../admin/adminState";
 import { showNotification } from "@mantine/notifications";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import { SuspenseFallback } from "../components/SuspenseFallback";
+import { useI18nContext } from "../i18n/i18n-react";
+import { TranslationFunctions } from "../i18n/i18n-types";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -112,25 +113,29 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-const adminData = [{ link: "details", label: "Your data", icon: IconUser }];
+const getAdminData = (LL: TranslationFunctions) => [
+  { link: "details", label: LL.profile.details.data(), icon: IconUser },
+];
 
-const data = [
-  { link: "details", label: "Your data", icon: IconUser },
-  { link: "active", label: "Active offers", icon: IconArrowsExchange },
-  { link: "history", label: "Offers history", icon: IconHistory },
-  { link: "toys", label: "Your toys", icon: IconHorseToy },
+const getData = (LL: TranslationFunctions) => [
+  { link: "details", label: LL.profile.details.data(), icon: IconUser },
+  { link: "active", label: LL.profile.active(), icon: IconArrowsExchange },
+  { link: "history", label: LL.profile.history(), icon: IconHistory },
+  { link: "toys", label: LL.profile.toys.toys(), icon: IconHorseToy },
 ];
 
 interface activePageI {
   [key: string]: string | undefined;
 }
 
-const activePage: activePageI = {
-  details: "Your data",
-  active: "Active offers",
-  history: "Offers history",
-  toys: "Your toys",
-} as const;
+const getActivePage = (LL: TranslationFunctions): activePageI => {
+  return {
+    details: LL.profile.details.data(),
+    active: LL.profile.active(),
+    history: LL.profile.history(),
+    toys: LL.profile.toys.toys(),
+  } as const;
+};
 
 export function UserPage() {
   const { classes, cx } = useStyles();
@@ -138,18 +143,29 @@ export function UserPage() {
   const setSelectedUserId = useSetRecoilState(clickedUserIdState);
   const navigate = useNavigate();
   const location = useLocation();
+  const { LL, locale } = useI18nContext();
   const pageFromLocation =
     location.pathname.split("/")[location.pathname.split("/").length - 1];
   const [active, setActive] = useState(
-    pageFromLocation ? activePage[pageFromLocation] : "Your data"
+    pageFromLocation
+      ? getActivePage(LL)[pageFromLocation]
+      : LL.profile.details.data()
   );
+
+  useEffect(() => {
+    setActive(
+      pageFromLocation
+        ? getActivePage(LL)[pageFromLocation]
+        : LL.profile.details.data()
+    );
+  }, [locale]);
 
   useEffect(() => {
     if (!user) return;
     setSelectedUserId(user?.id);
   }, [user?.id]);
 
-  const dataToDisplay = user?.role === "ADMIN" ? adminData : data;
+  const dataToDisplay = user?.role === "ADMIN" ? getAdminData(LL) : getData(LL);
 
   const links = dataToDisplay.map((item) => (
     <a
@@ -178,15 +194,15 @@ export function UserPage() {
     try {
       await updateAvatar(formData, user.id);
       showNotification({
-        title: "Success",
-        message: "Avatar updated successfully",
+        title: LL.notifications.success(),
+        message: LL.notifications.updated({ name: "Avatar" }),
         color: "green",
         autoClose: 3000,
       });
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message: message ?? "Something went wrong",
         color: "red",
         autoClose: 5000,
@@ -231,7 +247,6 @@ export function UserPage() {
           <SuspenseFallback>{links}</SuspenseFallback>
         </Navbar.Section>
       </Navbar>
-      {/* TODO: might want to exclude fluid */}
       <Container m={0} px={30} fluid miw={1000}>
         <Outlet context={[active]} />
       </Container>

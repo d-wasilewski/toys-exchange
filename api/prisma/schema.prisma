@@ -19,6 +19,7 @@ model User {
   role        UserRole   @default(BASIC)
   status      UserStatus @default(ACTIVE)
   confirmed   Boolean    @default(false)
+  language    Language   @default(EN)
   version     Int        @default(0)
 
   createdAt DateTime @default(now())
@@ -28,6 +29,11 @@ model User {
   ratings        Rating[]
   offersSend     Offer[]  @relation(name: "offersSend")
   offersReceived Offer[]  @relation(name: "offersReceived")
+}
+
+enum Language {
+  EN
+  PL
 }
 
 model Rating {

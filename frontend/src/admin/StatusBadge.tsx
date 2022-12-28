@@ -1,4 +1,5 @@
 import { Badge } from "@mantine/core";
+import { useI18nContext } from "../i18n/i18n-react";
 import { UserStatus } from "../shared/APIs/userService";
 
 interface StatusBadgeProps {
@@ -7,10 +8,14 @@ interface StatusBadgeProps {
 }
 
 export const StatusBadge = ({ status, confirmed }: StatusBadgeProps) => {
+  const { LL } = useI18nContext();
   const color = status === "ACTIVE" ? "green" : "pink";
+
   return (
     <Badge color={confirmed ? color : "yellow"}>
-      {confirmed ? status : "Unconfirmed"}
+      {confirmed
+        ? LL.admin.statuses({ status })
+        : LL.admin.statuses({ status: "UNCONFIRMED" })}
     </Badge>
   );
 };

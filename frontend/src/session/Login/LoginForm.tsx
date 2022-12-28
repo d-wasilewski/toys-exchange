@@ -16,12 +16,14 @@ import { schema } from "./validateSchema";
 import { getErrorMessage } from "../../shared/APIs/baseFetch";
 import { showNotification } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 export const LoginForm = () => {
   const [visible, { toggle }] = useDisclosure(false);
   const [isLoading, setIsLoading] = useState(false);
   const { setUserAndRedirect } = useSuccessfulLoginHandler();
   const navigate = useNavigate();
+  const { LL } = useI18nContext();
 
   const form = useForm({
     initialValues: {
@@ -41,7 +43,7 @@ export const LoginForm = () => {
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message,
         color: "red",
         autoClose: 5000,
@@ -58,16 +60,16 @@ export const LoginForm = () => {
           <TextInput
             required
             radius="md"
-            label="Email"
-            placeholder="your@email.com"
+            label={LL.form.email()}
+            placeholder={LL.form.placeholder.email()}
             {...form.getInputProps("email")}
           />
 
           <PasswordInput
             withAsterisk
             radius="md"
-            label="Password"
-            placeholder="strongPassword123"
+            label={LL.form.password()}
+            placeholder={LL.form.placeholder.password()}
             visible={visible}
             onVisibilityChange={toggle}
             {...form.getInputProps("password")}
@@ -79,11 +81,11 @@ export const LoginForm = () => {
             type="button"
             onClick={() => navigate("/auth/resetPassword")}
           >
-            Reset password
+            {LL.login.reset()}
           </Anchor>
         </Text>
         <Button type="submit" mt="sm" fullWidth radius="md" loading={isLoading}>
-          Submit
+          {LL.login.login()}
         </Button>
       </form>
     </Paper>

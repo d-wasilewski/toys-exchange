@@ -1,15 +1,184 @@
-import type { Translation } from "../i18n-types.js";
+import type { BaseTranslation } from "../i18n-types.js";
 
-const pl: Translation = {
-  base: "bazowo",
+const pl: BaseTranslation = {
+  general: {
+    submit: "Potwierdź",
+    cancel: "Cofnij",
+    edit: "Edytuj",
+    delete: "Usuń",
+    confirm: "Potwierdź",
+    close: "Zamknij",
+    accept: "Zaakceptuj",
+    decline: "Odrzuć",
+    nothingFound: "Nic nie znaleziono",
+  },
   links: {
     homepage: "Strona główna",
-    toys: "Toys",
-    adminPage: "Admin page",
-    logout: "Logout",
-    login: "Login",
-    register: "Register",
+    toys: "Zabawki",
+    adminPage: "Strona admina",
+    logout: "Wyloguj",
+    login: "Zaloguj",
+    register: "Zarejestruj",
   },
+  filters: {
+    filters: "Filtry",
+    search: "Szukaj",
+    searchByAny: "Szukaj po dowolnym polu",
+    category: "Kategorie",
+    allCategories: "Wszystkie kategorie",
+  },
+  categories: {
+    figures: "Figurki",
+    cars: "Samochody",
+    radioControlled: "Sterowane zdalnie",
+    construction: "Konstrukcyjne",
+    educational: "Edukacyjne",
+    electronic: "Elektroniczne",
+    executive: "Zrób to sam",
+    foodRelated: "Związane z jedzeniem",
+    games: "Gry",
+    puzzle: "Puzzle",
+    lego: "Lego",
+    science: "Nauka",
+    sound: "Dźwięk",
+    spinning: "Kręcące",
+    wooden: "Drewniane",
+    other: "Inne",
+  },
+  form: {
+    email: "Email",
+    password: "Hasło",
+    confirmPassword: "Potwierdź hasło",
+    name: "Imię",
+    phone: "Numer telefonu",
+    address: "Adres",
+    photo: "Zdjęcie",
+    description: "Opis",
+    id: "Id",
+    created: "Data utworzenia",
+    updated: "Data aktualizacji",
+    status: "Status",
+    role: "Rola",
+    toysNumber: "Liczba posiadanych zabawek",
+    placeholder: {
+      email: "twoj@email.com",
+      password: "silneHaslo123",
+      name: "Damian",
+      phone: "999 999 999",
+      address: "Lodz al. Politechniki 1",
+      photo: "Zdjęcie",
+      toy: {
+        name: "McQueen",
+        description: "Dobry stan",
+      },
+    },
+  },
+  login: {
+    login: "Zaloguj się",
+    welcomeBack: "Witaj ponownie!",
+    noAccount: "Nie posiadasz konta?",
+    reset: "Zresetuj hasło",
+  },
+  register: {
+    register: "Zarejestruj się",
+    welcome: "Witaj",
+    alreadyHave: "Posiadasz juz konto?",
+    terms: "Akceptuję regulamin",
+    requirements: {
+      number: "Zawiera liczby",
+      lower: "Zawiera małą literę",
+      upper: "Zawiera duza litere",
+      special: "Zawiera symbol specjalny",
+      characters: "Zawiera przynajmniej 6 znaków",
+    },
+  },
+  profile: {
+    details: {
+      data: "Twoje dane",
+      changePassword: "Zmień swoje hasło",
+      rating: "Twoja ocena",
+    },
+    active: "Aktywne oferty",
+    history: "Historia ofert",
+    toys: {
+      toys: "Twoje zabawki",
+      new: "Dodaj nową",
+    },
+  },
+  toy: {
+    details: "Toy details",
+    status:
+      "{status|{ACTIVE: aktywny, FINISHED: zakończony, UNCONFIRMED: niepotwierdzony}}",
+    category:
+      "{category|{FIGURES: FIGURKI, ANIMALS: ZWIERZĘTA, CARS: SAMOCHODY, RADIO_CONTROLLED: STEROWANE ZDALNIE, CONSTRUCTION: KONSTRUKCYJNE, CREATIVE: KREATYWNE, DOLLS: LALKI, EDUCATIONAL: EDUKACYJNE, ELECTRONIC: ELEKTRONICZNE, EXECUTIVE: ZRÓB TO SAM, FOOD_RELATED: ZWIĄZANE Z JEDZENIEM, GAMES: GRY, PLAYGOUND: PLAYGROUND, PUZZLE: PUZZLE, LEGO: LEGO, SCIENCE: NAUKA, SOUND: DŹWIĘK, SPINNING: KRĘCĄCE, WOODEN: DREWNIANE, OTHER: INNE}}",
+    swap: {
+      selectOne: "Wybierz jedną z zabawek",
+      notFound: "Nic tu nie ma",
+      complete: "Wymiana zakończona",
+      offer: "Oferta wymiany",
+      tryingSwap: "Próbujesz się wymienić za",
+      make: "Zaproponuj wymianę",
+    },
+  },
+  admin: {
+    users: "Uzytkownicy",
+    offers: "Oferty",
+    reported: "Zgłoszone zabawki",
+    name: "Imię",
+    email: "Email",
+    phone: "Numer telefonu",
+    role: "Rola",
+    status: "Status",
+    userDetails: "Szczegóły uzytkownika",
+    roles: "{role|{BASIC: UZYTKOWNIK, ADMIN: ADMINISTRATOR}}",
+    statuses:
+      "{status|{ACTIVE: AKTYWNY, BLOCKED: ZABLOKOWANY, UNCONFIRMED: NIEPOTWIERDZONY}}",
+  },
+  offer: {
+    statuses:
+      "{status|{ACCEPTED: ACCEPTED, DECLINED: DECLINED, PENDING: PENDING}}",
+    senderRate: "Sender rate",
+    receiverRate: "Receiver rate",
+    yourRate: "Twoja ocena",
+    rateUser: "Rate user",
+    exchangeLike: "How did you like the exchange?",
+    declineModal: {
+      title: "Decline the offer",
+      text: "Are you sure you want to decline this offer? This action is irreversible.",
+      no: "No, don't decline",
+      yes: "Decline offer",
+    },
+    confirmModal: {
+      title: "Please confirm your action",
+      text: "Are you sure you want to accept this offer? This action is irreversible.",
+    },
+    sender: "Sender",
+    receiver: "Receiver",
+    yourToy: "Your toy",
+    swapComplete: {
+      title: "Swap complete",
+      textIntr:
+        "You swapped for a toy in the app, now plase contact the person you made a swap with to finish the process",
+      textInfo: "Here is the data about the person you are swapping with",
+      textFinish:
+        "Please keep in mind you won't be able to comeback to this screen so save the displayed data",
+    },
+  },
+  // pomyślnie utworzono x
+  notifications: {
+    success: "Success",
+    created: "{name: string} has been created",
+    updated: "{name: string} has been updated",
+    deleted: "{name: string} has been deleted",
+    declined: "{name: string} has been declined",
+    statusChanged: "Status has been changed",
+    resetPasswordEmail:
+      "If your email exists, we sent you a link to reset your password",
+    resetPasswordConfirmation: "Your password has been reset",
+    error: "Error",
+    generalError: "Something went wrong",
+  },
+  homepage: {},
 };
 
 export default pl;

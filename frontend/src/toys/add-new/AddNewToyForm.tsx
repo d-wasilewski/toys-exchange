@@ -3,6 +3,8 @@ import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 import { useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
+import { useI18nContext } from "../../i18n/i18n-react";
+import { TranslationFunctions } from "../../i18n/i18n-types";
 import { userState } from "../../session/sessionState";
 import { createToy, ToyCategories } from "../../shared/APIs/toysService";
 import { currentToysListState } from "../toysState";
@@ -12,29 +14,34 @@ interface CategoriesSelect {
   label: string;
 }
 
-export const categoriesData: CategoriesSelect[] = [
-  { value: "FIGURES", label: "Figures" },
-  { value: "CARS", label: "Cars" },
-  { value: "RADIO_CONTROLLED", label: "Radio controlled" },
-  { value: "CONSTRUCTION", label: "Construction" },
-  { value: "EDUCATIONAL", label: "Educational" },
-  { value: "ELECTRONIC", label: "Electronic" },
-  { value: "EXECUTIVE", label: "Executive" },
-  { value: "FOOD_RELATED", label: "Food related" },
-  { value: "GAMES", label: "Games" },
-  { value: "PUZZLE", label: "Puzzle" },
-  { value: "LEGO", label: "Lego" },
-  { value: "SCIENCE", label: "Science" },
-  { value: "SOUND", label: "Sound" },
-  { value: "SPINNING", label: "Spinning" },
-  { value: "WOODEN", label: "Wooden" },
-  { value: "OTHER", label: "Other" },
-];
+export const generateCategoriesData = (
+  LL: TranslationFunctions
+): CategoriesSelect[] => {
+  return [
+    { value: "FIGURES", label: LL.categories.figures() },
+    { value: "CARS", label: LL.categories.cars() },
+    { value: "RADIO_CONTROLLED", label: LL.categories.radioControlled() },
+    { value: "CONSTRUCTION", label: LL.categories.construction() },
+    { value: "EDUCATIONAL", label: LL.categories.educational() },
+    { value: "ELECTRONIC", label: LL.categories.electronic() },
+    { value: "EXECUTIVE", label: LL.categories.executive() },
+    { value: "FOOD_RELATED", label: LL.categories.foodRelated() },
+    { value: "GAMES", label: LL.categories.games() },
+    { value: "PUZZLE", label: LL.categories.puzzle() },
+    { value: "LEGO", label: LL.categories.lego() },
+    { value: "SCIENCE", label: LL.categories.science() },
+    { value: "SOUND", label: LL.categories.sound() },
+    { value: "SPINNING", label: LL.categories.spinning() },
+    { value: "WOODEN", label: LL.categories.wooden() },
+    { value: "OTHER", label: LL.categories.other() },
+  ];
+};
 
 export const AddNewToyForm = () => {
   const [loading, setLoading] = useState(false);
   const user = useRecoilValue(userState);
   const refreshMyToysList = useRecoilRefresher_UNSTABLE(currentToysListState);
+  const { LL } = useI18nContext();
 
   const form = useForm({
     initialValues: {
@@ -61,14 +68,14 @@ export const AddNewToyForm = () => {
       form.reset();
       refreshMyToysList();
       showNotification({
-        title: "Success",
-        message: "Toy added successfully",
+        title: LL.notifications.success(),
+        message: LL.notifications.created({ name: "Toy" }),
         color: "green",
         autoClose: 3000,
       });
     } catch (e) {
       showNotification({
-        title: "Error",
+        title: LL.notifications.error(),
         message: "Something went wrong",
         color: "red",
         autoClose: 5000,
@@ -84,23 +91,23 @@ export const AddNewToyForm = () => {
         <TextInput
           required
           radius="md"
-          label="Name"
-          placeholder="McQueen"
+          label={LL.form.name()}
+          placeholder={LL.form.placeholder.toy.name()}
           {...form.getInputProps("name")}
         />
         <Select
-          label="Category"
+          label={LL.filters.category()}
           required
           radius="md"
-          placeholder={categoriesData[0].label}
-          data={categoriesData}
+          placeholder={generateCategoriesData(LL)[0].label}
+          data={generateCategoriesData(LL)}
           {...form.getInputProps("category")}
         />
         <FileInput
           required
           radius="md"
-          label="Photo"
-          placeholder="toyImage"
+          label={LL.form.photo()}
+          placeholder={LL.form.placeholder.photo()}
           clearable
           {...form.getInputProps("toyImage")}
         />
@@ -108,13 +115,13 @@ export const AddNewToyForm = () => {
         <TextInput
           required
           radius="md"
-          label="Description"
-          placeholder="Good condition"
+          label={LL.form.description()}
+          placeholder={LL.form.placeholder.toy.description()}
           {...form.getInputProps("description")}
         />
       </Stack>
       <Button type="submit" mt="md" fullWidth radius="md" loading={loading}>
-        Submit
+        {LL.general.submit()}
       </Button>
     </form>
   );

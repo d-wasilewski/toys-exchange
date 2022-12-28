@@ -3,9 +3,10 @@ import { IconSearch } from "@tabler/icons";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { AllToys, Toy } from "../../shared/APIs/toysService";
-import { categoriesData } from "../add-new/AddNewToyForm";
+import { generateCategoriesData } from "../add-new/AddNewToyForm";
 import { toysListState } from "../toysState";
 import { keys } from "@mantine/utils";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 interface FiltersProps {
   setToysList: (list: AllToys) => void;
@@ -14,6 +15,7 @@ interface FiltersProps {
 export const Filters = ({ setToysList }: FiltersProps) => {
   const toysList = useRecoilValue(toysListState);
   const [search, setSearch] = useState("");
+  const { LL } = useI18nContext();
 
   function filterData(data: Toy[], search: string) {
     const query = search.toLowerCase().trim();
@@ -32,23 +34,23 @@ export const Filters = ({ setToysList }: FiltersProps) => {
   };
 
   const categoriesDataWithAllOption = [
-    { value: "ALL CATEGORIES", label: "All categories" },
-    ...categoriesData,
+    { value: "ALL CATEGORIES", label: LL.filters.allCategories() },
+    ...generateCategoriesData(LL),
   ];
 
   return (
     <>
       <TextInput
-        placeholder="Search by any field"
+        placeholder={LL.filters.searchByAny()}
         radius="md"
         mb="md"
         icon={<IconSearch size={14} stroke={1.5} />}
-        label="Search"
+        label={LL.filters.search()}
         value={search}
         onChange={handleSearchChange}
       />
       <Select
-        label="Category"
+        label={LL.filters.category()}
         radius="md"
         placeholder={categoriesDataWithAllOption[0].label}
         data={categoriesDataWithAllOption}

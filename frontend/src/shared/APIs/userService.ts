@@ -1,4 +1,5 @@
 import { AxiosResponse } from "axios";
+import { Locales } from "../../i18n/i18n-types";
 import { APIRequestBody, APIResponse, client } from "./baseFetch";
 import { paths } from "./types";
 
@@ -69,6 +70,10 @@ export const resetPassword = (token: string, newPassword: string) => {
 
 export const rateUser = (payload: APIRequestBody<"/user/rate">) => {
   return client.post("/user/rate", payload);
+};
+
+export const changeLanguage = (id: string, lang: Locales) => {
+  return client.post("/user/changeLanguage", { id, lang: lang.toUpperCase() });
 };
 
 export const logout = async () => {

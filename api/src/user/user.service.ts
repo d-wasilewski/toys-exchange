@@ -13,7 +13,7 @@ import {
   UpdateUserDto,
   UpdateUserSelfDto,
 } from './dtos/user.dto';
-import { UserStatus } from '@prisma/client';
+import { Language, UserStatus } from '@prisma/client';
 import { File } from 'src/toys/toys.service';
 import { v2 } from 'cloudinary';
 import { round } from 'lodash';
@@ -224,7 +224,7 @@ export class UserService {
   async changeUserStatus(userId: string, status: UserStatus) {
     return await this.prisma.user.update({
       where: { id: userId },
-      data: { status },
+      data: { status, version: { increment: 1 } },
     });
   }
 
@@ -293,6 +293,9 @@ export class UserService {
       },
       data: {
         imgUrl: uploadResponse.url,
+        version: {
+          increment: 1,
+        },
       },
     });
   }
@@ -307,6 +310,34 @@ export class UserService {
           confirmed: true,
         },
       });
+    } catch (e) {
+      throw new Error('Something went wrong');
+    }
+  }
+
+  async changeLanguage(id: string, language: Language) {
+    try {
+      const user = await this.prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          language,
+        },
+        include: {
+          toys: true,
+        },
+      });
+
+      const userRating = await this.getUserRating(user.id);
+
+      return {
+        ...user,
+        rating: {
+          value: userRating._avg.value,
+          count: userRating._count.value,
+        },
+      };
     } catch (e) {
       throw new Error('Something went wrong');
     }

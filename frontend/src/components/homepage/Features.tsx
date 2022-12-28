@@ -5,6 +5,8 @@ import {
   IconCoin,
   TablerIcon,
 } from "@tabler/icons";
+import { useI18nContext } from "../../i18n/i18n-react";
+import { TranslationFunctions } from "../../i18n/i18n-types";
 
 const useStyles = createStyles((theme) => ({
   feature: {
@@ -73,29 +75,30 @@ function Feature({
   );
 }
 
-const mockdata = [
+const getData = (LL: TranslationFunctions) => [
   {
     icon: IconTruck,
-    title: "Free Worldwide shipping",
-    description:
-      "As electricity builds up inside its body, it becomes more aggressive. One theory is that the electricity.",
+    title: LL.homepage.features.title1(),
+    description: LL.homepage.features.description1(),
   },
   {
     icon: IconCertificate,
-    title: "Best Quality Product",
-    description:
-      "Slakoth’s heart beats just once a minute. Whatever happens, it is content to loaf around motionless.",
+    title: LL.homepage.features.title2(),
+    description: LL.homepage.features.description2(),
   },
   {
     icon: IconCoin,
-    title: "Very Affordable Pricing",
-    description:
-      "Thought to have gone extinct, Relicanth was given a name that is a variation of the name of the person who discovered.",
+    title: LL.homepage.features.title3(),
+    description: LL.homepage.features.description3(),
   },
 ];
 
 export function Features() {
-  const items = mockdata.map((item) => <Feature {...item} key={item.title} />);
+  const { LL } = useI18nContext();
+
+  const items = getData(LL).map((item) => (
+    <Feature {...item} key={item.title} />
+  ));
 
   return (
     <Container mt={150} mb={150} size="lg">
