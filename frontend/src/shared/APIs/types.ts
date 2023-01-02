@@ -67,8 +67,8 @@ export interface paths {
   "/toy/confirm": {
     post: operations["ToysController_confirmToy"];
   };
-  "/toy/block": {
-    post: operations["ToysController_blockToy"];
+  "/toy/report": {
+    post: operations["ToysController_reportToy"];
   };
   "/toy/user-toys": {
     post: operations["ToysController_getUserToys"];
@@ -145,7 +145,7 @@ export interface components {
         | "SPINNING"
         | "WOODEN"
         | "OTHER";
-      status: "ACTIVE" | "UNCONFIRMED" | "FINISHED";
+      status: "ACTIVE" | "REPORTED" | "FINISHED";
       id: string;
       name: string;
       imgUrl: string;
@@ -224,7 +224,7 @@ export interface components {
         | "SPINNING"
         | "WOODEN"
         | "OTHER";
-      status: "ACTIVE" | "UNCONFIRMED" | "FINISHED";
+      status: "ACTIVE" | "REPORTED" | "FINISHED";
       id: string;
       name: string;
       imgUrl: string;
@@ -589,7 +589,7 @@ export interface operations {
       };
     };
   };
-  ToysController_blockToy: {
+  ToysController_reportToy: {
     parameters: {};
     responses: {
       201: unknown;

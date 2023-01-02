@@ -11,6 +11,8 @@ const pl: BaseTranslation = {
     accept: "Zaakceptuj",
     decline: "Odrzuć",
     nothingFound: "Nic nie znaleziono",
+    activate: "Aktywuj",
+    ok: "Ok",
   },
   links: {
     homepage: "Strona główna",
@@ -108,16 +110,32 @@ const pl: BaseTranslation = {
   toy: {
     details: "Toy details",
     status:
-      "{status|{ACTIVE: aktywny, FINISHED: zakończony, UNCONFIRMED: niepotwierdzony}}",
+      "{status|{ACTIVE: aktywna, FINISHED: zakończona, REPORTED: zgloszona}}",
     category:
       "{category|{FIGURES: FIGURKI, ANIMALS: ZWIERZĘTA, CARS: SAMOCHODY, RADIO_CONTROLLED: STEROWANE ZDALNIE, CONSTRUCTION: KONSTRUKCYJNE, CREATIVE: KREATYWNE, DOLLS: LALKI, EDUCATIONAL: EDUKACYJNE, ELECTRONIC: ELEKTRONICZNE, EXECUTIVE: ZRÓB TO SAM, FOOD_RELATED: ZWIĄZANE Z JEDZENIEM, GAMES: GRY, PLAYGOUND: PLAYGROUND, PUZZLE: PUZZLE, LEGO: LEGO, SCIENCE: NAUKA, SOUND: DŹWIĘK, SPINNING: KRĘCĄCE, WOODEN: DREWNIANE, OTHER: INNE}}",
     swap: {
+      swap: "Wymień",
       selectOne: "Wybierz jedną z zabawek",
       notFound: "Nic tu nie ma",
       complete: "Wymiana zakończona",
       offer: "Oferta wymiany",
       tryingSwap: "Próbujesz się wymienić za",
       make: "Zaproponuj wymianę",
+      noToys: "Nie masz zadnych zabawek!",
+      loginFirst: "Zaloguj się aby móc wymieniać zabawki",
+      pleaseGo: "Przejdź",
+      toProfile: "do swojego profilu",
+      andAddToy: "i dodaj jakąś zabawkę aby móc wymieniać się z innymi!",
+    },
+    confirmDelete: {
+      title: "Potwierdź swoją akcję",
+      text: "Czy na pewno chcesz usunąć tę zabawkę? Ta operacja jest nieodwracalna.",
+    },
+    reportToy: {
+      title: "Zgłoś tę zabawkę",
+      text: "Czy na pewno chcesz zgłosić tę zabawkę?",
+      yes: "Zgłoś zabawkę",
+      no: "Nie, nie zgłaszaj",
     },
   },
   admin: {
@@ -166,19 +184,54 @@ const pl: BaseTranslation = {
   },
   // pomyślnie utworzono x
   notifications: {
-    success: "Success",
+    success: "Sukces",
     created: "{name: string} has been created",
     updated: "{name: string} has been updated",
     deleted: "{name: string} has been deleted",
     declined: "{name: string} has been declined",
-    statusChanged: "Status has been changed",
+    statusChanged: "Status został zmieniony",
+    reported: "Zabawka została zgłoszona",
     resetPasswordEmail:
-      "If your email exists, we sent you a link to reset your password",
-    resetPasswordConfirmation: "Your password has been reset",
-    error: "Error",
-    generalError: "Something went wrong",
+      "Jeśli twój email istnieje, wysłaliśmy ci link do zresetowania hasła",
+    resetPasswordConfirmation: "Twoje hasło zostało zresetowane",
+    error: "Błąd",
+    generalError: "Coś poszło nie tak",
   },
-  homepage: {},
+  homepage: {
+    titleMain: "Baw się & Wymieniaj & Powtarzaj",
+    titleText:
+      "Are you tired of your child's toys gathering dust and taking up space in your home? Look no further! Our platform allows you to swap toys with others, giving your child the opportunity to play with new toys while decluttering your home. Start browsing and swapping today!",
+    gettingStarted: "Zacznij",
+    features: {
+      title1: "Large selection of toys",
+      description1:
+        "Our toy swapping platform has a wide selection of toys to choose from, so you are sure to find something that your child will love.",
+      title2: "Easy to use interface",
+      description2:
+        "Our platform is designed to be user-friendly, so you can easily browse, request, and list toys with just a few clicks.",
+      title3: "Like-minded community",
+      description3:
+        "You can connect with other parents who are looking to declutter their homes and give their children the opportunity to play with new toys",
+    },
+    faq: {
+      title: "Frequently asked questions",
+      question1: "How do I join the toy swapping community?",
+      answer1:
+        "To join the toy swapping community, simply create an account on our platform and start browsing available toys to swap. You can also list your own toys for others to request.",
+      question2: "How do I request a toy from another user?",
+      answer2:
+        "To request a toy from another user, simply click on the toy that you are interested in and follow the prompts to send a request to the owner. The owner will then have the option to accept or decline your request.",
+      question3: "How do I list my own toys for others to request?",
+      answer3:
+        "To list your own toys, click on the 'Add a toy' button and follow the prompts to upload a photo and description of the toy you want to list.",
+      question4: "How do I complete a toy swap?",
+      answer4:
+        "Once a request for a toy has been accepted, the two users can coordinate the details of the swap, such as where to meet or how to exchange the toys.",
+      question5: "Is there a fee to use the toy swapping platform?",
+      answer5:
+        "There is no fee to use our toy swapping platform. It is completely free to join and list toys.",
+    },
+  },
 };
 
 export default pl;

@@ -11,6 +11,8 @@ const en: BaseTranslation = {
     accept: "Accept",
     decline: "Decline",
     nothingFound: "Nothing found",
+    activate: "Activate",
+    ok: "Ok",
   },
   links: {
     homepage: "Homepage",
@@ -107,17 +109,33 @@ const en: BaseTranslation = {
   },
   toy: {
     details: "Toy details",
-    status:
-      "{status|{ACTIVE: active, FINISHED: finished, UNCONFIRMED: unconfirmed}}",
+    status: "{status|{ACTIVE: active, FINISHED: finished, REPORTED: reported}}",
     category:
       "{category|{FIGURES: FIGURES, ANIMALS: ANIMALS, CARS: CARS, RADIO_CONTROLLED: RADIO CONTROLLED, CONSTRUCTION: CONSTRUCTION, CREATIVE: CREATIVE, DOLLS: DOLLS, EDUCATIONAL: EDUCATIONAL, ELECTRONIC: ELECTRONIC, EXECUTIVE: EXECUTIVE, FOOD_RELATED: FOOD RELATED, GAMES: GAMES, PLAYGOUND: PLAYGOUND, PUZZLE: PUZZLE, LEGO: LEGO, SCIENCE: SCIENCE, SOUND: SOUND, SPINNING: SPINNING, WOODEN: WOODEN, OTHER: OTHER}}",
     swap: {
+      swap: "Swap",
       selectOne: "Select one of your toys",
       notFound: "Nobody here",
       complete: "Swap complete",
       offer: "Swap offer",
       tryingSwap: "You are trying to swap for",
       make: "Make an offer",
+      noToys: "You dont have any toys!",
+      loginFirst: "Please login first to swap toys",
+      pleaseGo: "Please go",
+      toProfile: "To your profile",
+      andAddToy:
+        "first and add a toy or two to be able to make swaps with other users!",
+    },
+    confirmDelete: {
+      title: "Please confirm your action",
+      text: "Are you sure you want to delete this toy? This action is irreversible.",
+    },
+    reportToy: {
+      title: "Report this toy",
+      text: "Are you sure you want to report this toy?",
+      yes: "Report toy",
+      no: "No, don't report it",
     },
   },
   admin: {
@@ -171,6 +189,7 @@ const en: BaseTranslation = {
     deleted: "{name: string} has been deleted",
     declined: "{name: string} has been declined",
     statusChanged: "Status has been changed",
+    reported: "Toy has been reported",
     resetPasswordEmail:
       "If your email exists, we sent you a link to reset your password",
     resetPasswordConfirmation: "Your password has been reset",

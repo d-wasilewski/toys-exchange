@@ -12,7 +12,7 @@ import { loadAllLocales } from "./i18n/i18n-util.sync";
 import { MantineGlobalStyles } from "./MantineGlobalStyles";
 
 loadAllLocales();
-const detectedLocale = detectLocale("pl", ["en", "pl"], navigatorDetector);
+const detectedLocale = detectLocale("en", ["en", "pl"], navigatorDetector);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

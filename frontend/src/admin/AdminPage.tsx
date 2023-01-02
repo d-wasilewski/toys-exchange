@@ -9,7 +9,7 @@ import {
   usersListState,
 } from "./adminState";
 import { UserDetailsDrawer } from "./drawer/UserDetailsDrawer";
-import { UnconfirmedToysList } from "./UnconfirmedToysList";
+import { ReportedToysList } from "./ReportedToysList";
 import { UsersTable } from "./UsersTable";
 
 export const AdminPage = () => {
@@ -42,7 +42,7 @@ export const AdminPage = () => {
           <OfferCardList />
         </Tabs.Panel>
         <Tabs.Panel value="toys" pt="xs">
-          <UnconfirmedToysList />
+          <ReportedToysList />
         </Tabs.Panel>
       </Tabs>
       <UserDetailsDrawer

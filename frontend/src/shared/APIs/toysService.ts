@@ -24,8 +24,8 @@ export const confirmToy = (toyId: string): Promise<void> => {
   return client.post("/toy/confirm", { id: toyId });
 };
 
-export const blockToy = (toyId: string): Promise<void> => {
-  return client.post("/toy/block", { id: toyId });
+export const reportToy = (toyId: string): Promise<void> => {
+  return client.post("/toy/report", { id: toyId });
 };
 
 export const getToyData = (

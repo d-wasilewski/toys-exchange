@@ -51,6 +51,14 @@ type RootTranslation = {
 		 * N​o​t​h​i​n​g​ ​f​o​u​n​d
 		 */
 		nothingFound: string
+		/**
+		 * A​c​t​i​v​a​t​e
+		 */
+		activate: string
+		/**
+		 * O​k
+		 */
+		ok: string
 	}
 	links: {
 		/**
@@ -358,16 +366,20 @@ type RootTranslation = {
 		 */
 		details: string
 		/**
-		 * {​s​t​a​t​u​s​|​{​A​C​T​I​V​E​:​ ​a​c​t​i​v​e​,​ ​F​I​N​I​S​H​E​D​:​ ​f​i​n​i​s​h​e​d​,​ ​U​N​C​O​N​F​I​R​M​E​D​:​ ​u​n​c​o​n​f​i​r​m​e​d​}​}
-		 * @param {'ACTIVE' | 'FINISHED' | 'UNCONFIRMED'} status
+		 * {​s​t​a​t​u​s​|​{​A​C​T​I​V​E​:​ ​a​c​t​i​v​e​,​ ​F​I​N​I​S​H​E​D​:​ ​f​i​n​i​s​h​e​d​,​ ​R​E​P​O​R​T​E​D​:​ ​r​e​p​o​r​t​e​d​}​}
+		 * @param {'ACTIVE' | 'FINISHED' | 'REPORTED'} status
 		 */
-		status: RequiredParams<`status|{ACTIVE:${string}, FINISHED:${string}, UNCONFIRMED:${string}}`>
+		status: RequiredParams<`status|{ACTIVE:${string}, FINISHED:${string}, REPORTED:${string}}`>
 		/**
 		 * {​c​a​t​e​g​o​r​y​|​{​F​I​G​U​R​E​S​:​ ​F​I​G​U​R​E​S​,​ ​A​N​I​M​A​L​S​:​ ​A​N​I​M​A​L​S​,​ ​C​A​R​S​:​ ​C​A​R​S​,​ ​R​A​D​I​O​_​C​O​N​T​R​O​L​L​E​D​:​ ​R​A​D​I​O​ ​C​O​N​T​R​O​L​L​E​D​,​ ​C​O​N​S​T​R​U​C​T​I​O​N​:​ ​C​O​N​S​T​R​U​C​T​I​O​N​,​ ​C​R​E​A​T​I​V​E​:​ ​C​R​E​A​T​I​V​E​,​ ​D​O​L​L​S​:​ ​D​O​L​L​S​,​ ​E​D​U​C​A​T​I​O​N​A​L​:​ ​E​D​U​C​A​T​I​O​N​A​L​,​ ​E​L​E​C​T​R​O​N​I​C​:​ ​E​L​E​C​T​R​O​N​I​C​,​ ​E​X​E​C​U​T​I​V​E​:​ ​E​X​E​C​U​T​I​V​E​,​ ​F​O​O​D​_​R​E​L​A​T​E​D​:​ ​F​O​O​D​ ​R​E​L​A​T​E​D​,​ ​G​A​M​E​S​:​ ​G​A​M​E​S​,​ ​P​L​A​Y​G​O​U​N​D​:​ ​P​L​A​Y​G​O​U​N​D​,​ ​P​U​Z​Z​L​E​:​ ​P​U​Z​Z​L​E​,​ ​L​E​G​O​:​ ​L​E​G​O​,​ ​S​C​I​E​N​C​E​:​ ​S​C​I​E​N​C​E​,​ ​S​O​U​N​D​:​ ​S​O​U​N​D​,​ ​S​P​I​N​N​I​N​G​:​ ​S​P​I​N​N​I​N​G​,​ ​W​O​O​D​E​N​:​ ​W​O​O​D​E​N​,​ ​O​T​H​E​R​:​ ​O​T​H​E​R​}​}
 		 * @param {'ANIMALS' | 'CARS' | 'CONSTRUCTION' | 'CREATIVE' | 'DOLLS' | 'EDUCATIONAL' | 'ELECTRONIC' | 'EXECUTIVE' | 'FIGURES' | 'FOOD_RELATED' | 'GAMES' | 'LEGO' | 'OTHER' | 'PLAYGOUND' | 'PUZZLE' | 'RADIO_CONTROLLED' | 'SCIENCE' | 'SOUND' | 'SPINNING' | 'WOODEN'} category
 		 */
 		category: RequiredParams<`category|{FIGURES:${string}, ANIMALS:${string}, CARS:${string}, RADIO_CONTROLLED:${string}, CONSTRUCTION:${string}, CREATIVE:${string}, DOLLS:${string}, EDUCATIONAL:${string}, ELECTRONIC:${string}, EXECUTIVE:${string}, FOOD_RELATED:${string}, GAMES:${string}, PLAYGOUND:${string}, PUZZLE:${string}, LEGO:${string}, SCIENCE:${string}, SOUND:${string}, SPINNING:${string}, WOODEN:${string}, OTHER:${string}}`>
 		swap: {
+			/**
+			 * S​w​a​p
+			 */
+			swap: string
 			/**
 			 * S​e​l​e​c​t​ ​o​n​e​ ​o​f​ ​y​o​u​r​ ​t​o​y​s
 			 */
@@ -392,6 +404,54 @@ type RootTranslation = {
 			 * M​a​k​e​ ​a​n​ ​o​f​f​e​r
 			 */
 			make: string
+			/**
+			 * Y​o​u​ ​d​o​n​t​ ​h​a​v​e​ ​a​n​y​ ​t​o​y​s​!
+			 */
+			noToys: string
+			/**
+			 * P​l​e​a​s​e​ ​l​o​g​i​n​ ​f​i​r​s​t​ ​t​o​ ​s​w​a​p​ ​t​o​y​s
+			 */
+			loginFirst: string
+			/**
+			 * P​l​e​a​s​e​ ​g​o
+			 */
+			pleaseGo: string
+			/**
+			 * T​o​ ​y​o​u​r​ ​p​r​o​f​i​l​e
+			 */
+			toProfile: string
+			/**
+			 * f​i​r​s​t​ ​a​n​d​ ​a​d​d​ ​a​ ​t​o​y​ ​o​r​ ​t​w​o​ ​t​o​ ​b​e​ ​a​b​l​e​ ​t​o​ ​m​a​k​e​ ​s​w​a​p​s​ ​w​i​t​h​ ​o​t​h​e​r​ ​u​s​e​r​s​!
+			 */
+			andAddToy: string
+		}
+		confirmDelete: {
+			/**
+			 * P​l​e​a​s​e​ ​c​o​n​f​i​r​m​ ​y​o​u​r​ ​a​c​t​i​o​n
+			 */
+			title: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​d​e​l​e​t​e​ ​t​h​i​s​ ​t​o​y​?​ ​T​h​i​s​ ​a​c​t​i​o​n​ ​i​s​ ​i​r​r​e​v​e​r​s​i​b​l​e​.
+			 */
+			text: string
+		}
+		reportToy: {
+			/**
+			 * R​e​p​o​r​t​ ​t​h​i​s​ ​t​o​y
+			 */
+			title: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​r​e​p​o​r​t​ ​t​h​i​s​ ​t​o​y​?
+			 */
+			text: string
+			/**
+			 * R​e​p​o​r​t​ ​t​o​y
+			 */
+			yes: string
+			/**
+			 * N​o​,​ ​d​o​n​'​t​ ​r​e​p​o​r​t​ ​i​t
+			 */
+			no: string
 		}
 	}
 	admin: {
@@ -557,6 +617,10 @@ type RootTranslation = {
 		 */
 		statusChanged: string
 		/**
+		 * T​o​y​ ​h​a​s​ ​b​e​e​n​ ​r​e​p​o​r​t​e​d
+		 */
+		reported: string
+		/**
 		 * I​f​ ​y​o​u​r​ ​e​m​a​i​l​ ​e​x​i​s​t​s​,​ ​w​e​ ​s​e​n​t​ ​y​o​u​ ​a​ ​l​i​n​k​ ​t​o​ ​r​e​s​e​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d
 		 */
 		resetPasswordEmail: string
@@ -699,6 +763,14 @@ export type TranslationFunctions = {
 		 * Nothing found
 		 */
 		nothingFound: () => LocalizedString
+		/**
+		 * Activate
+		 */
+		activate: () => LocalizedString
+		/**
+		 * Ok
+		 */
+		ok: () => LocalizedString
 	}
 	links: {
 		/**
@@ -1006,14 +1078,18 @@ export type TranslationFunctions = {
 		 */
 		details: () => LocalizedString
 		/**
-		 * {status|{ACTIVE: active, FINISHED: finished, UNCONFIRMED: unconfirmed}}
+		 * {status|{ACTIVE: active, FINISHED: finished, REPORTED: reported}}
 		 */
-		status: (arg: { status: 'ACTIVE' | 'FINISHED' | 'UNCONFIRMED' }) => LocalizedString
+		status: (arg: { status: 'ACTIVE' | 'FINISHED' | 'REPORTED' }) => LocalizedString
 		/**
 		 * {category|{FIGURES: FIGURES, ANIMALS: ANIMALS, CARS: CARS, RADIO_CONTROLLED: RADIO CONTROLLED, CONSTRUCTION: CONSTRUCTION, CREATIVE: CREATIVE, DOLLS: DOLLS, EDUCATIONAL: EDUCATIONAL, ELECTRONIC: ELECTRONIC, EXECUTIVE: EXECUTIVE, FOOD_RELATED: FOOD RELATED, GAMES: GAMES, PLAYGOUND: PLAYGOUND, PUZZLE: PUZZLE, LEGO: LEGO, SCIENCE: SCIENCE, SOUND: SOUND, SPINNING: SPINNING, WOODEN: WOODEN, OTHER: OTHER}}
 		 */
 		category: (arg: { category: 'ANIMALS' | 'CARS' | 'CONSTRUCTION' | 'CREATIVE' | 'DOLLS' | 'EDUCATIONAL' | 'ELECTRONIC' | 'EXECUTIVE' | 'FIGURES' | 'FOOD_RELATED' | 'GAMES' | 'LEGO' | 'OTHER' | 'PLAYGOUND' | 'PUZZLE' | 'RADIO_CONTROLLED' | 'SCIENCE' | 'SOUND' | 'SPINNING' | 'WOODEN' }) => LocalizedString
 		swap: {
+			/**
+			 * Swap
+			 */
+			swap: () => LocalizedString
 			/**
 			 * Select one of your toys
 			 */
@@ -1038,6 +1114,54 @@ export type TranslationFunctions = {
 			 * Make an offer
 			 */
 			make: () => LocalizedString
+			/**
+			 * You dont have any toys!
+			 */
+			noToys: () => LocalizedString
+			/**
+			 * Please login first to swap toys
+			 */
+			loginFirst: () => LocalizedString
+			/**
+			 * Please go
+			 */
+			pleaseGo: () => LocalizedString
+			/**
+			 * To your profile
+			 */
+			toProfile: () => LocalizedString
+			/**
+			 * first and add a toy or two to be able to make swaps with other users!
+			 */
+			andAddToy: () => LocalizedString
+		}
+		confirmDelete: {
+			/**
+			 * Please confirm your action
+			 */
+			title: () => LocalizedString
+			/**
+			 * Are you sure you want to delete this toy? This action is irreversible.
+			 */
+			text: () => LocalizedString
+		}
+		reportToy: {
+			/**
+			 * Report this toy
+			 */
+			title: () => LocalizedString
+			/**
+			 * Are you sure you want to report this toy?
+			 */
+			text: () => LocalizedString
+			/**
+			 * Report toy
+			 */
+			yes: () => LocalizedString
+			/**
+			 * No, don't report it
+			 */
+			no: () => LocalizedString
 		}
 	}
 	admin: {
@@ -1195,6 +1319,10 @@ export type TranslationFunctions = {
 		 * Status has been changed
 		 */
 		statusChanged: () => LocalizedString
+		/**
+		 * Toy has been reported
+		 */
+		reported: () => LocalizedString
 		/**
 		 * If your email exists, we sent you a link to reset your password
 		 */

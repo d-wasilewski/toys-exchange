@@ -60,19 +60,13 @@ export class ToysController {
   }
 
   @Post('confirm')
-  async confirmToy(
-    @Body() toyId: ToyIdDto,
-    @Headers('If-Match') ifMatch,
-  ): Promise<void> {
-    return this.toysService.changeToyStatus(toyId.id, 'ACTIVE', ifMatch);
+  async confirmToy(@Body() toyId: ToyIdDto): Promise<void> {
+    return this.toysService.changeToyStatus(toyId.id, 'ACTIVE');
   }
 
-  @Post('block')
-  async blockToy(
-    @Body() toyId: ToyIdDto,
-    @Headers('If-Match') ifMatch,
-  ): Promise<void> {
-    return this.toysService.changeToyStatus(toyId.id, 'UNCONFIRMED', ifMatch);
+  @Post('report')
+  async reportToy(@Body() toyId: ToyIdDto): Promise<void> {
+    return this.toysService.changeToyStatus(toyId.id, 'REPORTED');
   }
 
   @Post('user-toys')

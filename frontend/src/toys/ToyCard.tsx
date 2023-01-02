@@ -1,3 +1,4 @@
+import { ThemeContext } from "@emotion/react";
 import {
   Card,
   Badge,
@@ -10,9 +11,11 @@ import {
   Rating,
   Anchor,
   Stack,
+  Tooltip,
 } from "@mantine/core";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
+import { IconExclamationCircle } from "@tabler/icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -24,9 +27,9 @@ import { useI18nContext } from "../i18n/i18n-react";
 import { userState } from "../session/sessionState";
 import { getErrorMessage } from "../shared/APIs/baseFetch";
 import {
-  blockToy,
   confirmToy,
   deleteToyById,
+  reportToy,
   Toy,
 } from "../shared/APIs/toysService";
 import { SwapModal } from "./SwapModal";
@@ -60,6 +63,18 @@ const useStyles = createStyles((theme) => ({
     top: theme.spacing.xs,
     left: theme.spacing.xs + 1,
     pointerEvents: "none",
+  },
+
+  report: {
+    position: "absolute",
+    top: theme.spacing.xs - 4,
+    left: theme.spacing.xs - 26,
+    background: "transparent",
+    marginLeft: 10,
+
+    "&:hover": {
+      background: theme.colors.red[0],
+    },
   },
 
   footer: {
@@ -103,26 +118,29 @@ export const ToyCard = ({
   const handleSwap = () => {
     if (currentUserToys.length === 0) {
       openModal({
-        title: "You dont have any toys!",
+        title: LL.toy.swap.noToys(),
         children: (
           <>
-            <Text>
-              Please go{" "}
-              <Anchor
-                component="button"
-                type="button"
-                onClick={() => {
-                  closeAllModals();
-                  navigate(`/user/${currentUser?.id}/toys`);
-                }}
-              >
-                to your profile
-              </Anchor>{" "}
-              first and add a toy or two to be able to make swaps with other
-              users!
-            </Text>
+            {!currentUser ? (
+              <Text>{LL.toy.swap.loginFirst()}</Text>
+            ) : (
+              <Text>
+                {LL.toy.swap.pleaseGo()}{" "}
+                <Anchor
+                  component="button"
+                  type="button"
+                  onClick={() => {
+                    closeAllModals();
+                    navigate(`/user/${currentUser?.id}/toys`);
+                  }}
+                >
+                  {LL.toy.swap.toProfile()}
+                </Anchor>{" "}
+                {LL.toy.swap.andAddToy()}
+              </Text>
+            )}
             <Button fullWidth onClick={() => closeAllModals()} mt="md">
-              Ok
+              {LL.general.ok()}
             </Button>
           </>
         ),
@@ -133,23 +151,23 @@ export const ToyCard = ({
     }
   };
 
-  const handleBlock = async () => {
+  const handleReport = async () => {
     openConfirmModal({
-      title: "Deactivate this toy",
-      children: (
-        <Text size="sm">Are you sure you want to deactivate this toy?</Text>
-      ),
-      labels: { confirm: "Deactivate toy", cancel: "No don't deactivate it" },
+      title: LL.toy.reportToy.title(),
+      children: <Text size="sm">{LL.toy.reportToy.text()}</Text>,
+      labels: {
+        confirm: LL.toy.reportToy.yes(),
+        cancel: LL.toy.reportToy.no(),
+      },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: async () => {
         try {
-          setIsLoading(true);
-          await blockToy(id);
+          await reportToy(id);
           refreshToyList();
           showNotification({
             title: LL.notifications.success(),
-            message: LL.notifications.statusChanged(),
+            message: LL.notifications.reported(),
             color: "green",
             autoClose: 3000,
           });
@@ -161,8 +179,6 @@ export const ToyCard = ({
             color: "red",
             autoClose: 5000,
           });
-        } finally {
-          setIsLoading(false);
         }
       },
     });
@@ -199,15 +215,10 @@ export const ToyCard = ({
 
   const handleDelete = () => {
     openConfirmModal({
-      title: "Please confirm your action",
+      title: LL.toy.confirmDelete.title(),
       closeOnConfirm: false,
-      children: (
-        <Text size="sm">
-          This action is so important that you are required to confirm it with a
-          modal. Please click one of these buttons to proceed.
-        </Text>
-      ),
-      labels: { confirm: "Delete", cancel: "Cancel" },
+      children: <Text size="sm">{LL.toy.confirmDelete.text()}</Text>,
+      labels: { confirm: LL.general.delete(), cancel: LL.general.cancel() },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: async () => {
@@ -237,7 +248,6 @@ export const ToyCard = ({
     });
   };
 
-  // TODO: display status of the toy!
   return (
     <Card withBorder p="md" radius="md" className={classes.card}>
       <Card.Section mb="sm">
@@ -266,6 +276,19 @@ export const ToyCard = ({
         >
           {LL.toy.status({ status })}
         </Badge>
+      )}
+
+      {ownerId !== currentUser?.id && currentUser?.role === "BASIC" && (
+        <Tooltip label={LL.toy.reportToy.title()}>
+          <Button
+            size="xs"
+            className={classes.report}
+            color="red"
+            onClick={() => handleReport()}
+          >
+            <IconExclamationCircle color="#FA5252" />
+          </Button>
+        </Tooltip>
       )}
 
       <Text weight={700} className={classes.title} mt="xs">
@@ -314,7 +337,7 @@ export const ToyCard = ({
           <>
             <Card.Section className={classes.footer} pb={0} pt="sm">
               <Button fullWidth onClick={handleSwap}>
-                Swap
+                {LL.toy.swap.swap()}
               </Button>
             </Card.Section>
 
@@ -336,27 +359,30 @@ export const ToyCard = ({
         )}
 
       {currentUser?.role === "ADMIN" && (
-        <Card.Section className={classes.footer} pt="sm">
-          {status === "UNCONFIRMED" ? (
-            <Button
-              fullWidth
-              color="green"
-              onClick={handleConfirm}
-              loading={isLoading}
-            >
-              Confirm
-            </Button>
-          ) : (
-            <Button
-              fullWidth
-              color="red"
-              onClick={handleBlock}
-              loading={isLoading}
-            >
-              Block
-            </Button>
+        <>
+          {status === "REPORTED" && (
+            <Card.Section className={classes.footer} pt="sm">
+              <Stack>
+                <Button
+                  fullWidth
+                  color="green"
+                  onClick={handleConfirm}
+                  loading={isLoading}
+                >
+                  {LL.general.activate()}
+                </Button>
+                <Button
+                  fullWidth
+                  color="red"
+                  onClick={handleDelete}
+                  loading={isLoading}
+                >
+                  {LL.general.delete()}
+                </Button>
+              </Stack>
+            </Card.Section>
           )}
-        </Card.Section>
+        </>
       )}
     </Card>
   );

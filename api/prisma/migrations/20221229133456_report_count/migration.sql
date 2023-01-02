@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Toy" ADD COLUMN     "reportCount" INTEGER NOT NULL DEFAULT 0;

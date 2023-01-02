@@ -51,7 +51,7 @@ export class ToysService {
     }
   }
 
-  async changeToyStatus(toyId: string, status: ToyStatus, ifMatch: string) {
+  async changeToyStatus(toyId: string, status: ToyStatus) {
     const toy = await this.prisma.toy.findFirst({
       where: { id: toyId },
     });
@@ -60,18 +60,22 @@ export class ToysService {
       throw new NotFoundException('Toy not found. Please refresh the page');
     }
 
-    const currentEtag = encodeETag(toy.version, toy.id);
-
-    if (currentEtag !== ifMatch) {
-      throw new ConflictException(
-        'The data is expired. Please refresh the page',
-      );
+    if (status === 'REPORTED' && toy.reportCount < 2) {
+      await this.prisma.toy.update({
+        where: { id: toyId },
+        data: {
+          reportCount: { increment: 1 },
+        },
+      });
+    } else {
+      await this.prisma.toy.update({
+        where: { id: toyId },
+        data: {
+          status,
+          version: { increment: 1 },
+        },
+      });
     }
-
-    await this.prisma.toy.update({
-      where: { id: toyId },
-      data: { status, version: { increment: 1 } },
-    });
   }
 
   async getToys() {

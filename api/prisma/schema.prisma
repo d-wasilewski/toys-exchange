@@ -66,7 +66,8 @@ model Toy {
   description String
   owner       User          @relation(fields: [ownerId], references: [id])
   ownerId     String
-  status      ToyStatus     @default(UNCONFIRMED)
+  status      ToyStatus     @default(ACTIVE)
+  reportCount Int           @default(0)
   version     Int           @default(0)
 
   createdAt DateTime @default(now())
@@ -78,7 +79,7 @@ model Toy {
 
 enum ToyStatus {
   ACTIVE
-  UNCONFIRMED
+  REPORTED
   FINISHED
 }
 
