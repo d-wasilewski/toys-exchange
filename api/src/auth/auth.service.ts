@@ -72,7 +72,6 @@ export class AuthService {
 
   async sendResetPasswordLink(email: string) {
     const user = await this.userService.findOne(email);
-    console.log({ user });
 
     if (!user) return;
 

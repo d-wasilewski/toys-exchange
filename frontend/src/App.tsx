@@ -42,7 +42,6 @@ function App() {
 
     if (token) {
       const decodedToken = jwtDecode<IDecodedToken>(token);
-      console.log(decodedToken.exp < Date.now(), decodedToken.exp);
       if (decodedToken.exp < Date.now()) {
         logout();
         setUser(null);
@@ -54,7 +53,6 @@ function App() {
   }, [user]);
 
   useEffect(() => {
-    console.log(locale);
     const userLocale = user?.language.toLowerCase() as Locales;
     setLocale(userLocale ?? locale);
   }, [locale]);

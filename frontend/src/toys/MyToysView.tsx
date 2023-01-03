@@ -1,6 +1,7 @@
 import { Button, Flex, Modal } from "@mantine/core";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
+import { useI18nContext } from "../i18n/i18n-react";
 import { AddNewToyForm } from "./add-new/AddNewToyForm";
 import { ToysList } from "./ToysList";
 import { currentToysListState } from "./toysState";
@@ -8,6 +9,7 @@ import { currentToysListState } from "./toysState";
 export const MyToysView = () => {
   const [opened, setOpened] = useState(false);
   const myToysList = useRecoilValue(currentToysListState);
+  const { LL } = useI18nContext();
 
   return (
     <Flex wrap="wrap" gap="lg">
@@ -16,9 +18,9 @@ export const MyToysView = () => {
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Add a new toy"
+        title={LL.profile.toys.new()}
       >
-        <AddNewToyForm />
+        <AddNewToyForm setOpened={setOpened} />
       </Modal>
     </Flex>
   );

@@ -221,54 +221,70 @@ export class OfferService {
   }
 
   async acceptOffer(offerId: string) {
-    await this.prisma.$transaction(async (tx) => {
-      const offer = await tx.offer.findFirst({
-        where: {
-          id: offerId,
-        },
-        include: {
-          toyFromReceiver: true,
-          toyFromSender: true,
-        },
-      });
+    const MAX_RETRIES = 3;
+    let retries = 0;
 
-      if (!offer.toyFromSender || !offer.toyFromReceiver) {
-        throw new NotFoundException(
-          'Data is expired. Please refresh the page.',
-        );
+    while (retries < MAX_RETRIES) {
+      try {
+        await this.prisma.$transaction(async (tx) => {
+          const offer = await tx.offer.findFirst({
+            where: {
+              id: offerId,
+            },
+            include: {
+              toyFromReceiver: true,
+              toyFromSender: true,
+            },
+          });
+
+          if (!offer || !offer.toyFromSender || !offer.toyFromReceiver) {
+            throw new NotFoundException(
+              'Data is expired. Please refresh the page.',
+            );
+          }
+
+          if (offer.status !== Status.PENDING) {
+            throw new ConflictException(`Offer is not active anymore`);
+          }
+
+          await tx.offer.update({
+            where: {
+              id: offerId,
+            },
+            data: {
+              status: Status.ACCEPTED,
+            },
+          });
+
+          await tx.toy.update({
+            where: {
+              id: offer.toyFromSenderId,
+            },
+            data: {
+              ownerId: offer.receiverUserId,
+              status: 'FINISHED',
+            },
+          });
+
+          await tx.toy.update({
+            where: {
+              id: offer.toyFromReceiverId,
+            },
+            data: {
+              ownerId: offer.senderUserId,
+              status: 'FINISHED',
+            },
+          });
+        });
+        break;
+      } catch (error) {
+        if (error.code === 'P2034') {
+          retries++;
+          continue;
+        }
+        throw error;
       }
-
-      if (offer.status !== Status.PENDING) {
-        throw new ConflictException(`Offer is not active anymore`);
-      }
-
-      await tx.offer.update({
-        where: {
-          id: offerId,
-        },
-        data: {
-          status: Status.ACCEPTED,
-        },
-      });
-
-      await tx.toy.update({
-        where: {
-          id: offer.toyFromSenderId,
-        },
-        data: {
-          ownerId: offer.receiverUserId,
-        },
-      });
-
-      await tx.toy.update({
-        where: {
-          id: offer.toyFromReceiverId,
-        },
-        data: {
-          ownerId: offer.senderUserId,
-        },
-      });
-    });
+    }
   }
 
   async declineOffer(offerId: string) {
@@ -278,7 +294,7 @@ export class OfferService {
       },
     });
 
-    if (offer.status !== Status.PENDING) {
+    if (!offer || offer.status !== Status.PENDING) {
       throw new ConflictException(`Offer is not active anymore`);
     }
 

@@ -32,37 +32,46 @@ export class UserService {
   async register(data: RegisterUserDto) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    try {
-      return await this.prisma.$transaction(async (tx) => {
-        const createdUser = await tx.user.create({
-          data: {
-            ...data,
-            password: hashedPassword,
-          },
-          include: {
-            toys: true,
-          },
+    const MAX_RETRIES = 3;
+    let retries = 0;
+
+    while (retries < MAX_RETRIES) {
+      try {
+        return await this.prisma.$transaction(async (tx) => {
+          const createdUser = await tx.user.create({
+            data: {
+              ...data,
+              password: hashedPassword,
+            },
+            include: {
+              toys: true,
+            },
+          });
+
+          if (!createdUser)
+            throw new NotFoundException('Error while creating user');
+
+          const payload = { username: createdUser.email, sub: createdUser.id };
+
+          const token = this.jwtService.sign(payload, {
+            secret: process.env.JWT_SECRET,
+          });
+
+          try {
+            await this.mailService.sendUserConfirmation(createdUser, token);
+          } catch (e) {
+            throw e;
+          }
+
+          return createdUser;
         });
-
-        if (!createdUser)
-          throw new NotFoundException('Error while creating user');
-
-        const payload = { username: createdUser.email, sub: createdUser.id };
-
-        const token = this.jwtService.sign(payload, {
-          secret: process.env.JWT_SECRET,
-        });
-
-        try {
-          await this.mailService.sendUserConfirmation(createdUser, token);
-        } catch (e) {
-          throw e;
+      } catch (error) {
+        if (error.code === 'P2034') {
+          retries++;
+          continue;
         }
-
-        return createdUser;
-      });
-    } catch (error) {
-      throw new BadRequestException('Something went wrong');
+        throw error;
+      }
     }
   }
 

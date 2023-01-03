@@ -37,7 +37,11 @@ export const generateCategoriesData = (
   ];
 };
 
-export const AddNewToyForm = () => {
+export const AddNewToyForm = ({
+  setOpened,
+}: {
+  setOpened: (arg: boolean) => void;
+}) => {
   const [loading, setLoading] = useState(false);
   const user = useRecoilValue(userState);
   const refreshMyToysList = useRecoilRefresher_UNSTABLE(currentToysListState);
@@ -67,6 +71,7 @@ export const AddNewToyForm = () => {
 
       form.reset();
       refreshMyToysList();
+      setOpened(false);
       showNotification({
         title: LL.notifications.success(),
         message: LL.notifications.created({ name: "Toy" }),
@@ -76,7 +81,7 @@ export const AddNewToyForm = () => {
     } catch (e) {
       showNotification({
         title: LL.notifications.error(),
-        message: "Something went wrong",
+        message: LL.notifications.generalError(),
         color: "red",
         autoClose: 5000,
       });

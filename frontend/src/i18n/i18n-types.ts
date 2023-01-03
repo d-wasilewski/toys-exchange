@@ -362,6 +362,10 @@ type RootTranslation = {
 	}
 	toy: {
 		/**
+		 * L​i​s​t​ ​o​f​ ​a​l​l​ ​t​o​y​s
+		 */
+		list: string
+		/**
 		 * T​o​y​ ​d​e​t​a​i​l​s
 		 */
 		details: string
@@ -1073,6 +1077,10 @@ export type TranslationFunctions = {
 		}
 	}
 	toy: {
+		/**
+		 * List of all toys
+		 */
+		list: () => LocalizedString
 		/**
 		 * Toy details
 		 */

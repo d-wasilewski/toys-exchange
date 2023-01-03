@@ -55,7 +55,7 @@ export const ToysView = () => {
         </Navbar>
         {/* TODO: might want to exclude fluid */}
         <Container m={0} px={30} fluid miw={1000}>
-          <h1>List of all toys</h1>
+          <h1>{LL.toy.list()}</h1>
           <ToysList
             toysList={toysList
               .filter((toy) => toy.ownerId !== user?.id)

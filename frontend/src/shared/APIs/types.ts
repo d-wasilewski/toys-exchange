@@ -4,6 +4,9 @@
  */
 
 export interface paths {
+  "/": {
+    get: operations["AppController_get"];
+  };
   "/user/sign-up": {
     post: operations["UserController_signupUser"];
   };
@@ -343,6 +346,16 @@ export interface components {
 }
 
 export interface operations {
+  AppController_get: {
+    parameters: {};
+    responses: {
+      200: {
+        content: {
+          "application/json": string;
+        };
+      };
+    };
+  };
   UserController_signupUser: {
     parameters: {};
     responses: {

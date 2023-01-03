@@ -60,7 +60,7 @@ export const ActionButtons = ({
   const handleAccept = () => {
     openConfirmModal({
       title: LL.offer.confirmModal.title(),
-      closeOnConfirm: false,
+      closeOnConfirm: true,
       children: <Text size="sm">{LL.offer.confirmModal.text()}</Text>,
       labels: { confirm: LL.general.confirm(), cancel: LL.general.cancel() },
       confirmProps: { color: "green" },

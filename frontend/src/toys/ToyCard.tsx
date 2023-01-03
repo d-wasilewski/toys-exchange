@@ -1,4 +1,3 @@
-import { ThemeContext } from "@emotion/react";
 import {
   Card,
   Badge,
@@ -116,7 +115,8 @@ export const ToyCard = ({
   const { LL } = useI18nContext();
 
   const handleSwap = () => {
-    if (currentUserToys.length === 0) {
+    const activeToys = currentUserToys.filter((toy) => toy.status === "ACTIVE");
+    if (activeToys.length === 0) {
       openModal({
         title: LL.toy.swap.noToys(),
         children: (

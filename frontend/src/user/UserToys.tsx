@@ -31,7 +31,7 @@ export const UserToys = () => {
         onClose={() => setOpened(false)}
         title={LL.profile.toys.new()}
       >
-        <AddNewToyForm />
+        <AddNewToyForm setOpened={setOpened} />
       </Modal>
     </>
   );

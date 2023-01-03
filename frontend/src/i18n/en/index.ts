@@ -108,6 +108,7 @@ const en: BaseTranslation = {
     },
   },
   toy: {
+    list: "List of all toys",
     details: "Toy details",
     status: "{status|{ACTIVE: active, FINISHED: finished, REPORTED: reported}}",
     category:
@@ -120,7 +121,7 @@ const en: BaseTranslation = {
       offer: "Swap offer",
       tryingSwap: "You are trying to swap for",
       make: "Make an offer",
-      noToys: "You dont have any toys!",
+      noToys: "You dont have any active toys!",
       loginFirst: "Please login first to swap toys",
       pleaseGo: "Please go",
       toProfile: "To your profile",

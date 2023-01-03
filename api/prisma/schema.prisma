@@ -112,9 +112,9 @@ model Offer {
   senderUserId      String
   receiver          User        @relation(name: "offersReceived", fields: [receiverUserId], references: [id])
   receiverUserId    String
-  toyFromSender     Toy         @relation(name: "toyFromSender", fields: [toyFromSenderId], references: [id])
+  toyFromSender     Toy         @relation(name: "toyFromSender", fields: [toyFromSenderId], references: [id], onDelete: Cascade)
   toyFromSenderId   String
-  toyFromReceiver   Toy         @relation(name: "toyFromReceiver", fields: [toyFromReceiverId], references: [id])
+  toyFromReceiver   Toy         @relation(name: "toyFromReceiver", fields: [toyFromReceiverId], references: [id], onDelete: Cascade)
   toyFromReceiverId String
   status            OfferStatus @default(PENDING)
   senderRating      Rating?     @relation(name: "senderRating")
