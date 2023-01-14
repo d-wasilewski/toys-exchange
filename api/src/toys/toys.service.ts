@@ -60,7 +60,7 @@ export class ToysService {
       throw new NotFoundException('Toy not found. Please refresh the page');
     }
 
-    if (status === 'REPORTED' && toy.reportCount < 2) {
+    if (status === 'REPORTED' && toy.reportCount < 1) {
       await this.prisma.toy.update({
         where: { id: toyId },
         data: {

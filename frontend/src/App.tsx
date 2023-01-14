@@ -54,7 +54,7 @@ function App() {
 
   useEffect(() => {
     const userLocale = user?.language.toLowerCase() as Locales;
-    setLocale(userLocale ?? locale);
+    setLocale(locale);
   }, [locale]);
 
   // probably might be changed based on user status here

@@ -238,7 +238,7 @@ export class UserService {
   }
 
   async rateUser({ value, userId, offerId, sentBy }: RateUserDto) {
-    if (value === 0) {
+    if (value <= 0) {
       throw new BadRequestException('Value has to be greater than 0');
     }
     if (sentBy === 'receiver') {

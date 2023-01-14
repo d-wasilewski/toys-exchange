@@ -19,8 +19,7 @@ async function bootstrap() {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_KEY,
-    // api_secret: process.env.CLOUDINARY_SECRET,
-    api_secret: '_5EzeykNIms3YyweGiK9wpfR3Z4',
+    api_secret: process.env.CLOUDINARY_SECRET,
   });
 
   await app.listen(3000);

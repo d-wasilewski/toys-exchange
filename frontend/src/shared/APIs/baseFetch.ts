@@ -3,6 +3,7 @@ import { paths } from "./types";
 
 export const client = axios.create({
   baseURL: "http://localhost:3000",
+  // baseURL: "https://toys-exchange-production.up.railway.app",
   headers: {
     Authorization: localStorage.authToken,
   },

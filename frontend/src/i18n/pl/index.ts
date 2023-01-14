@@ -195,25 +195,25 @@ const pl: BaseTranslation = {
     resetPasswordEmail:
       "Jeśli twój email istnieje, wysłaliśmy ci link do zresetowania hasła",
     resetPasswordConfirmation: "Twoje hasło zostało zresetowane",
+    registered: "Wysłano email z linkiem do aktywacji konta",
     error: "Błąd",
     generalError: "Coś poszło nie tak",
   },
   homepage: {
     titleMain: "Baw się & Wymieniaj & Powtarzaj",
     titleText:
-      "Are you tired of your child's toys gathering dust and taking up space in your home? Look no further! Our platform allows you to swap toys with others, giving your child the opportunity to play with new toys while decluttering your home. Start browsing and swapping today!",
-    // "Jesteś zmęczony"
+      "Jesteś zmęczony tym, ze zabawki Twojego dziecka zbierają kurz i zabierają miejsce w Twoim domu? Nie szukaj dalej! Nasza platform pozawala Ci na wymianę zabawek z innymi, dając Twojemu dziecku szansę na zabawę nowymi zabawkami. Zacznij przeglądać i wymieniać juz dziś!",
     gettingStarted: "Zacznij teraz",
     features: {
       title1: "Szeroki wybór zabawek",
       description1:
-        "Our toy swapping platform has a wide selection of toys to choose from, so you are sure to find something that your child will love.",
+        "Nasza platforma do wymiany oferuje szeroki wybór zabawek, więc mozesz zawsze być pewny ze znajdziesz coś, co Twoje dziecko pokocha.",
       title2: "Przejrzysty interfejs",
       description2:
-        "Our platform is designed to be user-friendly, so you can easily browse, request, and list toys with just a few clicks.",
+        "Nasza platforma jest zaprojektowana aby być przyjazna uzytkownikowi, więc mozesz łatwo przeglądać, wymieniać i wystawiać zabawki.",
       title3: "Podobnie myśląca społeczność",
       description3:
-        "You can connect with other parents who are looking to declutter their homes and give their children the opportunity to play with new toys",
+        "Mozesz połączyć się z innymi rodzicami, którzy szukają sposobu na zrobienie miejsca w mieszkaniu i danie dzieciom okazji do zabawy nowymi zabawkami.",
     },
     faq: {
       title: "Często zadawane pytania",
@@ -222,16 +222,16 @@ const pl: BaseTranslation = {
         "Aby dołączyć do społeczności, po prostu stwórz konto na naszej platformie i zacznij przeglądać dostępne zabawki do wymiany. Mozesz takze wystawiać własne zabawki do wymiany",
       question2: "Jak zaządać zabawki od innego uzytkownika?",
       answer2:
-        "To request a toy from another user, simply click on the toy that you are interested in and follow the prompts to send a request to the owner. The owner will then have the option to accept or decline your request.",
+        "Aby zaządać zabawki od innego uzytkownika, kliknij na zabawkę którą jesteś zainteresowany i podązaj za poleceniamy aby wysłać ofertę wymiany do właściciela. Właściciel będzie wtedy miał mozliwość akceptacji lub odrzucenia oferty.",
       question3: "Jak wystawiać własne zabawki aby inni mogli ich zaządać?",
       answer3:
-        "To list your own toys, click on the 'Add a toy' button and follow the prompts to upload a photo and description of the toy you want to list.",
+        "Aby wystawiać własne zabawki, kliknij na przycisk 'Dodaj zabawkę' i wypełnij formularz aby dodać opis i zdjęcie zabawki którą chcesz wystawić.",
       question4: "Jak dokonać wymiany zabawek?",
       answer4:
-        "Once a request for a toy has been accepted, the two users can coordinate the details of the swap, such as where to meet or how to exchange the toys.",
+        "Gdy ządanie wymiany zostało zaakceptowane, oboje uzytkownicy mogą skoordynować detale wymiany, takie jak gdzie się spotkać lub jak przeprowadzić wymianę",
       question5: "Czy jest jakaś opłata za korzystanie z platformy?",
       answer5:
-        "There is no fee to use our toy swapping platform. It is completely free to join and list toys.",
+        "Nie ma zadnej opłaty za korzystanie z platformy. Dołączanie i wymiana zabawek jest całkowicie darmowa.",
     },
   },
 };

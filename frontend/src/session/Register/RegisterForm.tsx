@@ -84,6 +84,12 @@ export const RegisterForm = () => {
     try {
       setIsLoading(true);
       await signUp(valuesWithoutTerms);
+      showNotification({
+        title: LL.notifications.success(),
+        message: LL.notifications.registered(),
+        color: "green",
+        autoClose: 3000,
+      });
     } catch (e) {
       const message = getErrorMessage(e);
       showNotification({

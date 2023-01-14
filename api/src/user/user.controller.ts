@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Language, User } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { encodeETag } from 'src/shared/encodeETag';
 import { AdminPermissionGuard } from 'src/shared/guards/permission.guard';
 import { File } from 'src/toys/toys.service';
@@ -62,6 +63,7 @@ export class UserController {
     return this.userService.changeUserImage(file, param.userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('rate')
   async rateUser(@Body() payload: RateUserDto) {
     return this.userService.rateUser(payload);

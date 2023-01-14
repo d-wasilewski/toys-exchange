@@ -268,6 +268,27 @@ type RootTranslation = {
 			}
 		}
 	}
+	validation: {
+		/**
+		 * T​h​i​s​ ​f​i​e​l​d​ ​i​s​ ​r​e​q​u​i​r​e​d
+		 */
+		required: string
+		/**
+		 * {​n​a​m​e​}​ ​s​h​o​u​l​d​ ​h​a​v​e​ ​m​a​x​i​m​u​m​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s
+		 * @param {number} min
+		 * @param {string} name
+		 */
+		maximum: RequiredParams<'min' | 'name'>
+		/**
+		 * {​n​a​m​e​}​ ​i​s​ ​t​o​o​ ​l​o​n​g
+		 * @param {string} name
+		 */
+		tooLong: RequiredParams<'name'>
+		/**
+		 * I​n​v​a​l​i​d​ ​e​m​a​i​l
+		 */
+		invalidEmail: string
+	}
 	login: {
 		/**
 		 * L​o​g​i​n
@@ -409,7 +430,7 @@ type RootTranslation = {
 			 */
 			make: string
 			/**
-			 * Y​o​u​ ​d​o​n​t​ ​h​a​v​e​ ​a​n​y​ ​t​o​y​s​!
+			 * Y​o​u​ ​d​o​n​t​ ​h​a​v​e​ ​a​n​y​ ​a​c​t​i​v​e​ ​t​o​y​s​!
 			 */
 			noToys: string
 			/**
@@ -632,6 +653,10 @@ type RootTranslation = {
 		 * Y​o​u​r​ ​p​a​s​s​w​o​r​d​ ​h​a​s​ ​b​e​e​n​ ​r​e​s​e​t
 		 */
 		resetPasswordConfirmation: string
+		/**
+		 * R​e​g​i​s​t​e​r​e​d​,​ ​p​l​e​a​s​e​ ​c​o​n​f​i​r​m​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​n​o​w​.
+		 */
+		registered: string
 		/**
 		 * E​r​r​o​r
 		 */
@@ -984,6 +1009,24 @@ export type TranslationFunctions = {
 			}
 		}
 	}
+	validation: {
+		/**
+		 * This field is required
+		 */
+		required: () => LocalizedString
+		/**
+		 * {name} should have maximum {min} characters
+		 */
+		maximum: (arg: { min: number, name: string }) => LocalizedString
+		/**
+		 * {name} is too long
+		 */
+		tooLong: (arg: { name: string }) => LocalizedString
+		/**
+		 * Invalid email
+		 */
+		invalidEmail: () => LocalizedString
+	}
 	login: {
 		/**
 		 * Login
@@ -1123,7 +1166,7 @@ export type TranslationFunctions = {
 			 */
 			make: () => LocalizedString
 			/**
-			 * You dont have any toys!
+			 * You dont have any active toys!
 			 */
 			noToys: () => LocalizedString
 			/**
@@ -1339,6 +1382,10 @@ export type TranslationFunctions = {
 		 * Your password has been reset
 		 */
 		resetPasswordConfirmation: () => LocalizedString
+		/**
+		 * Registered, please confirm your account now.
+		 */
+		registered: () => LocalizedString
 		/**
 		 * Error
 		 */

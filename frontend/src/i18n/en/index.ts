@@ -75,6 +75,12 @@ const en: BaseTranslation = {
       },
     },
   },
+  validation: {
+    required: "This field is required",
+    maximum: "{name: string} should have maximum {min: number} characters",
+    tooLong: "{name: string} is too long",
+    invalidEmail: "Invalid email",
+  },
   login: {
     login: "Login",
     welcomeBack: "Welcome back!",
@@ -194,6 +200,7 @@ const en: BaseTranslation = {
     resetPasswordEmail:
       "If your email exists, we sent you a link to reset your password",
     resetPasswordConfirmation: "Your password has been reset",
+    registered: "Registered, please confirm your account now.",
     error: "Error",
     generalError: "Something went wrong",
   },
