@@ -96,7 +96,7 @@ export const AddNewToyForm = ({
         <TextInput
           required
           radius="md"
-          label={LL.form.name()}
+          label={LL.form.toyName()}
           placeholder={LL.form.placeholder.toy.name()}
           {...form.getInputProps("name")}
         />

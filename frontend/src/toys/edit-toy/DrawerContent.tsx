@@ -45,7 +45,7 @@ export const DrawerContent = () => {
       category: selectedToy.category,
     },
     validateInputOnBlur: true,
-    validate: zodResolver(schema),
+    validate: zodResolver(schema(LL)),
   });
 
   const handleSubmit = async (values: typeof form.values) => {

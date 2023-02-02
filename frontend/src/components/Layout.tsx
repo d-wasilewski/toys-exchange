@@ -30,6 +30,7 @@ export const Layout = ({ children }: AppLayoutProps) => {
   const unauthenticatedLinks = [
     { label: LL.links.login(), link: ROUTES.login },
     { label: LL.links.register(), link: ROUTES.register },
+    { label: LL.links.toys(), link: ROUTES.toys },
   ];
 
   const links = user

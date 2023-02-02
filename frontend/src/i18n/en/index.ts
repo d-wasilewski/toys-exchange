@@ -52,6 +52,7 @@ const en: BaseTranslation = {
     password: "Password",
     confirmPassword: "Confirm password",
     name: "Name",
+    toyName: "Name",
     phone: "Phone number",
     address: "Address",
     photo: "Photo",
@@ -77,9 +78,12 @@ const en: BaseTranslation = {
   },
   validation: {
     required: "This field is required",
-    maximum: "{name: string} should have maximum {min: number} characters",
-    tooLong: "{name: string} is too long",
+    maximum: "This field should have maximum {max: number} characters",
+    minimum: "This field should have mininum {min: number} characters",
+    tooLong: "This field contains too many characters",
     invalidEmail: "Invalid email",
+    passwordMismatch: "Passwords doesn't match",
+    invalidPhone: "Invalid phone number",
   },
   login: {
     login: "Login",
@@ -97,7 +101,7 @@ const en: BaseTranslation = {
       lower: "Includes lowercase letter",
       upper: "Includes uppercase letter",
       special: "Includes special symbol",
-      characters: "Includes at least 6 characters",
+      characters: "Includes at least 8 characters",
     },
   },
   profile: {

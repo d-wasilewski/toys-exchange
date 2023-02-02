@@ -52,6 +52,7 @@ const pl: BaseTranslation = {
     password: "Hasło",
     confirmPassword: "Potwierdź hasło",
     name: "Imię",
+    toyName: "Nazwa",
     phone: "Numer telefonu",
     address: "Adres",
     photo: "Zdjęcie",
@@ -75,6 +76,15 @@ const pl: BaseTranslation = {
       },
     },
   },
+  validation: {
+    required: "To pole jest wymagane",
+    maximum: "To pole powinno zawierać maksymalnie {max: number} znaków",
+    minimum: "To pole powinno zawierać przynajmniej {min: number} znaków",
+    tooLong: "To pole zawiera za dużo znaków",
+    invalidEmail: "Niepoprawny email",
+    passwordMismatch: "Hasła nie są takie same",
+    invalidPhone: "Niepoprawny numer telefonu",
+  },
   login: {
     login: "Zaloguj się",
     welcomeBack: "Witaj ponownie!",
@@ -91,7 +101,7 @@ const pl: BaseTranslation = {
       lower: "Zawiera małą literę",
       upper: "Zawiera duza litere",
       special: "Zawiera symbol specjalny",
-      characters: "Zawiera przynajmniej 6 znaków",
+      characters: "Zawiera przynajmniej 8 znaków",
     },
   },
   profile: {

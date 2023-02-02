@@ -192,6 +192,10 @@ type RootTranslation = {
 		 */
 		name: string
 		/**
+		 * N​a​m​e
+		 */
+		toyName: string
+		/**
 		 * P​h​o​n​e​ ​n​u​m​b​e​r
 		 */
 		phone: string
@@ -274,20 +278,31 @@ type RootTranslation = {
 		 */
 		required: string
 		/**
-		 * {​n​a​m​e​}​ ​s​h​o​u​l​d​ ​h​a​v​e​ ​m​a​x​i​m​u​m​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s
-		 * @param {number} min
-		 * @param {string} name
+		 * T​h​i​s​ ​f​i​e​l​d​ ​s​h​o​u​l​d​ ​h​a​v​e​ ​m​a​x​i​m​u​m​ ​{​m​a​x​}​ ​c​h​a​r​a​c​t​e​r​s
+		 * @param {number} max
 		 */
-		maximum: RequiredParams<'min' | 'name'>
+		maximum: RequiredParams<'max'>
 		/**
-		 * {​n​a​m​e​}​ ​i​s​ ​t​o​o​ ​l​o​n​g
-		 * @param {string} name
+		 * T​h​i​s​ ​f​i​e​l​d​ ​s​h​o​u​l​d​ ​h​a​v​e​ ​m​i​n​i​n​u​m​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s
+		 * @param {number} min
 		 */
-		tooLong: RequiredParams<'name'>
+		minimum: RequiredParams<'min'>
+		/**
+		 * T​h​i​s​ ​f​i​e​l​d​ ​c​o​n​t​a​i​n​s​ ​t​o​o​ ​m​a​n​y​ ​c​h​a​r​a​c​t​e​r​s
+		 */
+		tooLong: string
 		/**
 		 * I​n​v​a​l​i​d​ ​e​m​a​i​l
 		 */
 		invalidEmail: string
+		/**
+		 * P​a​s​s​w​o​r​d​s​ ​d​o​e​s​n​'​t​ ​m​a​t​c​h
+		 */
+		passwordMismatch: string
+		/**
+		 * I​n​v​a​l​i​d​ ​p​h​o​n​e​ ​n​u​m​b​e​r
+		 */
+		invalidPhone: string
 	}
 	login: {
 		/**
@@ -342,7 +357,7 @@ type RootTranslation = {
 			 */
 			special: string
 			/**
-			 * I​n​c​l​u​d​e​s​ ​a​t​ ​l​e​a​s​t​ ​6​ ​c​h​a​r​a​c​t​e​r​s
+			 * I​n​c​l​u​d​e​s​ ​a​t​ ​l​e​a​s​t​ ​8​ ​c​h​a​r​a​c​t​e​r​s
 			 */
 			characters: string
 		}
@@ -933,6 +948,10 @@ export type TranslationFunctions = {
 		 */
 		name: () => LocalizedString
 		/**
+		 * Name
+		 */
+		toyName: () => LocalizedString
+		/**
 		 * Phone number
 		 */
 		phone: () => LocalizedString
@@ -1015,17 +1034,29 @@ export type TranslationFunctions = {
 		 */
 		required: () => LocalizedString
 		/**
-		 * {name} should have maximum {min} characters
+		 * This field should have maximum {max} characters
 		 */
-		maximum: (arg: { min: number, name: string }) => LocalizedString
+		maximum: (arg: { max: number }) => LocalizedString
 		/**
-		 * {name} is too long
+		 * This field should have mininum {min} characters
 		 */
-		tooLong: (arg: { name: string }) => LocalizedString
+		minimum: (arg: { min: number }) => LocalizedString
+		/**
+		 * This field contains too many characters
+		 */
+		tooLong: () => LocalizedString
 		/**
 		 * Invalid email
 		 */
 		invalidEmail: () => LocalizedString
+		/**
+		 * Passwords doesn't match
+		 */
+		passwordMismatch: () => LocalizedString
+		/**
+		 * Invalid phone number
+		 */
+		invalidPhone: () => LocalizedString
 	}
 	login: {
 		/**
@@ -1080,7 +1111,7 @@ export type TranslationFunctions = {
 			 */
 			special: () => LocalizedString
 			/**
-			 * Includes at least 6 characters
+			 * Includes at least 8 characters
 			 */
 			characters: () => LocalizedString
 		}

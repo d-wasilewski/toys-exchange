@@ -55,11 +55,11 @@ export function OfferDetails({ toy, user, type }: ArticleCardVerticalProps) {
 
   return (
     <Stack spacing={4}>
-      {type === "sender" ? (
+      {/* {type === "sender" ? (
         <Text align="center">{LL.offer.sender()}</Text>
       ) : (
         <Text align="center">{LL.offer.receiver()}</Text>
-      )}
+      )} */}
       <Card withBorder radius="md" p={0} className={classes.card}>
         <Group noWrap spacing={0}>
           <Image src={toy.imgUrl} height={120} width={180} fit="contain" />

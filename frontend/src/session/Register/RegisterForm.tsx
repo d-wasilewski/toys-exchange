@@ -45,7 +45,7 @@ export const RegisterForm = () => {
       confirmPassword: "",
     },
     validateInputOnBlur: true,
-    validate: zodResolver(schema),
+    validate: zodResolver(schema(LL)),
     transformValues: (values) => ({
       ...values,
       phoneNumber: values.phoneNumber.replaceAll("-", "").substring(4),

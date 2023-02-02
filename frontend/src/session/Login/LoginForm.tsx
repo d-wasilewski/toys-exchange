@@ -31,7 +31,7 @@ export const LoginForm = () => {
       password: "",
     },
     validateInputOnBlur: true,
-    validate: zodResolver(schema),
+    validate: zodResolver(schema(LL)),
   });
 
   const handleSubmit = async (values: typeof form.values) => {

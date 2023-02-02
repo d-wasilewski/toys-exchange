@@ -1,9 +1,11 @@
 import { z } from "zod";
+import { TranslationFunctions } from "../../../i18n/i18n-types";
 
-export const schema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "This field is required" })
-    .email({ message: "Invalid email" })
-    .max(150, { message: "Email is too long" }),
-});
+export const schema = (LL: TranslationFunctions) =>
+  z.object({
+    email: z
+      .string()
+      .min(1, { message: LL.validation.required() })
+      .email({ message: LL.validation.invalidEmail() })
+      .max(150, { message: LL.validation.maximum({ max: 150 }) }),
+  });
