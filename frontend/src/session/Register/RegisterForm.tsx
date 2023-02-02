@@ -1,6 +1,5 @@
 import {
   Button,
-  Checkbox,
   Input,
   Paper,
   PasswordInput,
@@ -44,7 +43,6 @@ export const RegisterForm = () => {
       address: "",
       password: "",
       confirmPassword: "",
-      terms: false,
     },
     validateInputOnBlur: true,
     validate: zodResolver(schema),
@@ -73,13 +71,9 @@ export const RegisterForm = () => {
       form.setFieldError("password", "Password doesn't match requirements");
     }
 
-    if (!form.values.terms) {
-      form.setFieldError("terms", "This field is required");
-    }
-
     if (!isEmpty(form.errors)) return;
 
-    const { terms, confirmPassword, ...valuesWithoutTerms } = values;
+    const { confirmPassword, ...valuesWithoutTerms } = values;
 
     try {
       setIsLoading(true);
@@ -173,7 +167,7 @@ export const RegisterForm = () => {
               />
               <PasswordRequirement
                 label={LL.register.requirements.characters()}
-                meets={form.values.password.length > 5}
+                meets={form.values.password.length > 7}
               />
               {checks}
             </Popover.Dropdown>
@@ -187,12 +181,6 @@ export const RegisterForm = () => {
             visible={visible}
             onVisibilityChange={toggle}
             {...form.getInputProps("confirmPassword")}
-          />
-          <Checkbox
-            mt="sm"
-            label={LL.register.terms()}
-            {...form.getInputProps("terms", { type: "checkbox" })}
-            error={form.errors.terms}
           />
         </Stack>
         <Button type="submit" mt="md" fullWidth radius="md" loading={isLoading}>
