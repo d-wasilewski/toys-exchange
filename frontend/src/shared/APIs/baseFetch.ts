@@ -2,10 +2,9 @@ import axios, { AxiosError } from "axios";
 import { paths } from "./types";
 
 export const client = axios.create({
-  baseURL: "http://localhost:3000",
-  // baseURL: "https://toys-exchange-production.up.railway.app",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
-    Authorization: localStorage.authToken,
+    Authorization: "Bearer " + localStorage.authToken,
   },
 });
 
