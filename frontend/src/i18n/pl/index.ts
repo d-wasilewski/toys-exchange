@@ -1,6 +1,6 @@
-import type { BaseTranslation } from "../i18n-types.js";
+import type { Translation } from "../i18n-types.js";
 
-const pl: BaseTranslation = {
+const pl: Translation = {
   general: {
     submit: "Potwierdź",
     cancel: "Cofnij",
