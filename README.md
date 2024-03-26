@@ -8,4 +8,7 @@
 * [Mantine](https://mantine.dev/)
 * [Cloudinary](https://cloudinary.com)
 
-[Demo](https://www.loom.com/share/44f9c92802cb42a2a361ddd3de568e5b?sid=97528c0c-2cf6-498e-9a22-ef701bd48975)https://www.loom.com/share/44f9c92802cb42a2a361ddd3de568e5b?sid=97528c0c-2cf6-498e-9a22-ef701bd48975
+App demo:
+
+https://github.com/d-wasilewski/toys-exchange/assets/71132144/90e79f55-455a-42b3-b473-8c3d3aac3dbb
+
